@@ -14,9 +14,11 @@ import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
 import kotlinx.android.synthetic.main.fragment_feeds.*
+import timber.log.Timber
 
 
 class PostFragment : BaseFragment(), PostContract.View {
+
 
     override val contentLayout: Int
         get() = com.socialpub.rahul.R.layout.fragment_feeds
@@ -62,13 +64,12 @@ class PostFragment : BaseFragment(), PostContract.View {
                 menuInflater.inflate(R.menu.menu_sort_popup, popup.menu)
 
                 setOnMenuItemClickListener {
-                    toast("todo click filter ${it.title}")
-//                    when (it.itemId) {
-//                        R.id.action_latest -> controller
-//                        R.id.action_liked -> controller
-//                        R.id.action_controversial -> controller
-//                        else -> Timber.e("Error")
-//                    }
+                    when (it.itemId) {
+                        R.id.action_latest -> controller.filterLatest()
+                        R.id.action_liked -> controller.filterLiked()
+                        R.id.action_controversial -> controller.filterCommented()
+                        else -> Timber.e("Error")
+                    }
                     return@setOnMenuItemClickListener true
                 }
                 show()
@@ -93,9 +94,11 @@ class PostFragment : BaseFragment(), PostContract.View {
             adapter = postAdapter
         }
 
-
     }
 
+    override fun listScrollToTop() {
+        list_global_post.smoothScrollToPosition(0)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -105,6 +108,8 @@ class PostFragment : BaseFragment(), PostContract.View {
     override fun onImagePickerSuccess(path: String) {
         controller.uploadPost(
             Post(
+                likeCount = 50,
+                commentCount = 50,
                 imagePath = path,
                 caption = "Pokemon pokemon pokemon"
             )

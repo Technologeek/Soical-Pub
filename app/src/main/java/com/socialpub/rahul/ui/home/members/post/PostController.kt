@@ -8,6 +8,7 @@ import com.socialpub.rahul.data.local.prefs.AppPrefs
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
+import com.socialpub.rahul.utils.AppConst
 import com.socialpub.rahul.utils.helper.CloudinaryUploadHelper
 import timber.log.Timber
 
@@ -28,7 +29,14 @@ class PostController(
     private var globalfeedsListener: ListenerRegistration? = null
 
     override fun startObservingGlobalFeeds() {
-        globalfeedsListener = postSource.observeGlobalFeeds()
+
+        val filterObservable = when (userPrefs.filterType) {
+            AppConst.POST_FILTER_LIKES -> postSource.observeGlobalFeedsByLikes()
+            AppConst.POST_FILTER_COMMENTS -> postSource.observeGlobalFeedsByComments()
+            else -> postSource.observeGlobalFeedsByTimeStamp()
+        }
+
+        globalfeedsListener = filterObservable
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
 
                 if (firebaseFirestoreException != null) {
@@ -50,6 +58,27 @@ class PostController(
             }
     }
 
+    override fun filterLatest() {
+        stopObservingGlobalFeeds()
+        userPrefs.filterType = AppConst.POST_FILTER_LATEST
+        startObservingGlobalFeeds()
+        view.listScrollToTop()
+    }
+
+    override fun filterLiked() {
+        stopObservingGlobalFeeds()
+        userPrefs.filterType = AppConst.POST_FILTER_LIKES
+        startObservingGlobalFeeds()
+        view.listScrollToTop()
+    }
+
+    override fun filterCommented() {
+        stopObservingGlobalFeeds()
+        userPrefs.filterType = AppConst.POST_FILTER_COMMENTS
+        startObservingGlobalFeeds()
+        view.listScrollToTop()
+    }
+
     override fun stopObservingGlobalFeeds() {
         globalfeedsListener?.remove()
     }
@@ -59,8 +88,7 @@ class PostController(
             try {
                 val image = ImagePicker.getFirstImageOrNull(data)
                 val path = image.path
-
-                view.onError("todo : showDilaog which show inputs for other post details")
+                view.onError("todo : show Dilaog which show inputs for other post details")
                 view.onImagePickerSuccess(path)
             } catch (e: Exception) {
                 view.onError(e.localizedMessage)
@@ -70,7 +98,6 @@ class PostController(
 
 
     override fun uploadPost(post: Post) {
-        view.onError("todo :add feed dialog before upload image to cloudinary")
         uploadImageClouinary(post)
     }
 

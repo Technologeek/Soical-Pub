@@ -68,7 +68,7 @@
             tools:text="Location"
             android:padding="8dp"
             android:textSize="14sp"
-            android:background="@android:color/darker_gray"
+            android:background="@color/colorAccent"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_width="match_parent"

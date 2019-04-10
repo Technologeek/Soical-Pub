@@ -12,6 +12,7 @@ interface AppPrefs {
             const val USER_PHOTO: String = "USER_PHOTO"
             const val USER_EMAIL: String = "USER_EMAIL"
             const val USER_ID: String = "USER_UNIQUE_ID"
+            const val FILTER_TYPE: String = "POST_FILTER_TYPE"
         }
 
         var isUserLoggedIn: Boolean
@@ -19,6 +20,7 @@ interface AppPrefs {
         var displayName: String
         var avatarUrl: String
         var email: String
+        var filterType: Int
     }
 
 

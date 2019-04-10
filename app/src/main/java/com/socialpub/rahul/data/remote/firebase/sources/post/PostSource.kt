@@ -1,5 +1,6 @@
 package com.socialpub.rahul.data.remote.firebase.sources.post
 
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.remote.cloudinary.config.CloudinaryManager
@@ -25,8 +26,17 @@ class PostSource private constructor(
 
     private val firebaseStore by lazy { firebaseManager.firestore }
 
-    fun observeGlobalFeeds() = firebaseStore
+    fun observeGlobalFeedsByTimeStamp() = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .orderBy("timestamp", Query.Direction.DESCENDING)
+
+    fun observeGlobalFeedsByLikes() = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .orderBy("likeCount", Query.Direction.DESCENDING)
+
+    fun observeGlobalFeedsByComments() = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .orderBy("commentCount", Query.Direction.DESCENDING)
 
     fun uploadImageCloundary(filePath: String) = cloudinaryManager.uploadImage(filePath)
 

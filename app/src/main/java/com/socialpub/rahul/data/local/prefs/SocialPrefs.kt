@@ -2,11 +2,12 @@ package com.socialpub.rahul.data.local.prefs
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.socialpub.rahul.utils.AppConst
 
 
 class SocialPrefs private constructor(context: Context) {
 
-    inner class UserPref : AppPrefs.User {
+    inner class UserPref() : AppPrefs.User {
 
         override var isUserLoggedIn: Boolean
             get() = prefs.getBoolean(AppPrefs.User.Key.IS_USER_LOGGEDIN, false)
@@ -27,6 +28,10 @@ class SocialPrefs private constructor(context: Context) {
         override var userId: String
             get() = prefs.getString(AppPrefs.User.Key.USER_ID, "")!!
             set(value) = prefs.edit().putString(AppPrefs.User.Key.USER_ID, value).apply()
+
+        override var filterType: Int
+            get() = prefs.getInt(AppPrefs.User.Key.FILTER_TYPE, AppConst.POST_FILTER_LATEST)
+            set(value) = prefs.edit().putInt(AppPrefs.User.Key.FILTER_TYPE, value).apply()
 
     }
 

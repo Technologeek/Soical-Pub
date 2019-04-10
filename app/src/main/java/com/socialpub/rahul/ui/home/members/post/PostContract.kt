@@ -10,7 +10,7 @@ interface PostContract {
         fun attachActions()
         fun onImagePickerSuccess(path: String)
         fun updatePost(globalPost: List<Post>)
-
+        fun listScrollToTop()
     }
 
     interface Controller : BaseContract.Controller {
@@ -23,6 +23,9 @@ interface PostContract {
         fun uploadPost(post: Post)
         fun startObservingGlobalFeeds()
         fun stopObservingGlobalFeeds()
+        fun filterLatest()
+        fun filterCommented()
+        fun filterLiked()
     }
 
 }
