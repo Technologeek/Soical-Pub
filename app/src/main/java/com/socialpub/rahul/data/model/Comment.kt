@@ -1,10 +1,16 @@
 package com.socialpub.rahul.data.model
 
-import java.util.*
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class Comment(
+    @SerializedName("uid")
+    @Expose
     val uid: String = "",
+    @SerializedName("username")
+    @Expose
     val username: String = "",
-    val text: String = "",
-    val date: Date
+    @SerializedName("text")
+    @Expose
+    val text: String = ""
 )
