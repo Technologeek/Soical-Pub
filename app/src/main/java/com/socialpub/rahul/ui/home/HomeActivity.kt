@@ -36,11 +36,9 @@ class HomeActivity : BaseActivity(), NavController {
     }
 
     override fun goto(screen: String) {
-
+        navigator.goto(screen)
     }
-
-    override fun goBack() {
-
-    }
+    
+    override fun goBack() = navigator.goBack()
 
 }

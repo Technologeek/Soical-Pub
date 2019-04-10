@@ -3,6 +3,7 @@ package com.socialpub.rahul.ui.home.members.post
 
 import android.content.Intent
 import android.view.View
+import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.features.ReturnMode
@@ -11,16 +12,22 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
+import com.socialpub.rahul.ui.home.navigation.NavController
 import kotlinx.android.synthetic.main.fragment_feeds.*
-import timber.log.Timber
+
 
 class PostFragment : BaseFragment(), PostContract.View {
 
     override val contentLayout: Int
-        get() = R.layout.fragment_feeds
+        get() = com.socialpub.rahul.R.layout.fragment_feeds
 
     lateinit var controller: PostController
+    lateinit var navigator: NavController
+
     override fun setup(view: View) {
+
+        navigator = attachedContext as NavController
+
         controller = PostController(this)
         controller.onStart()
     }
@@ -38,6 +45,7 @@ class PostFragment : BaseFragment(), PostContract.View {
     private lateinit var postAdapter: GlobalPostAdapter
 
     override fun attachActions() {
+
         fab_upload.setOnClickListener {
             ImagePicker.create(this)
                 .returnMode(ReturnMode.ALL)
@@ -47,14 +55,35 @@ class PostFragment : BaseFragment(), PostContract.View {
                 .start(PostContract.Controller.Const.IMAGE_PICKER_REQUEST)
         }
 
+        btn_sort.setOnClickListener {
+            val popup = PopupMenu(attachedContext, it)
+            popup.run {
+
+                menuInflater.inflate(R.menu.menu_sort_popup, popup.menu)
+
+                setOnMenuItemClickListener {
+                    toast("todo click filter ${it.title}")
+//                    when (it.itemId) {
+//                        R.id.action_latest -> controller
+//                        R.id.action_liked -> controller
+//                        R.id.action_controversial -> controller
+//                        else -> Timber.e("Error")
+//                    }
+                    return@setOnMenuItemClickListener true
+                }
+                show()
+            }
+
+        }
+
 
         postAdapter = GlobalPostAdapter.newInstance(object : PostClickListener {
-            override fun onlikeClicked(adapterPosition: Int) {
-
+            override fun onlikeClicked(position: Int) {
+                toast("clicked like:$position")
             }
 
             override fun onCommentClicked(position: Int) {
-
+                toast("clicked comment:$position")
             }
 
         })
@@ -66,6 +95,7 @@ class PostFragment : BaseFragment(), PostContract.View {
 
 
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

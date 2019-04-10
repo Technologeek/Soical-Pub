@@ -16,8 +16,8 @@ class PostController(
     private val view: PostContract.View
 ) : PostContract.Controller {
 
-    lateinit var userPrefs: AppPrefs.User
-    lateinit var postSource: PostSource
+    private lateinit var userPrefs: AppPrefs.User
+    private lateinit var postSource: PostSource
 
     override fun onStart() {
         view.attachActions()

@@ -7,6 +7,8 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.base.NavFlow
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.onboarding.navigation.NavController
+import io.reactivex.Completable
+import java.util.concurrent.TimeUnit
 
 /**
  * Screen fragment is resposnible for selecting
@@ -23,14 +25,17 @@ class SplashFragment : BaseFragment() {
     override fun setup(view: View) {
         navigator = attachedContext as NavController
 
-        val appPrefs = Injector.userPrefs()
-        if (appPrefs.isUserLoggedIn) {
-            navigator.gotoHome()
-        } else {
-            navigator.goto(NavFlow.ONBOARD.REGISTER)
-        }
-    }
+        Completable.timer(1, TimeUnit.SECONDS)
+            .subscribe {
+                val appPrefs = Injector.userPrefs()
+                if (appPrefs.isUserLoggedIn) {
+                    navigator.gotoHome()
+                } else {
+                    navigator.goto(NavFlow.ONBOARD.REGISTER)
+                }
+            }
 
+    }
 
     companion object {
         fun newInstance() = SplashFragment()

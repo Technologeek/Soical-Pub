@@ -13,6 +13,7 @@ import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_post.view.*
 import timber.log.Timber
+import java.text.DateFormat
 
 class GlobalPostAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<Post>,
@@ -54,10 +55,12 @@ class GlobalPostAdapter private constructor(
 
             text_username.text = post.username
             text_post_location.text = post.location
-            text_post_date.text = post.timestamp.toString()
             text_post_caption.text = post.caption
             btn_like.text = "${post.likeCount} Likes"
             btn_comments.text = "${post.commentCount} Comments"
+
+            val date = DateFormat.getInstance().format(post.timestamp)
+            text_post_date.text = date
 
             if (!post.userAvatar.isEmpty()) {
                 Picasso.get()

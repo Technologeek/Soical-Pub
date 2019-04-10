@@ -25,6 +25,4 @@ class Navigator(
         NavFlow.Home.PROFILE -> ProfileFragment.newInstance()
         else -> PostFragment.newInstance()
     }
-
-
 }
