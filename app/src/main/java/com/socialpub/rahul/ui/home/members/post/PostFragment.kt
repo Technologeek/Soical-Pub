@@ -82,9 +82,7 @@ class PostFragment : BaseFragment(), PostContract.View {
     }
 
     override fun updatePost(globalPost: List<Post>) {
-        toast(globalPost.get(0).toString())
-
-        //postAdapter.submitList(globalPost)
+        postAdapter.submitList(globalPost)
     }
 
     override fun showLoading(message: String) = showProgress(message)

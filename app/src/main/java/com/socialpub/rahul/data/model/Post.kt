@@ -1,32 +1,54 @@
 package com.socialpub.rahul.data.model
 
 import com.google.firebase.firestore.Exclude
-import com.google.firebase.firestore.FieldValue
-
-data class UserPost(
-    val userPost: HashMap<String, Post>?
-)
-
-data class LikedPost(
-    val userPost: HashMap<String, Post>?
-)
-
-data class GlobalPost(
-    val globalPost: HashMap<String, Post>?
-)
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
 data class Post(
-    val postId: String = "",
-    val uid: String = "",
-    val username: String = "",
-    val userProfilePic: String = "",
-    val imageUrl: String = "",
-    @get:Exclude val imagePath: String,
-    val caption: String = "",
-    val location: String = "",
-    val comments: List<Comment> = emptyList(),
-    val likedBy: List<String> = emptyList(),
-    val likeCount: Long = likedBy.size.toLong(),
-    val commentCount: Long = comments.size.toLong(),
-    val date: FieldValue = FieldValue.serverTimestamp()
+    @SerializedName("postId")
+    @Expose
+    var postId: String = "",
+    @SerializedName("uid")
+    @Expose
+    var uid: String = "",
+    @SerializedName("username")
+    @Expose
+    var username: String = "",
+    @SerializedName("userAvatar")
+    @Expose
+    var userAvatar: String = "",
+
+    @SerializedName("imageUrl")
+    @Expose
+    var imageUrl: String = "",
+
+    @get:Exclude var imagePath: String = "",
+
+    @SerializedName("caption")
+    @Expose
+    var caption: String = "",
+
+    @SerializedName("location")
+    @Expose
+    var location: String = "",
+
+    @SerializedName("comments")
+    @Expose
+    var comments: List<Comment> = emptyList(),
+
+    @SerializedName("likedBy")
+    @Expose
+    var likedBy: List<Like> = emptyList(),
+
+    @SerializedName("likeCount")
+    @Expose
+    var likeCount: Long = likedBy.size.toLong(),
+
+    @SerializedName("commentCount")
+    @Expose
+    var commentCount: Long = comments.size.toLong(),
+
+    @SerializedName("timestamp")
+    @Expose
+    var timestamp: Long = System.currentTimeMillis()
 )

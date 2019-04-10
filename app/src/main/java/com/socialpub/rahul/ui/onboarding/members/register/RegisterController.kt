@@ -58,7 +58,7 @@ class RegisterController(
                 name = firebaseUser.displayName.toString(),
                 username = firebaseUser.displayName.toString(),
                 email = firebaseUser.email.toString(),
-                photo = firebaseUser.photoUrl.toString(),
+                avatar = firebaseUser.photoUrl.toString(),
                 uid = firebaseUser.uid
             )
 

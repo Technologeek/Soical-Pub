@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.Post
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_post.view.*
+import timber.log.Timber
 
 class GlobalPostAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<Post>,
@@ -45,25 +47,33 @@ class GlobalPostAdapter private constructor(
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         with(holder) {
+
             val post = getItem(position)
+
+            Timber.e(Gson().toJson(post))
+
             text_username.text = post.username
             text_post_location.text = post.location
-            text_post_date.text = post.date.toString()
+            text_post_date.text = post.timestamp.toString()
             text_post_caption.text = post.caption
             btn_like.text = "${post.likeCount} Likes"
             btn_comments.text = "${post.commentCount} Comments"
 
-            Picasso.get()
-                .load(post.userProfilePic)
-                .transform(CropCircleTransformation())
-                .into(image_post_publisher_avatar)
+            if (!post.userAvatar.isEmpty()) {
+                Picasso.get()
+                    .load(post.userAvatar)
+                    .transform(CropCircleTransformation())
+                    .into(image_post_publisher_avatar)
+            }
+            if (!post.imageUrl.isEmpty()) {
+                Picasso.get()
+                    .load(post.imageUrl)
+                    .placeholder(R.drawable.ic_empty_image)
+                    .fit()
+                    .centerInside()
+                    .into(image_post_preview)
+            }
 
-            Picasso.get()
-                .load(post.imageUrl)
-                .placeholder(R.drawable.ic_empty_image)
-                .fit()
-                .centerInside()
-                .into(image_post_preview)
         }
     }
 

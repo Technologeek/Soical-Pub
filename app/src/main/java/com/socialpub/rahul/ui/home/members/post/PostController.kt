@@ -4,11 +4,8 @@ import android.content.Intent
 import com.cloudinary.android.callback.ErrorInfo
 import com.esafirm.imagepicker.features.ImagePicker
 import com.google.firebase.firestore.ListenerRegistration
-import com.google.gson.Gson
 import com.socialpub.rahul.data.local.prefs.AppPrefs
-import com.socialpub.rahul.data.model.GlobalPost
 import com.socialpub.rahul.data.model.Post
-import com.socialpub.rahul.data.model.UserPost
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.utils.helper.CloudinaryUploadHelper
@@ -31,8 +28,8 @@ class PostController(
     private var globalfeedsListener: ListenerRegistration? = null
 
     override fun startObservingGlobalFeeds() {
-        globalfeedsListener =
-            postSource.observeGlobalFeeds().addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+        globalfeedsListener = postSource.observeGlobalFeeds()
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
 
                 if (firebaseFirestoreException != null) {
                     view.onError("Post not available...try again later")
@@ -40,14 +37,18 @@ class PostController(
                     return@addSnapshotListener
                 }
 
-                if (documentSnapshot?.exists() == true) {
+                if (querySnapshot != null) {
 
-                    val globalPost = Gson().toJson(documentSnapshot.get("globalPost"))
+                    val updatePostList = arrayListOf<Post>()
+                    querySnapshot.forEach { queryDocument ->
+                        val post = queryDocument.toObject(Post::class.java)
+                        updatePostList.add(post)
+                    }
 
+                    view.updatePost(updatePostList)
                 }
             }
     }
-
 
     override fun stopObservingGlobalFeeds() {
         globalfeedsListener?.remove()
@@ -91,7 +92,7 @@ class PostController(
                     val imageUrl = requireNotNull(resultData?.get("secure_url") as String?)
                     val newPost = post.copy(
                         postId = publicKey,
-                        userProfilePic = userPrefs.avatarUrl,
+                        userAvatar = userPrefs.avatarUrl,
                         uid = userPrefs.userId,
                         username = userPrefs.displayName,
                         imageUrl = imageUrl
@@ -104,18 +105,15 @@ class PostController(
                     super.onError(requestId, error)
                     view.hideLoading()
                     Timber.e(error?.description)
-                    view.onError(error?.description.toString())
+                    view.onError("Something went wrong while uploading post..")
                 }
 
             }).dispatch()
 
     //push post to userId
     private fun uploadUserPost(post: Post) {
-        postSource.createPost(UserPost(
-            userPost = hashMapOf<String, Post>().apply {
-                put(post.postId, post)
-            }
-        ), post.uid).addOnSuccessListener {
+        postSource.createPost(post)
+            .addOnSuccessListener {
             uploadGlobalPost(post)
         }.addOnFailureListener {
             view.hideLoading()
@@ -125,11 +123,8 @@ class PostController(
 
     //push post to global feeds
     private fun uploadGlobalPost(post: Post) {
-        postSource.addPostGlobally(GlobalPost(
-            globalPost = hashMapOf<String, Post>().also {
-                it.put(post.postId, post)
-            }
-        )).addOnCompleteListener {
+        postSource.addPostGlobally(post)
+            .addOnCompleteListener {
             view.hideLoading()
         }.addOnFailureListener {
             view.hideLoading()
