@@ -1,0 +1,52 @@
+{
+  "project_info": {
+    "project_number": "75068433761",
+    "firebase_url": "https://social-pup.firebaseio.com",
+    "project_id": "social-pup",
+    "storage_bucket": "social-pup.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75068433761:android:2360b701314fbb9a",
+        "android_client_info": {
+          "package_name": "com.socialpub.rahul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "75068433761-dri4sq2l1deundnvsvkv3h8i2d22pi79.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.socialpub.rahul",
+            "certificate_hash": "e3eead163b59b3e971bdcb0bee81c244506fb475"
+          }
+        },
+        {
+          "client_id": "75068433761-knbphnts91j051ligdl51sdu2f1q2cbp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.socialpub.rahul",
+            "certificate_hash": "1aea685737a80296fa79d199d3c44a076603927e"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPxYvz5W4gHltggJ1rMaOGhrDnjY18GLI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "75068433761-su7d55s0htg53v0fqp60aoam255rqpjs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

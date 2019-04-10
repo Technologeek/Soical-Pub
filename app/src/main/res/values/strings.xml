@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Social-pub</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">75068433761-su7d55s0htg53v0fqp60aoam255rqpjs.apps.googleusercontent.com
+    </string>
+    <string name="title_activity_home">HomeActivity</string>
+</resources>
