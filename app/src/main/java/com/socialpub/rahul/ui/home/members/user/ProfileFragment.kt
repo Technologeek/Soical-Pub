@@ -12,7 +12,6 @@ class ProfileFragment : BaseFragment() {
 
     override fun setup(view: View) {
 
-
     }
 
     companion object {

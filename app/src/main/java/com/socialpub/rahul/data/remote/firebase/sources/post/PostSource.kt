@@ -47,6 +47,15 @@ class PostSource private constructor(
     fun createPost(userPost: Post) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(userPost.uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(userPost.postId)
+        .set(userPost, SetOptions.merge())
+
+    fun likePost(userPost: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(userPost.uid)
+        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
     fun addPostGlobally(globalPost: Post) = firebaseStore

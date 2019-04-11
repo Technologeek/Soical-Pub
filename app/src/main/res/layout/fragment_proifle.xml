@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -8,4 +9,74 @@
         tools:context=".ui.home.members.user.ProfileFragment">
 
 
-</FrameLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="@color/white"
+            android:padding="16dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+                android:src="@mipmap/ic_launcher_round"
+                android:layout_margin="8dp"
+                android:layout_width="64dp"
+                android:id="@+id/image_user_search_avatar"
+                android:layout_gravity="center_vertical"
+                android:layout_height="64dp"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/text_search_user_name"
+                    tools:text="User Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_search_user_email"
+                    tools:text="email"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="100\nfollowers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_marginStart="16dp"
+                        android:textSize="12sp"
+                        android:gravity="center"
+                        android:text="100\nfollowering"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

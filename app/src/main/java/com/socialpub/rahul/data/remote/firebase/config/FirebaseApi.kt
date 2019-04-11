@@ -6,14 +6,15 @@ object FirebaseApi {
 
         object Collection {
             const val ALL_USERS = "all_users"
-            const val USER_POSTS = "user_posts"
+            const val PUBLISHED_POSTS = "published_posts"
+            const val LIKED_POSTS = "liked_posts"
             const val ALL_POST = "all_posts"
             const val PROFILE = "profile"
         }
 
         object Documents {
-            const val USER = "user"
-            const val ALL_POST = "all_post"
+            const val LIKE = "liked"
+            const val POST = "post"
         }
 
     }
