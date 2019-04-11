@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
-        android:id="@+id/container_search_post"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/white"
         android:layout_margin="8dp"
         android:orientation="vertical"
@@ -66,7 +64,7 @@
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_marginTop="16dp"
             android:id="@+id/text_post_caption"
-            tools:text="Location"
+            tools:text="bla bla bla caption"
             android:padding="8dp"
             android:textSize="14sp"
             android:background="@color/colorAccent"
@@ -75,29 +73,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_like"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                app:icon="@drawable/ic_like"
-                android:text="like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_comments"
-                android:layout_marginStart="8dp"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                app:icon="@drawable/ic_comment"
-                android:text="Comments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

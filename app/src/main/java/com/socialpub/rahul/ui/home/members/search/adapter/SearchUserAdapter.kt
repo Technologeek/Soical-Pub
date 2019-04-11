@@ -54,6 +54,7 @@ class SearchUserAdapter private constructor(
 
             text_userEmail.text = userProfile.email
             text_userName.text = userProfile.username
+            text_userLocation.text = userProfile.location
 
             if (userProfile.avatar?.isEmpty() != true) {
                 Picasso.get()
@@ -72,6 +73,7 @@ class SearchUserAdapter private constructor(
         val text_userName = view.text_search_user_name
         val text_userEmail = view.text_search_user_email
         val image_userAvatar = view.image_user_search_avatar
+        val text_userLocation = view.text_search_user_location
         private val container_profile = view.container_profile.also {
             it.setOnClickListener {
                 listener.onClickUserProfile(adapterPosition)

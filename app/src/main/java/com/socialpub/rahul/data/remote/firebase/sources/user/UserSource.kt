@@ -1,6 +1,7 @@
 package com.socialpub.rahul.data.remote.firebase.sources.user
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.data.remote.firebase.config.FirebaseApi
@@ -29,6 +30,11 @@ class UserSource private constructor(private val firebaseManager: FirebaseManage
     fun getUser(uId: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(uId)
+        .get()
+
+    fun getAllProfiles() = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .orderBy("username")
         .get()
 
 }

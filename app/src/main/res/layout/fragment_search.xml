@@ -23,6 +23,8 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                     android:layout_marginTop="16dp"
+                    android:maxLines="1"
+                    android:maxLength="200"
                     android:id="@+id/edit_search_user_name"
                     android:foregroundTint="@color/white"
                     android:hint="Search"
@@ -66,12 +68,72 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_sort_users"
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container_search"
+            android:background="@android:color/holo_green_light"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.appcompat.widget.AppCompatTextView
+                android:padding="8dp"
+                android:text="Search result"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_sort_users"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container_followers"
+            android:background="@android:color/holo_orange_dark"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:padding="8dp"
+                android:text="You are following"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_following_users"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/container_search_post"
+            android:background="@android:color/holo_blue_dark"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:padding="8dp"
+                android:text="Post search result"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_search_post"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -30,6 +30,10 @@ class PostSource private constructor(
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
         .orderBy("timestamp", Query.Direction.DESCENDING)
 
+    fun getAllPost() = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .get()
+
     fun observeGlobalFeedsByLikes() = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
         .orderBy("likeCount", Query.Direction.DESCENDING)

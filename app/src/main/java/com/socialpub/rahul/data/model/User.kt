@@ -30,6 +30,10 @@ data class User(
     @Expose
     var bio: String? = null,
 
+    @SerializedName("location")
+    @Expose
+    var location: String? = null,
+
     @SerializedName("avatar")
     @Expose
     var avatar: String? = null,

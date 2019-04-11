@@ -7,4 +7,9 @@ object AppConst {
     const val POST_FILTER_LATEST = 0
     const val POST_FILTER_LIKES = 1
     const val POST_FILTER_COMMENTS = 2
+
+    const val SEARCH_FILTER_NONE = 0
+    const val SEARCH_FILTER_NAME = 1
+    const val SEARCH_FILTER_EMAIL = 2
+    const val SEARCH_FILTER_LOCATION = 3
 }
