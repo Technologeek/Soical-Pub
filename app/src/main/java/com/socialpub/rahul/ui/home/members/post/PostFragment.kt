@@ -13,8 +13,10 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
+import io.reactivex.Completable
 import kotlinx.android.synthetic.main.fragment_feeds.*
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 
 class PostFragment : BaseFragment(), PostContract.View {
@@ -97,7 +99,10 @@ class PostFragment : BaseFragment(), PostContract.View {
     }
 
     override fun listScrollToTop() {
-        list_global_post.smoothScrollToPosition(0)
+        Completable.timer(300, TimeUnit.MILLISECONDS)
+            .subscribe {
+                list_global_post.smoothScrollToPosition(0)
+            }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

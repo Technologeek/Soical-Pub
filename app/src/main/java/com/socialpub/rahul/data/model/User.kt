@@ -5,28 +5,36 @@ import com.google.gson.annotations.SerializedName
 
 
 data class User(
+
     @SerializedName("name")
     @Expose
-    val name: String = "",
+    var name: String = "",
+
     @SerializedName("username")
     @Expose
-    val username: String = "",
+    var username: String = "",
+
     @SerializedName("email")
     @Expose
-    val email: String = "",
+    var email: String = "",
+
     @SerializedName("follows")
     @Expose
-    val follows: Map<String, Boolean> = emptyMap(),
+    var following: List<String> = emptyList(),
+
     @SerializedName("followers")
     @Expose
-    val followers: Map<String, Boolean> = emptyMap(),
+    var followers: List<String> = emptyList(),
+
     @SerializedName("bio")
     @Expose
-    val bio: String? = null,
+    var bio: String? = null,
+
     @SerializedName("avatar")
     @Expose
-    val avatar: String? = null,
+    var avatar: String? = null,
+
     @SerializedName("uid")
     @Expose
-    val uid: String = ""
+    var uid: String = ""
 )

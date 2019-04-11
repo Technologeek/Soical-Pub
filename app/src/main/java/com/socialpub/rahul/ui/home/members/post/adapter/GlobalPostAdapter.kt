@@ -51,7 +51,7 @@ class GlobalPostAdapter private constructor(
 
             val post = getItem(position)
 
-            Timber.e(Gson().toJson(post))
+            Timber.d(Gson().toJson(post))
 
             text_username.text = post.username
             text_post_location.text = post.location
