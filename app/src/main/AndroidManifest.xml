@@ -10,14 +10,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.members.post.members.PostFilterActivity">
-        </activity>
 
         <meta-data
                 android:name="CLOUDINARY_URL"
                 android:value="cloudinary://787682759425367:TW7viAZkD17DAhFw_8s0uYpgW0w@social-pup"/>
 
         <activity
+                android:screenOrientation="portrait"
                 android:name=".ui.home.HomeActivity"
                 android:label="@string/title_activity_home"
                 android:theme="@style/AppTheme.NoActionBar">
