@@ -15,10 +15,11 @@ interface ProfileContract {
     }
 
     interface Controller : BaseContract.Controller {
-        fun getUserProfile(uId: String)
+        fun startProfileObserving(uId: String)
         fun startObservingPublishedPost()
         fun stopObservingPublishedPost()
         fun startObservingLikedPost()
+        fun stopProfileObserving()
         fun stopObservingLikedPost()
     }
 

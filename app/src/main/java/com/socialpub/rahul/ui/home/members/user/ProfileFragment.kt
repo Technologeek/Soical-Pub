@@ -9,6 +9,7 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
+import com.socialpub.rahul.ui.profile.edit.ProfileEditBottomSheet
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -31,13 +32,14 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     lateinit var publishedPostAdapter: SearchPostAdapter
     lateinit var likedPostAdapter: SearchPostAdapter
+
     override fun attachActions() {
 
         list_profile_published_post.visibility = View.VISIBLE
         list_profile_liked_post.visibility = View.GONE
 
         btn_edit_profile.setOnClickListener {
-            toast("Wip:edit profile")
+            ProfileEditBottomSheet.newInstance().show(childFragmentManager, "Profile_Bottom_Sheet")
         }
 
         btn_profile_user_post.setOnClickListener {
@@ -83,6 +85,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     override fun updateProfileInfo(profile: User) {
+
         text_profile_user_name.text = profile.username
         text_profile_user_email.text = profile.email
         Picasso.get()
@@ -116,6 +119,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         super.onDestroyView()
         controller.stopObservingLikedPost()
         controller.stopObservingPublishedPost()
+        controller.stopProfileObserving()
     }
 
     companion object {

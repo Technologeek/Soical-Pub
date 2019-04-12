@@ -29,25 +29,39 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
                 uid = userPrefs.userId
             )
         )
-        getUserProfile(userPrefs.userId)
+        startProfileObserving(userPrefs.userId)
         startObservingPublishedPost()
         startObservingLikedPost()
     }
 
-    override fun getUserProfile(uId: String) {
-        userSource.getUser(uId).addOnSuccessListener {
-            val profile = it.toObject(User::class.java)
-            requireNotNull(profile)
+    private var profileListener: ListenerRegistration? = null
+    override fun startProfileObserving(uId: String) {
+        profileListener =
+            userSource.observeUserProfile(uId).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException != null) {
+                    view.onError("Profile info not available...try again later")
+                    Timber.e(firebaseFirestoreException)
+                    return@addSnapshotListener
+                }
 
-            with(userPrefs) {
-                profile.avatar?.apply { userPrefs.avatarUrl = this }
-                followers = profile.followers.size.toLong()
-                following = profile.following.size.toLong()
-                displayName = profile.name
-            }
+                if (documentSnapshot != null) {
+                    with(userPrefs) {
+                        val profile = documentSnapshot.toObject(User::class.java)
+                        if (profile != null) {
+                            profile.avatar?.apply { avatarUrl = this }
+                            followers = profile.followers.size.toLong()
+                            following = profile.following.size.toLong()
+                            displayName = profile.name
+                            view.updateProfileInfo(profile)
+                        }
+                    }
 
-            view.updateProfileInfo(profile)
+                }
         }
+    }
+
+    override fun stopProfileObserving() {
+        profileListener?.remove()
     }
 
     private var publishPostListener: ListenerRegistration? = null
