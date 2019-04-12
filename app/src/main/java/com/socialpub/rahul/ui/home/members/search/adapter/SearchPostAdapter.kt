@@ -9,18 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.Post
-import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_post.view.*
 import timber.log.Timber
 import java.text.DateFormat
 
-class SearchPostPostAdapter private constructor(
+class SearchPostAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<Post>,
     private val listener: SearchPostListener
 ) :
-    ListAdapter<Post, SearchPostPostAdapter.PostViewHolder>(diffCallback) {
+    ListAdapter<Post, SearchPostAdapter.PostViewHolder>(diffCallback) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Post>() {
@@ -32,7 +31,7 @@ class SearchPostPostAdapter private constructor(
             }
         }
 
-        fun newInstance(listener: SearchPostListener) = SearchPostPostAdapter(DIFF_CALLBACK, listener)
+        fun newInstance(listener: SearchPostListener) = SearchPostAdapter(DIFF_CALLBACK, listener)
     }
 
     fun getPostAt(position: Int) = getItem(position)

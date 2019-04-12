@@ -43,14 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_search_user_location"
-                tools:text="User Name"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

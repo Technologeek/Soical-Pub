@@ -33,6 +33,14 @@ class SocialPrefs private constructor(context: Context) {
             get() = prefs.getInt(AppPrefs.User.Key.FILTER_TYPE, AppConst.POST_FILTER_LATEST)
             set(value) = prefs.edit().putInt(AppPrefs.User.Key.FILTER_TYPE, value).apply()
 
+        override var followers: Long
+            get() = prefs.getLong(AppPrefs.User.Key.FOLLOWERS, 0)
+            set(value) = prefs.edit().putLong(AppPrefs.User.Key.FOLLOWERS, value).apply()
+
+        override var following: Long
+            get() = prefs.getLong(AppPrefs.User.Key.FOLLOWING, 0)
+            set(value) = prefs.edit().putLong(AppPrefs.User.Key.FOLLOWING, value).apply()
+
     }
 
     companion object {

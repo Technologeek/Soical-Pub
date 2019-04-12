@@ -13,6 +13,8 @@ interface AppPrefs {
             const val USER_EMAIL: String = "USER_EMAIL"
             const val USER_ID: String = "USER_UNIQUE_ID"
             const val FILTER_TYPE: String = "POST_FILTER_TYPE"
+            const val FOLLOWERS: String = "USER_FOLLOWERS"
+            const val FOLLOWING: String = "USER_FOLLOWING"
         }
 
         var isUserLoggedIn: Boolean
@@ -21,6 +23,8 @@ interface AppPrefs {
         var avatarUrl: String
         var email: String
         var filterType: Int
+        var followers:Long
+        var following:Long
     }
 
 

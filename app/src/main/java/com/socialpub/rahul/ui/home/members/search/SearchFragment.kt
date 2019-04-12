@@ -8,7 +8,7 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
-import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostPostAdapter
+import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.UserProfileListener
 import com.socialpub.rahul.utils.AppConst
@@ -31,7 +31,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
 
     private lateinit var searchProfileAdapter: SearchUserAdapter
     private lateinit var followerProfileAdapter: SearchUserAdapter
-    private lateinit var globalPostsAdapter: SearchPostPostAdapter
+    private lateinit var globalPostsAdapter: SearchPostAdapter
 
     override fun attachActions() {
 
@@ -51,7 +51,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             }
         )
 
-        globalPostsAdapter = SearchPostPostAdapter.newInstance(
+        globalPostsAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
                     toast("clicked")

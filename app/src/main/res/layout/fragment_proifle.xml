@@ -6,12 +6,12 @@
         android:layout_width="match_parent"
         android:background="@color/background"
         android:layout_height="match_parent"
-        tools:context=".ui.home.members.user.ProfileFragment">
+        xmlns:app="http://schemas.android.com/apk/res-auto" tools:context=".ui.home.members.user.ProfileFragment">
 
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:background="@color/white"
-            android:padding="16dp"
+            android:padding="8dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -19,64 +19,91 @@
         <androidx.appcompat.widget.AppCompatImageView
                 android:src="@mipmap/ic_launcher_round"
                 android:layout_margin="8dp"
-                android:layout_width="64dp"
-                android:id="@+id/image_user_search_avatar"
+                android:layout_width="84dp"
+                android:id="@+id/image_profile_avatar"
                 android:layout_gravity="center_vertical"
-                android:layout_height="64dp"/>
+                android:layout_height="84dp"/>
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:layout_marginTop="4dp"
-                    android:id="@+id/text_search_user_name"
+                    android:id="@+id/text_profile_user_name"
                     tools:text="User Name"
                     android:textSize="16sp"
+                    android:gravity="center"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_search_user_email"
+                    android:id="@+id/text_profile_user_email"
                     tools:text="email"
+                    android:gravity="center"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:text="100\nfollowers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_marginStart="16dp"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        android:text="100\nfollowering"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-
-            </androidx.appcompat.widget.LinearLayoutCompat>
-
+            <com.google.android.material.button.MaterialButton
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/btn_edit_profile"
+                    style="@style/Widget.MaterialComponents.Button.Icon"
+                    app:icon="@drawable/ic_edit"
+                    android:layout_gravity="center"
+                    android:text="Edit Profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:weightSum="1"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_profile_user_post"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_gravity="center"
+                android:text="Your Post"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_profile_liked_post"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_gravity="center"
+                android:text="Favourite Post"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/list_profile_published_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:background="@android:color/holo_orange_dark"
+            android:id="@+id/list_profile_liked_post"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>
