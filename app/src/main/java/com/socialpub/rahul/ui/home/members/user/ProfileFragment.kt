@@ -14,7 +14,6 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_proifle.*
-import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 class ProfileFragment : BaseFragment(), ProfileContract.View {
@@ -54,33 +53,32 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             list_profile_liked_post.visibility = View.VISIBLE
         }
 
+        publishedPostAdapter = SearchPostAdapter.newInstance(
+            object : SearchPostListener {
+                override fun onPostClicked(position: Int) {
+                    toast("clicked $position")
+                }
+            }
+        )
 
         list_profile_published_post.run {
             layoutManager = LinearLayoutManager(attachedContext)
-            adapter = SearchPostAdapter.newInstance(
-                object : SearchPostListener {
-                    override fun onPostClicked(position: Int) {
-                        toast("clicked post $position")
-                    }
-                }
-            ).also {
-                publishedPostAdapter = it
-            }
+            adapter = publishedPostAdapter
         }
+
+
+        likedPostAdapter = SearchPostAdapter.newInstance(
+            object : SearchPostListener {
+                override fun onPostClicked(position: Int) {
+                    toast("clicked $position")
+                }
+            }
+        )
 
         list_profile_liked_post.run {
             layoutManager = LinearLayoutManager(attachedContext)
-            adapter = SearchPostAdapter.newInstance(
-                object : SearchPostListener {
-                    override fun onPostClicked(position: Int) {
-                        toast("clicked post $position")
-                    }
-                }
-            ).also {
-                likedPostAdapter = it
-            }
+            adapter = likedPostAdapter
         }
-
 
     }
 
@@ -95,9 +93,13 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             .into(image_profile_avatar)
     }
 
-    override fun updateLikedList(postList: List<Post>) = likedPostAdapter.submitList(postList)
+    override fun updateLikedList(postList: List<Post>) {
+        //likedPostAdapter.submitList(postList)
+    }
 
-    override fun updatePublishList(postList: List<Post>) = publishedPostAdapter.submitList(postList)
+    override fun updatePublishList(postList: List<Post>) {
+        publishedPostAdapter.submitList(postList)
+    }
 
     override fun listScrollToTop() {
         Completable.timer(300, TimeUnit.MILLISECONDS)
