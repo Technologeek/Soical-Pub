@@ -50,11 +50,11 @@ class UserProfileBottomSheet : BaseBottomSheet(),
         }
 
         searchPostAdapter = SearchPostAdapter.newInstance(
-            object : SearchPostListener{
+            object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
                     val post = searchPostAdapter.getPostAt(position)
-                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId,false,post.uid)
-                    postPreview.showNow(childFragmentManager,"Post_Profile_Preview_post")
+                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
+                    postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
                 }
             }
         )
@@ -63,6 +63,10 @@ class UserProfileBottomSheet : BaseBottomSheet(),
             layoutManager = LinearLayoutManager(attachedContext)
             adapter = searchPostAdapter
         }
+    }
+
+    override fun disableFollowing() {
+        btn_preview_follow.isEnabled = false
     }
 
 

@@ -11,6 +11,7 @@ interface UserProfileContract {
         fun dissmissDialog()
         fun updateUserPreview(user: User)
         fun showAllUser(list: List<Post>)
+        fun disableFollowing()
     }
 
     interface Controller : BaseContract.Controller {

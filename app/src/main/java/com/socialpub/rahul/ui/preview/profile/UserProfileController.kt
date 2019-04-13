@@ -7,6 +7,7 @@ import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
 import timber.log.Timber
+import java.lang.Exception
 
 class UserProfileController(
     private val view: UserProfileContract.View
@@ -35,26 +36,48 @@ class UserProfileController(
 
         view.showLoading("loading..")
 
+        var following: List<String>? = null
+
+        userSource.getUser(userPrefs.userId).addOnSuccessListener { doc ->
+            val user = doc.toObject(User::class.java)
+            if (user != null) {
+                following = user.following
+            } else {
+                error(Exception("user is null"))
+            }
+
+        }.addOnFailureListener {
+            error(it)
+        }
+
         userSource.getUser(userId)
             .addOnSuccessListener { doc ->
                 val user = doc.toObject(User::class.java)
-
-                view.hideLoading()
                 if (user != null) {
                     previewUser = user
+
+                    following?.forEach { userFollowing ->
+                        if (user.uid == userFollowing) {
+                            view.disableFollowing()
+                        }
+                    }
                     view.updateUserPreview(user)
                     getPreviewUserPost(user)
-                } else {
-                    view.dissmissDialog()
                     view.hideLoading()
-                    view.onError("Unable to show profile...")
+                } else {
+                    error(Exception("error in null"))
                 }
+
             }.addOnFailureListener {
-                view.dissmissDialog()
-                view.hideLoading()
-                view.onError("Unable to show profile...")
-                Timber.e(it.localizedMessage)
+                error(it)
             }
+    }
+
+    private fun error(it: Exception) {
+        view.dissmissDialog()
+        view.hideLoading()
+        view.onError("Unable to show profile...")
+        Timber.e(it.localizedMessage)
     }
 
     private fun getPreviewUserPost(user: User) {
@@ -68,9 +91,7 @@ class UserProfileController(
             view.showAllUser(postList)
             view.hideLoading()
         }.addOnFailureListener {
-            view.hideLoading()
-            view.onError("Unable to show profile...")
-            Timber.e(it.localizedMessage)
+            error(it)
         }
     }
 
