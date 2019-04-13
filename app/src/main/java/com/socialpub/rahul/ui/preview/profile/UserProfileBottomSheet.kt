@@ -9,20 +9,22 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
+import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_proifle.*
 
-class PreviewProfileBottomSheet : BaseBottomSheet(), PreviewProfileContract.View {
+class UserProfileBottomSheet : BaseBottomSheet(),
+    UserProfileContract.View {
 
     override val contentLayout: Int
         get() = R.layout.bottom_sheet_preview_proifle
 
-    lateinit var controller: PreviewProfileController
+    lateinit var controller: UserProfileController
 
     override fun setup(view: View) {
         val userId = arguments?.getString("userId")
-        controller = PreviewProfileController(this)
+        controller = UserProfileController(this)
         controller.onStart()
         controller.getUserProfile(userId)
     }
@@ -50,7 +52,9 @@ class PreviewProfileBottomSheet : BaseBottomSheet(), PreviewProfileContract.View
         searchPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener{
                 override fun onPostClicked(position: Int) {
-
+                    val post = searchPostAdapter.getPostAt(position)
+                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId,false,post.uid)
+                    postPreview.showNow(childFragmentManager,"Post_Profile_Preview_post")
                 }
             }
         )
@@ -100,7 +104,7 @@ class PreviewProfileBottomSheet : BaseBottomSheet(), PreviewProfileContract.View
     }
 
     companion object {
-        fun newInstance(userId: String, showFollow: Boolean) = PreviewProfileBottomSheet().also {
+        fun newInstance(userId: String, showFollow: Boolean) = UserProfileBottomSheet().also {
             it.arguments = Bundle().apply {
                 putBoolean("showFollow", showFollow)
                 putString("userId", userId)

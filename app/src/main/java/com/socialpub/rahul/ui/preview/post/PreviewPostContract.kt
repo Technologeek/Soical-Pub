@@ -16,5 +16,10 @@ interface PreviewPostContract {
         fun submitComment(text: String)
         fun stopObservingComments()
         fun deletePost()
+
+        fun getGlobalUserPost(postId: String?, globalUserId: String?)
+        fun submitGlobalComment(text: String)
+
+
     }
 }

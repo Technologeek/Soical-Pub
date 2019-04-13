@@ -23,42 +23,29 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
     lateinit var controller: PreviewPostController
 
     override fun setup(view: View) {
-
-        val postId = arguments?.getString("postId")
         controller = PreviewPostController(this)
         controller.onStart()
-        controller.getUserPost(postId)
     }
 
     private lateinit var commentsAdapter: CommentsAdapter
 
     override fun attachActions() {
+        val postId = arguments?.getString("postId")
+        val enableDelete = arguments?.getBoolean("enableDelete", false) ?: false
+
         btn_close.setOnClickListener {
             dissmissDialog()
         }
 
-        edit_new_comment.setOnEditorActionListener { view, actionId, event ->
-            return@setOnEditorActionListener when (actionId) {
-                EditorInfo.IME_ACTION_DONE -> {
-                    submitComment(edit_new_comment.text.toString())
-                    edit_new_comment.text?.clear()
-                    true
-                }
-                else -> false
-            }
-        }
-
-        btn_post_delete.setOnClickListener {
-            controller.deletePost()
-        }
 
         commentsAdapter = CommentsAdapter.newInstance(
             object : CommentProfileListener {
                 override fun onClickCommentProfile(position: Int) {
-                    
+
                 }
             }
         )
+
 
         list_comments.run {
             layoutManager = LinearLayoutManager(attachedContext)
@@ -66,6 +53,55 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
         }
 
 
+        if (!enableDelete) {
+
+            //global user
+            btn_post_delete.visibility = View.GONE
+            val globalUserId = arguments?.getString("globalUserId")
+            controller.getGlobalUserPost(postId,globalUserId)
+
+
+            edit_new_comment.setOnEditorActionListener { view, actionId, event ->
+                return@setOnEditorActionListener when (actionId) {
+                    EditorInfo.IME_ACTION_DONE -> {
+                        submitGlobalComment(edit_new_comment.text.toString())
+                        edit_new_comment.text?.clear()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+
+
+        } else {
+            //local user
+            controller.getUserPost(postId)
+
+            edit_new_comment.setOnEditorActionListener { view, actionId, event ->
+                return@setOnEditorActionListener when (actionId) {
+                    EditorInfo.IME_ACTION_DONE -> {
+                        submitComment(edit_new_comment.text.toString())
+                        edit_new_comment.text?.clear()
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            btn_post_delete.setOnClickListener {
+                controller.deletePost()
+            }
+
+        }
+    }
+
+    private fun submitGlobalComment(text: String) {
+        if (text.trim().isNotEmpty()) {
+            controller.submitGlobalComment(text)
+        } else {
+            onError("Enter some comment...")
+        }
     }
 
     private fun submitComment(text: String) {
@@ -120,9 +156,11 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
     }
 
     companion object {
-        fun newInstance(postId: String) = PreviewPostBottomSheet().also {
+        fun newInstance(postId: String, enableDelete: Boolean, globalUserId: String) = PreviewPostBottomSheet().also {
             it.arguments = Bundle().apply {
                 putString("postId", postId)
+                putBoolean("enableDelete", enableDelete)
+                putString("globalUserId", globalUserId)
             }
         }
     }

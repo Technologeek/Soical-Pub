@@ -8,9 +8,9 @@ import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
 import timber.log.Timber
 
-class PreviewProfileController(
-    private val view: PreviewProfileContract.View
-) : PreviewProfileContract.Controller {
+class UserProfileController(
+    private val view: UserProfileContract.View
+) : UserProfileContract.Controller {
 
     private lateinit var userPrefs: AppPrefs.User
     private lateinit var userSource: UserSource

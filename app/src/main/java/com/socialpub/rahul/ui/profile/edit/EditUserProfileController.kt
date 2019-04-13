@@ -12,9 +12,9 @@ import com.socialpub.rahul.ui.home.members.post.PostContract
 import com.socialpub.rahul.utils.helper.CloudinaryUploadHelper
 import timber.log.Timber
 
-class ProfileEditController(
-    private val view: ProfileEditContract.View
-) : ProfileEditContract.Controller {
+class EditUserProfileController(
+    private val view: EditUserProfileContract.View
+) : EditUserProfileContract.Controller {
 
     private lateinit var userPrefs: AppPrefs.User
     private lateinit var userSource: UserSource

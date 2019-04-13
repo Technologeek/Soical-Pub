@@ -3,7 +3,7 @@ package com.socialpub.rahul.ui.profile.edit
 import android.content.Intent
 import com.socialpub.rahul.base.BaseContract
 
-interface ProfileEditContract {
+interface EditUserProfileContract {
 
     interface View : BaseContract.View {
         fun attachActions(profileUrl:String)

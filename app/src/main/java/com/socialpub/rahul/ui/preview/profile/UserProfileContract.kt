@@ -4,7 +4,7 @@ import com.socialpub.rahul.base.BaseContract
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 
-interface PreviewProfileContract {
+interface UserProfileContract {
 
     interface View : BaseContract.View {
         fun attachActions()

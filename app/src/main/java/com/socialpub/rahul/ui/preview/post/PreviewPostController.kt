@@ -52,6 +52,32 @@ class PreviewPostController(
             }
     }
 
+
+    override fun getGlobalUserPost(postId: String?, globalUserId: String?) {
+        if (!globalUserId.isNullOrBlank() && !postId.isNullOrBlank()) {
+            postSource.getUserPost(postId, globalUserId)
+                .addOnSuccessListener { doc ->
+                    val post = doc.toObject(Post::class.java)
+
+                    view.hideLoading()
+                    if (post != null) {
+                        previewPost = post
+                        startObServingComments(post)
+                        view.updatePostPreview(post)
+                    } else {
+                        view.dissmissDialog()
+                        view.onError("Unable to show preview...")
+                    }
+                }
+
+        } else {
+            view.dissmissDialog()
+            view.onError("Unable to show preview...")
+        }
+
+    }
+
+
     override fun deletePost() {
 
         previewPost?.run {
@@ -140,6 +166,47 @@ class PreviewPostController(
             view.onError("Something went wrong...")
             view.dissmissDialog()
         }
+
+    }
+
+
+    override fun submitGlobalComment(text: String) {
+
+        if (previewPost != null) {
+            view.showLoading("Submitting...")
+
+            val newComment = Comment(
+                uid = userPrefs.userId,
+                userAvatar = userPrefs.avatarUrl,
+                text = text
+            )
+
+            val newCommentList: ArrayList<Comment> = ArrayList(previewPost!!.comments)
+            newCommentList.add(newComment)
+
+            val updatedPost = previewPost!!.copy(
+                comments = newCommentList,
+                commentCount = newCommentList.size.toLong()
+            )
+
+            Timber.e("Size : ${newCommentList.size}")
+
+            postSource.commentOnUserPost(updatedPost).addOnSuccessListener {
+
+                updateGlobalCommnets(updatedPost)
+
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Could'nt Comment.Something went wrong...")
+                view.dissmissDialog()
+            }
+
+        } else {
+            view.hideLoading()
+            view.onError("Something went wrong...")
+            view.dissmissDialog()
+        }
+
 
     }
 

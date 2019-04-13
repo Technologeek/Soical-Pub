@@ -10,11 +10,11 @@ import com.esafirm.imagepicker.features.ReturnMode
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
+import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
-import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
-import com.socialpub.rahul.ui.preview.profile.PreviewProfileBottomSheet
+import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import io.reactivex.Completable
 import kotlinx.android.synthetic.main.fragment_feeds.*
 import timber.log.Timber
@@ -85,8 +85,12 @@ class PostFragment : BaseFragment(), PostContract.View {
         postAdapter = GlobalPostAdapter.newInstance(object : PostClickListener {
             override fun onProfileClicked(position: Int) {
                 val post = postAdapter.getPostAt(position)
-                PreviewProfileBottomSheet.newInstance(post.uid, true)
-                    .show(childFragmentManager, "Preview_Profile_Bottom_Sheet")
+
+                val userPrefs = Injector.userPrefs()
+                if (post.uid != userPrefs.userId) {
+                    UserProfileBottomSheet.newInstance(post.uid, true)
+                        .show(childFragmentManager, "Preview_Profile_Bottom_Sheet")
+                }
             }
 
             override fun onlikeClicked(position: Int) {
