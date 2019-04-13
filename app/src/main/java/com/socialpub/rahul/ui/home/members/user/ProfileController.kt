@@ -48,7 +48,6 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
                         val profile = documentSnapshot.toObject(User::class.java)
                         if (profile != null) {
                             profile.avatar?.apply { avatarUrl = this }
-                            followers = profile.followers.size.toLong()
                             following = profile.following.size.toLong()
                             displayName = profile.username
                             view.updateProfileInfo(profile)

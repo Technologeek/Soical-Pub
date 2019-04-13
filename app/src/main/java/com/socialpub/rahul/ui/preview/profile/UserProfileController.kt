@@ -63,7 +63,6 @@ class UserProfileController(
                     }
                     view.updateUserPreview(user)
                     getPreviewUserPost(user)
-                    view.hideLoading()
                 } else {
                     error(Exception("error in null"))
                 }

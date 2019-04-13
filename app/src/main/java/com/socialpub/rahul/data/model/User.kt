@@ -18,14 +18,6 @@ data class User(
     @Expose
     var following: List<String> = emptyList(),
 
-    @SerializedName("followers")
-    @Expose
-    var followers: List<String> = emptyList(),
-
-    @SerializedName("bio")
-    @Expose
-    var bio: String? = null,
-
     @SerializedName("avatar")
     @Expose
     var avatar: String? = null,

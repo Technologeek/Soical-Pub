@@ -29,8 +29,6 @@ class SearchUserAdapter private constructor(
                 return (oldItem.uid == newItem.uid &&
                         oldItem.username == newItem.username &&
                         oldItem.following == newItem.following &&
-                        oldItem.followers == newItem.followers &&
-                        oldItem.bio == newItem.bio &&
                         oldItem.avatar == newItem.avatar &&
                         oldItem.email == newItem.email)
             }
