@@ -1,4 +1,4 @@
-package com.socialpub.rahul.ui.profile.edit
+package com.socialpub.rahul.ui.edit.post
 
 import android.content.Intent
 import com.cloudinary.android.callback.ErrorInfo
@@ -12,9 +12,9 @@ import com.socialpub.rahul.ui.home.members.post.PostContract
 import com.socialpub.rahul.utils.helper.CloudinaryUploadHelper
 import timber.log.Timber
 
-class EditUserProfileController(
-    private val view: EditUserProfileContract.View
-) : EditUserProfileContract.Controller {
+class PostUploadController(
+    private val view: PostUploadContract.View
+) : PostUploadContract.Controller {
 
     private lateinit var userPrefs: AppPrefs.User
     private lateinit var userSource: UserSource

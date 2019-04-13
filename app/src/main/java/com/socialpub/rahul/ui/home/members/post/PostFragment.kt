@@ -11,6 +11,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.di.Injector
+import com.socialpub.rahul.ui.edit.post.PostBottomSheet
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
@@ -54,12 +55,16 @@ class PostFragment : BaseFragment(), PostContract.View {
     override fun attachActions() {
 
         fab_upload.setOnClickListener {
-            ImagePicker.create(this)
-                .returnMode(ReturnMode.ALL)
-                .includeVideo(false)
-                .single()
-                .showCamera(true)
-                .start(PostContract.Controller.Const.IMAGE_PICKER_REQUEST)
+
+            val uploadSheet = PostBottomSheet.newInstance()
+            uploadSheet.show(childFragmentManager, "UploadPost")
+
+//            ImagePicker.create(this)
+//                .returnMode(ReturnMode.ALL)
+//                .includeVideo(false)
+//                .single()
+//                .showCamera(true)
+//                .start(PostContract.Controller.Const.IMAGE_PICKER_REQUEST)
         }
 
         btn_sort.setOnClickListener {

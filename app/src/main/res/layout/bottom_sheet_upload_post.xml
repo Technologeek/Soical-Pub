@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:weightSum="1"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:padding="16dp"
+        android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:layout_gravity="start"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"
+                        android:text="Upload Post"
+                />
+
+
+            </FrameLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text="Select profile picture"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_profile"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_margin="16dp"
+                        android:layout_gravity="bottom|end"
+                        app:srcCompat="@drawable/ic_image_pick"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"/>
+
+            </FrameLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:hint="Caption">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_new_username"
+                        android:layout_width="match_parent"
+                        android:inputType="text"
+                        android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:text="Tag picture location"
+                    android:textSize="12sp"
+                    android:layout_height="wrap_content"/>
+
+            <FrameLayout
+                    android:id="@+id/map"
+                    android:background="@color/background"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp">
+
+
+            </FrameLayout>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_update_profile"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Done"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

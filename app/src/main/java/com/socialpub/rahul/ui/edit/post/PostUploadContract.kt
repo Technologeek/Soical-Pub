@@ -1,9 +1,9 @@
-package com.socialpub.rahul.ui.profile.edit
+package com.socialpub.rahul.ui.edit.post
 
 import android.content.Intent
 import com.socialpub.rahul.base.BaseContract
 
-interface EditUserProfileContract {
+interface PostUploadContract {
 
     interface View : BaseContract.View {
         fun attachActions(profileUrl:String)

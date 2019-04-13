@@ -12,7 +12,7 @@ import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.user.adapter.LikePostAdapter
 import com.socialpub.rahul.ui.home.members.user.adapter.LikePostListener
 import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
-import com.socialpub.rahul.ui.profile.edit.EditUserProfileBottomSheet
+import com.socialpub.rahul.ui.edit.profile.EditUserProfileBottomSheet
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
