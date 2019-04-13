@@ -60,7 +60,8 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
                     val post = publishedPostAdapter.getPostAt(position)
-                    val bottomSheet = PreviewPostBottomSheet.newInstance(post.postId, enableDelete = true, globalUserId = "")
+                    val bottomSheet =
+                        PreviewPostBottomSheet.newInstance(post.postId, enableDelete = true, globalUserId = "")
                     bottomSheet.showNow(childFragmentManager, "PREVIEW_POST")
                 }
             }
@@ -74,6 +75,12 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
         likedPostAdapter = LikePostAdapter.newInstance(
             object : LikePostListener {
+                override fun onPostPreviewCicked(position: Int) {
+                    val post = likedPostAdapter.getPostAt(position)
+                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
+                    postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
+                }
+
                 override fun onPostDelete(position: Int) {
                     val post = likedPostAdapter.getPostAt(position)
                     controller.deleteLikedPost(post)

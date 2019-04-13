@@ -74,6 +74,9 @@ class LikePostAdapter private constructor(
             btn_delete_liked.setOnClickListener {
                 listener.onPostDelete(adapterPosition)
             }
+            container_like_post.setOnClickListener {
+                listener.onPostPreviewCicked(adapterPosition)
+            }
 
         }
     }
@@ -89,9 +92,11 @@ class LikePostAdapter private constructor(
         val image_post_preview = view.image_published_post_preview
         val image_post_publisher_avatar = view.image_publisher_post_avatar
         val btn_delete_liked = view.btn_like_post_delete
+        val container_like_post = view.container_like_post
     }
 }
 
 interface LikePostListener {
     fun onPostDelete(position: Int)
+    fun onPostPreviewCicked(position: Int)
 }
