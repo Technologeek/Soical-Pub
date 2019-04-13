@@ -214,7 +214,7 @@ class PostController(
     }
 
     private fun updateUserLike(globalPost: Post) {
-        postSource.likeUserPost(globalPost)
+        postSource.likeUserPost(globalPost,userPrefs.userId)
             .addOnSuccessListener {
                 view.hideLoading()
                 view.onError("Post liked!")

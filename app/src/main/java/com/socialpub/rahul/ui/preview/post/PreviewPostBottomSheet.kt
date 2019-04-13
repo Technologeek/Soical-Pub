@@ -55,7 +55,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
         commentsAdapter = CommentsAdapter.newInstance(
             object : CommentProfileListener {
                 override fun onClickCommentProfile(position: Int) {
-                    toast("todo profilePreview @$position")
+                    
                 }
             }
         )

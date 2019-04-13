@@ -51,9 +51,9 @@ class PostSource private constructor(
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
-    fun likeUserPost(userPost: Post) = firebaseStore
+    fun likeUserPost(userPost: Post, userId: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
-        .document(userPost.uid)
+        .document(userId)
         .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
@@ -62,7 +62,6 @@ class PostSource private constructor(
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
         .document(globalPost.postId)
         .set(globalPost, SetOptions.merge())
-
 
     fun observePost(post: Post) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)

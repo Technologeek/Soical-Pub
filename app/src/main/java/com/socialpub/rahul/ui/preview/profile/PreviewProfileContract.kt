@@ -1,0 +1,18 @@
+package com.socialpub.rahul.ui.preview.profile
+
+import com.socialpub.rahul.base.BaseContract
+import com.socialpub.rahul.data.model.Post
+import com.socialpub.rahul.data.model.User
+
+interface PreviewProfileContract {
+
+    interface View : BaseContract.View {
+        fun attachActions()
+        fun dissmissDialog()
+        fun updateUserPreview(user: User)
+    }
+
+    interface Controller : BaseContract.Controller {
+        fun getUserProfile(userId: String?)
+    }
+}
