@@ -55,6 +55,8 @@ class PreviewPostController(
 
     override fun getGlobalUserPost(postId: String?, globalUserId: String?) {
         if (!globalUserId.isNullOrBlank() && !postId.isNullOrBlank()) {
+
+            view.showLoading("Loading...")
             postSource.getUserPost(postId, globalUserId)
                 .addOnSuccessListener { doc ->
                     val post = doc.toObject(Post::class.java)

@@ -14,6 +14,7 @@ import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
+import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import io.reactivex.Completable
 import kotlinx.android.synthetic.main.fragment_feeds.*
@@ -99,7 +100,9 @@ class PostFragment : BaseFragment(), PostContract.View {
             }
 
             override fun onCommentClicked(position: Int) {
-                toast("clicked comment:$position")
+                val post = postAdapter.getPostAt(position)
+                val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
+                postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
             }
 
         })
