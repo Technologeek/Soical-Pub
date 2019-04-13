@@ -23,10 +23,8 @@ class UserProfileBottomSheet : BaseBottomSheet(),
     lateinit var controller: UserProfileController
 
     override fun setup(view: View) {
-        val userId = arguments?.getString("userId")
         controller = UserProfileController(this)
         controller.onStart()
-        controller.getUserProfile(userId)
     }
 
 
@@ -34,13 +32,16 @@ class UserProfileBottomSheet : BaseBottomSheet(),
 
     override fun attachActions() {
 
+        val userId = arguments?.getString("userId")
         val showFollow = arguments?.getBoolean("showFollow", true) ?: true
+
+        controller.getUserProfile(userId)
 
         if (showFollow) {
             btn_preview_follow.run {
                 visibility = View.VISIBLE
                 setOnClickListener {
-                    toast("add to follow")
+                    controller.followGlobalUser(userId)
                 }
             }
         }

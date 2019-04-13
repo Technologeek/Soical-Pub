@@ -16,5 +16,6 @@ interface UserProfileContract {
 
     interface Controller : BaseContract.Controller {
         fun getUserProfile(userId: String?)
+        fun followGlobalUser(userId: String?)
     }
 }

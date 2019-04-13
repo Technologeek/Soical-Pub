@@ -26,6 +26,7 @@ class UserProfileController(
 
 
     var previewUser: User? = null
+    var localUser: User? = null
     override fun getUserProfile(userId: String?) {
 
         if (userId.isNullOrBlank()) {
@@ -41,6 +42,7 @@ class UserProfileController(
         userSource.getUser(userPrefs.userId).addOnSuccessListener { doc ->
             val user = doc.toObject(User::class.java)
             if (user != null) {
+                localUser = user
                 following = user.following
             } else {
                 error(Exception("user is null"))
@@ -71,6 +73,29 @@ class UserProfileController(
                 error(it)
             }
     }
+
+
+    override fun followGlobalUser(userId: String?) {
+        view.showLoading("Following...")
+        userId?.run {
+            val newFollowers = localUser!!.following.toMutableList()
+            newFollowers.add(userId)
+
+            val newUser = localUser!!.copy(
+                following = newFollowers
+            )
+
+            userSource.createUser(newUser).addOnSuccessListener {
+                view.hideLoading()
+                view.disableFollowing()
+            }.addOnFailureListener {
+                error(it)
+            }
+
+        }
+
+    }
+
 
     private fun error(it: Exception) {
         view.dissmissDialog()
