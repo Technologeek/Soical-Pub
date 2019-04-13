@@ -26,6 +26,7 @@ interface PostContract {
         fun filterLatest()
         fun filterCommented()
         fun filterLiked()
+        fun addLike(post: Post?)
     }
 
 }

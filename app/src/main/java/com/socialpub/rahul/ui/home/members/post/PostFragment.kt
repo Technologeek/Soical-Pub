@@ -82,7 +82,8 @@ class PostFragment : BaseFragment(), PostContract.View {
 
         postAdapter = GlobalPostAdapter.newInstance(object : PostClickListener {
             override fun onlikeClicked(position: Int) {
-                toast("clicked like:$position")
+                val post = postAdapter.getPostAt(position)
+                controller.addLike(post)
             }
 
             override fun onCommentClicked(position: Int) {

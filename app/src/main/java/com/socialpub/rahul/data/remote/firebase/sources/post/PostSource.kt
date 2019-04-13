@@ -58,6 +58,11 @@ class PostSource private constructor(
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
+    fun likeGlobalPost(userPost: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .document(userPost.postId)
+        .set(userPost, SetOptions.merge())
+
 
     fun observePost(post: Post) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
@@ -75,7 +80,7 @@ class PostSource private constructor(
 
     fun commentOnGlobalPost(userPost: Post) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
-        .document(userPost.uid)
+        .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
     fun addPostGlobally(globalPost: Post) = firebaseStore

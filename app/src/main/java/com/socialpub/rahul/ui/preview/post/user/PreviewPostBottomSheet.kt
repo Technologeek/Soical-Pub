@@ -94,13 +94,9 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
             val date = DateFormat.getInstance().format(timestamp)
             text_published_post_date.text = date
             text_published_post_caption.text = caption
-
-            text_search_post_likes.text = "Likes : ${post.likeCount}"
-            text_search_post_comments.text = "Comments : ${post.commentCount}"
             commentsAdapter.submitList(comments)
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

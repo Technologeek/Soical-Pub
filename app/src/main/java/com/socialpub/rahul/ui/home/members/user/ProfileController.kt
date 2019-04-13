@@ -22,7 +22,6 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
         postSource = Injector.postSource()
         view.updateProfileInfo(
             User(
-                name = userPrefs.displayName,
                 username = userPrefs.displayName,
                 email = userPrefs.email,
                 avatar = userPrefs.avatarUrl,
@@ -51,7 +50,7 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
                             profile.avatar?.apply { avatarUrl = this }
                             followers = profile.followers.size.toLong()
                             following = profile.following.size.toLong()
-                            displayName = profile.name
+                            displayName = profile.username
                             view.updateProfileInfo(profile)
                         }
                     }

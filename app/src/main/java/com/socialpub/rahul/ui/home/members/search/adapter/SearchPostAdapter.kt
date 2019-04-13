@@ -52,8 +52,6 @@ class SearchPostAdapter private constructor(
             text_post_location.text = post.location
             text_post_caption.text = post.caption
             text_post_caption.text = post.caption
-            text_search_post_likes.text = "Likes : ${post.likeCount}"
-            text_search_post_comments.text = "Comments : ${post.commentCount}"
 
             val date = DateFormat.getInstance().format(post.timestamp)
             text_post_date.text = date
@@ -91,8 +89,6 @@ class SearchPostAdapter private constructor(
         val image_post_preview = view.image_published_post_preview
         val image_post_publisher_avatar = view.image_publisher_post_avatar
         val container_search_post = view.container_published_post
-        val text_search_post_likes = view.text_search_post_likes
-        val text_search_post_comments = view.text_search_post_comments
     }
 }
 

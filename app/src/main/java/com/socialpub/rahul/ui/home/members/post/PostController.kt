@@ -5,6 +5,7 @@ import com.cloudinary.android.callback.ErrorInfo
 import com.esafirm.imagepicker.features.ImagePicker
 import com.google.firebase.firestore.ListenerRegistration
 import com.socialpub.rahul.data.local.prefs.AppPrefs
+import com.socialpub.rahul.data.model.Like
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
@@ -96,6 +97,36 @@ class PostController(
         }
     }
 
+    override fun addLike(post: Post?) {
+        post?.run {
+            view.showLoading("Liking...")
+
+            postSource.getGlobalPost(post.postId)
+                .addOnSuccessListener {
+
+                    val globalPost = it.toObject(Post::class.java)
+                    globalPost?.let {
+                        val likers = it.likedBy.toMutableList()
+                        likers.add(
+                            Like(
+                                uid = userPrefs.userId,
+                                username = userPrefs.displayName,
+                                userAvatar = userPrefs.avatarUrl
+                            )
+                        )
+                        val newPost = globalPost.copy(
+                            likedBy = likers,
+                            likeCount = likers.size.toLong()
+                        )
+                        updateGlobalLike(newPost)
+
+                    }
+
+                }.addOnFailureListener {
+
+                }
+        }
+    }
 
     override fun uploadPost(post: Post) {
         uploadImageClouinary(post)
@@ -119,12 +150,12 @@ class PostController(
                     val imageUrl = requireNotNull(resultData?.get("secure_url") as String?)
                     val newPost = post.copy(
                         postId = publicKey,
+                        username = userPrefs.displayName,
                         userAvatar = userPrefs.avatarUrl,
                         uid = userPrefs.userId,
-                        username = userPrefs.displayName,
+                        location = "delhi",
                         imageUrl = imageUrl
                     )
-
                     uploadUserPost(newPost)
                 }
 
@@ -137,26 +168,37 @@ class PostController(
 
             }).dispatch()
 
+    private fun updateGlobalLike(newPost: Post) {
+        postSource.likeGlobalPost(newPost)
+            .addOnSuccessListener {
+                postSource.likePost(newPost)
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Oh Snap..couldn't like")
+                Timber.e(it.localizedMessage)
+            }
+    }
+
     //push post to userId
     private fun uploadUserPost(post: Post) {
         postSource.createPost(post)
             .addOnSuccessListener {
-            uploadGlobalPost(post)
-        }.addOnFailureListener {
-            view.hideLoading()
-            view.onError(it.localizedMessage)
-        }
+                uploadGlobalPost(post)
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError(it.localizedMessage)
+            }
     }
 
     //push post to global feeds
     private fun uploadGlobalPost(post: Post) {
         postSource.addPostGlobally(post)
             .addOnCompleteListener {
-            view.hideLoading()
-        }.addOnFailureListener {
-            view.hideLoading()
-            view.onError(it.localizedMessage)
-        }
+                view.hideLoading()
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError(it.localizedMessage)
+            }
     }
 
 }
