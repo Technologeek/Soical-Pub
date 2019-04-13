@@ -56,7 +56,7 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
                     }
 
                 }
-        }
+            }
     }
 
     override fun stopProfileObserving() {
@@ -116,6 +116,23 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
 
     override fun stopObservingLikedPost() {
         likedPostListener?.remove()
+    }
+
+    override fun deleteLikedPost(post: Post?) {
+        view.showLoading("Deleting...")
+
+        post?.run {
+            postSource.deleteLikedPost(post.postId, userPrefs.userId)
+                .addOnSuccessListener {
+                    view.onError("Post deleted...")
+                    view.hideLoading()
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    view.onError("Woops..failed to delete")
+                    Timber.e(it.localizedMessage)
+                }
+
+        }
     }
 
 

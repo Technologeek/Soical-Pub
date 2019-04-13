@@ -59,6 +59,26 @@ class PostController(
             }
     }
 
+
+    override fun stopObservingGlobalFeeds() {
+        globalfeedsListener?.remove()
+    }
+
+    override fun handleImagePickerRequest(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PostContract.Controller.Const.IMAGE_PICKER_REQUEST) {
+            try {
+                val image = ImagePicker.getFirstImageOrNull(data)
+                val path = image.path
+                view.onError("todo : show Dilaog which show inputs for other post details")
+                view.onImagePickerSuccess(path)
+            } catch (e: Exception) {
+                view.onError(e.localizedMessage)
+            }
+        }
+    }
+
+    //============= Filter Post =================//
+
     override fun filterLatest() {
         stopObservingGlobalFeeds()
         userPrefs.filterType = AppConst.POST_FILTER_LATEST
@@ -80,53 +100,7 @@ class PostController(
         view.listScrollToTop()
     }
 
-    override fun stopObservingGlobalFeeds() {
-        globalfeedsListener?.remove()
-    }
-
-    override fun handleImagePickerRequest(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PostContract.Controller.Const.IMAGE_PICKER_REQUEST) {
-            try {
-                val image = ImagePicker.getFirstImageOrNull(data)
-                val path = image.path
-                view.onError("todo : show Dilaog which show inputs for other post details")
-                view.onImagePickerSuccess(path)
-            } catch (e: Exception) {
-                view.onError(e.localizedMessage)
-            }
-        }
-    }
-
-    override fun addLike(post: Post?) {
-        post?.run {
-            view.showLoading("Liking...")
-
-            postSource.getGlobalPost(post.postId)
-                .addOnSuccessListener {
-
-                    val globalPost = it.toObject(Post::class.java)
-                    globalPost?.let {
-                        val likers = it.likedBy.toMutableList()
-                        likers.add(
-                            Like(
-                                uid = userPrefs.userId,
-                                username = userPrefs.displayName,
-                                userAvatar = userPrefs.avatarUrl
-                            )
-                        )
-                        val newPost = globalPost.copy(
-                            likedBy = likers,
-                            likeCount = likers.size.toLong()
-                        )
-                        updateGlobalLike(newPost)
-
-                    }
-
-                }.addOnFailureListener {
-
-                }
-        }
-    }
+    //============= Create Post =================//
 
     override fun uploadPost(post: Post) {
         uploadImageClouinary(post)
@@ -168,16 +142,6 @@ class PostController(
 
             }).dispatch()
 
-    private fun updateGlobalLike(newPost: Post) {
-        postSource.likeGlobalPost(newPost)
-            .addOnSuccessListener {
-                postSource.likePost(newPost)
-            }.addOnFailureListener {
-                view.hideLoading()
-                view.onError("Oh Snap..couldn't like")
-                Timber.e(it.localizedMessage)
-            }
-    }
 
     //push post to userId
     private fun uploadUserPost(post: Post) {
@@ -200,5 +164,66 @@ class PostController(
                 view.onError(it.localizedMessage)
             }
     }
+
+
+    //============= LIKE =================//
+
+    override fun addLike(post: Post?) {
+
+        post?.run {
+            view.showLoading("Liking...")
+
+            postSource.getGlobalPost(post.postId)
+                .addOnSuccessListener {
+
+                    val globalPost = it.toObject(Post::class.java)
+
+                    globalPost?.let {
+                        val likers = it.likedBy.toMutableList()
+                        likers.add(
+                            Like(
+                                uid = userPrefs.userId,
+                                username = userPrefs.displayName,
+                                userAvatar = userPrefs.avatarUrl
+                            )
+                        )
+                        val newPost = globalPost.copy(
+                            likedBy = likers,
+                            likeCount = likers.size.toLong()
+                        )
+                        updateGlobalLike(newPost)
+                    }
+
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    view.onError("Unable to like post")
+                    Timber.e(it.localizedMessage)
+                }
+        }
+    }
+
+    private fun updateGlobalLike(globalPost: Post) {
+        postSource.likeGlobalPost(globalPost)
+            .addOnSuccessListener {
+                updateUserLike(globalPost)
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Oh Snap..couldn't like")
+                Timber.e(it.localizedMessage)
+            }
+    }
+
+    private fun updateUserLike(globalPost: Post) {
+        postSource.likeUserPost(globalPost)
+            .addOnSuccessListener {
+                view.hideLoading()
+                view.onError("Post liked!")
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Oh Snap..couldn't like")
+                Timber.e(it.localizedMessage)
+            }
+    }
+
 
 }

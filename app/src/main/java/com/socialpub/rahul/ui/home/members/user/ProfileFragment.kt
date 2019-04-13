@@ -1,19 +1,25 @@
 package com.socialpub.rahul.ui.home.members.user
 
 
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
+import com.socialpub.rahul.ui.home.HomeActivity
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
-import com.socialpub.rahul.ui.preview.post.user.PreviewPostBottomSheet
+import com.socialpub.rahul.ui.home.members.user.adapter.LikePostAdapter
+import com.socialpub.rahul.ui.home.members.user.adapter.LikePostListener
+import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.socialpub.rahul.ui.profile.edit.ProfileEditBottomSheet
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_proifle.*
 import java.util.concurrent.TimeUnit
 
@@ -31,7 +37,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     lateinit var publishedPostAdapter: SearchPostAdapter
-    lateinit var likedPostAdapter: SearchPostAdapter
+    lateinit var likedPostAdapter: LikePostAdapter
 
     override fun attachActions() {
 
@@ -59,7 +65,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
                 override fun onPostClicked(position: Int) {
                     val post = publishedPostAdapter.getPostAt(position)
                     val bottomSheet = PreviewPostBottomSheet.newInstance(post.postId)
-                    bottomSheet.show(childFragmentManager, "PREVIEW_POST")
+                    bottomSheet.showNow(childFragmentManager, "PREVIEW_POST")
                 }
             }
         )
@@ -70,10 +76,11 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         }
 
 
-        likedPostAdapter = SearchPostAdapter.newInstance(
-            object : SearchPostListener {
-                override fun onPostClicked(position: Int) {
-                    toast("clicked $position")
+        likedPostAdapter = LikePostAdapter.newInstance(
+            object : LikePostListener {
+                override fun onPostDelete(position: Int) {
+                    val post = likedPostAdapter.getPostAt(position)
+                    controller.deleteLikedPost(post)
                 }
             }
         )

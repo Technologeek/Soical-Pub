@@ -1,4 +1,4 @@
-package com.socialpub.rahul.ui.preview.post.user
+package com.socialpub.rahul.ui.preview.post
 
 import com.socialpub.rahul.base.BaseContract
 import com.socialpub.rahul.data.model.Post

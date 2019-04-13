@@ -21,6 +21,7 @@ interface ProfileContract {
         fun startObservingLikedPost()
         fun stopProfileObserving()
         fun stopObservingLikedPost()
+        fun deleteLikedPost(post: Post?)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.socialpub.rahul.ui.preview.post.user
+package com.socialpub.rahul.ui.preview.post
 
 import com.google.firebase.firestore.ListenerRegistration
 import com.socialpub.rahul.data.local.prefs.AppPrefs
