@@ -41,7 +41,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_DONE -> {
                     submitComment(edit_new_comment.text.toString())
-                    edit_new_comment.text.clear()
+                    edit_new_comment.text?.clear()
                     true
                 }
                 else -> false
