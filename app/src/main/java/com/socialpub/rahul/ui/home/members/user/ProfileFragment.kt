@@ -94,7 +94,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     override fun updateLikedList(postList: List<Post>) {
-        //likedPostAdapter.submitList(postList)
+        likedPostAdapter.submitList(postList)
     }
 
     override fun updatePublishList(postList: List<Post>) {

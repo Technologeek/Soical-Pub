@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/container_published_post"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@color/white"
@@ -16,7 +17,7 @@
                 android:src="@mipmap/ic_launcher_round"
                 android:layout_margin="8dp"
                 android:layout_width="64dp"
-                android:id="@+id/image_post_publisher_avatar"
+                android:id="@+id/image_publisher_post_avatar"
                 android:layout_gravity="center_vertical"
                 android:layout_height="match_parent"/>
 
@@ -28,7 +29,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:layout_marginTop="4dp"
-                    android:id="@+id/text_user_name"
+                    android:id="@+id/text_publisher_user_name"
                     tools:text="User Name"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -36,7 +37,7 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_post_location"
+                    android:id="@+id/text_published_post_location"
                     tools:text="Location"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -44,7 +45,7 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/text_post_date"
+                    android:id="@+id/text_published_post_date"
                     tools:text="date"
                     android:textSize="12sp"
                     android:textStyle="bold"
@@ -56,14 +57,14 @@
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/image_post_preview"
+            android:id="@+id/image_published_post_preview"
             android:layout_width="match_parent"
             android:layout_height="350dp"
     />
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_marginTop="16dp"
-            android:id="@+id/text_post_caption"
+            android:id="@+id/text_published_post_caption"
             tools:text="bla bla bla caption"
             android:padding="8dp"
             android:textSize="14sp"

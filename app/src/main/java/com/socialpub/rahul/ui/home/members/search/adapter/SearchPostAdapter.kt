@@ -11,7 +11,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.Post
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.item_post.view.*
+import kotlinx.android.synthetic.main.item_search_post.view.*
 import timber.log.Timber
 import java.text.DateFormat
 
@@ -38,7 +38,7 @@ class SearchPostAdapter private constructor(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_search_post, parent, false)
-        return PostViewHolder(view, listener)
+        return PostViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -70,23 +70,24 @@ class SearchPostAdapter private constructor(
                     .into(image_post_preview)
             }
 
+            container_search_post.setOnClickListener {
+                listener.onPostClicked(adapterPosition)
+            }
+
         }
     }
 
 
     class PostViewHolder(
-        view: View,
-        private val listener: SearchPostListener
+        view: View
     ) : RecyclerView.ViewHolder(view) {
-        val text_username = view.text_user_name
-        val text_post_location = view.text_post_location
-        val text_post_date = view.text_post_date
-        val text_post_caption = view.text_post_caption
-        val image_post_preview = view.image_post_preview
-        val image_post_publisher_avatar = view.image_post_publisher_avatar
-        val container_search_post = view.container_search_post.also {
-            listener.onPostClicked(adapterPosition)
-        }
+        val text_username = view.text_publisher_user_name
+        val text_post_location = view.text_published_post_location
+        val text_post_date = view.text_published_post_date
+        val text_post_caption = view.text_published_post_caption
+        val image_post_preview = view.image_published_post_preview
+        val image_post_publisher_avatar = view.image_publisher_post_avatar
+        val container_search_post = view.container_published_post
     }
 }
 
