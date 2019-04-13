@@ -128,19 +128,19 @@ class SearchFragment : BaseFragment(), SearchContract.View {
                 controller.searchType(AppConst.SEARCH_FILTER_EMAIL)
                 chip_sort_name.isChecked = false
                 chip_sort_location.isChecked = false
-                edit_search_user_name.hint = "Search by email"
+                edit_search_user_name.hint = "Search user by email"
             }
             R.id.chip_sort_name -> {
                 controller.searchType(AppConst.SEARCH_FILTER_NAME)
                 chip_sort_email.isChecked = false
                 chip_sort_location.isChecked = false
-                edit_search_user_name.hint = "Search by name"
+                edit_search_user_name.hint = "Search user by name"
             }
             R.id.chip_sort_location -> {
                 controller.searchType(AppConst.SEARCH_FILTER_LOCATION)
                 chip_sort_email.isChecked = false
                 chip_sort_name.isChecked = false
-                edit_search_user_name.hint = "Search Post by location"
+                edit_search_user_name.hint = "Search user by Post location"
             }
             else -> {
             }
@@ -155,7 +155,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             container_search.visibility = View.GONE
             container_search_post.visibility = View.GONE
             controller.getUserFollowers()
-            edit_search_user_name.hint = "Search"
+            edit_search_user_name.hint = "Search user"
             controller.searchType(AppConst.SEARCH_FILTER_NONE)
         } else {
             if (chip_sort_location.isChecked) {
