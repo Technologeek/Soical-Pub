@@ -27,7 +27,18 @@ class LikePostAdapter private constructor(
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return (oldItem.postId == newItem.postId &&
-                        oldItem.uid == newItem.uid)
+                        oldItem.uid == newItem.uid &&
+                        oldItem.username == newItem.username &&
+                        oldItem.userAvatar == newItem.userAvatar &&
+                        oldItem.imageUrl == newItem.imageUrl &&
+                        oldItem.caption == newItem.caption &&
+                        oldItem.location == newItem.location &&
+                        oldItem.comments == newItem.comments &&
+                        oldItem.likedBy == newItem.likedBy &&
+                        oldItem.likeCount == newItem.likeCount &&
+                        oldItem.commentCount == newItem.commentCount &&
+                        oldItem.timestamp == newItem.timestamp &&
+                        oldItem.imageUrl == newItem.imageUrl)
             }
         }
 
