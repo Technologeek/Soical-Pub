@@ -58,13 +58,40 @@ class PostSource private constructor(
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
+
+    fun observePost(post: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(post.uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(post.postId)
+
+
+    fun commentOnUserPost(userPost: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(userPost.uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(userPost.postId)
+        .set(userPost)
+
+    fun commentOnGlobalPost(userPost: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .document(userPost.uid)
+        .set(userPost, SetOptions.merge())
+
     fun addPostGlobally(globalPost: Post) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
         .document(globalPost.postId)
         .set(globalPost, SetOptions.merge())
 
-    fun getPost(postId:String) = firebaseStore
+    fun getGlobalPost(postId: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .document(postId)
+        .get()
+
+    fun getUserPost(postId: String, uid: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
         .document(postId)
         .get()
 

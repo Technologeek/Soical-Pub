@@ -9,6 +9,7 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
+import com.socialpub.rahul.ui.preview.post.user.PreviewPostBottomSheet
 import com.socialpub.rahul.ui.profile.edit.ProfileEditBottomSheet
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
@@ -56,7 +57,9 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         publishedPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
-                    toast("clicked $position")
+                    val post = publishedPostAdapter.getPostAt(position)
+                    val bottomSheet = PreviewPostBottomSheet.newInstance(post.postId)
+                    bottomSheet.show(childFragmentManager, "PREVIEW_POST")
                 }
             }
         )

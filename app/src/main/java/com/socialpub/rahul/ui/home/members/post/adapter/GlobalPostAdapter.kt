@@ -28,11 +28,7 @@ class GlobalPostAdapter private constructor(
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return (oldItem.postId == newItem.postId &&
                         oldItem.uid == newItem.uid &&
-                        oldItem.username == newItem.username &&
-                        oldItem.imageUrl == newItem.imageUrl &&
-                        oldItem.caption == newItem.caption &&
-                        oldItem.likeCount == newItem.likeCount &&
-                        oldItem.commentCount == newItem.commentCount)
+                        oldItem.imageUrl == newItem.imageUrl)
             }
         }
 
