@@ -2,10 +2,13 @@ package com.socialpub.rahul.ui.preview.profile
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseBottomSheet
+import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
-import com.socialpub.rahul.ui.preview.post.adapter.CommentsAdapter
+import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
+import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_proifle.*
@@ -22,12 +25,10 @@ class PreviewProfileBottomSheet : BaseBottomSheet(), PreviewProfileContract.View
         controller = PreviewProfileController(this)
         controller.onStart()
         controller.getUserProfile(userId)
-
-        toast("$userId")
-        text_preview_profile_user_email.text = "$userId"
     }
 
-    private lateinit var commentsAdapter: CommentsAdapter
+
+    private lateinit var searchPostAdapter: SearchPostAdapter
 
     override fun attachActions() {
 
@@ -46,6 +47,18 @@ class PreviewProfileBottomSheet : BaseBottomSheet(), PreviewProfileContract.View
             dissmissDialog()
         }
 
+        searchPostAdapter = SearchPostAdapter.newInstance(
+            object : SearchPostListener{
+                override fun onPostClicked(position: Int) {
+
+                }
+            }
+        )
+
+        list_preview_profile_published_post.run {
+            layoutManager = LinearLayoutManager(attachedContext)
+            adapter = searchPostAdapter
+        }
     }
 
 
@@ -61,6 +74,10 @@ class PreviewProfileBottomSheet : BaseBottomSheet(), PreviewProfileContract.View
             text_preview_profile_user_email.text = username
             text_preview_profile_user_name.text = email
         }
+    }
+
+    override fun showAllUser(list: List<Post>) {
+        searchPostAdapter.submitList(list)
     }
 
     override fun onDestroyView() {

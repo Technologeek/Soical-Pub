@@ -99,6 +99,12 @@ class PostSource private constructor(
         .document(postId)
         .get()
 
+    fun getAllPublishedPost(uid: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .get()
+
     fun deleteUserPost(postId: String, uid: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(uid)

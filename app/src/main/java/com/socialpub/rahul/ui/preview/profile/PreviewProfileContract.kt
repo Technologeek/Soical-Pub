@@ -10,6 +10,7 @@ interface PreviewProfileContract {
         fun attachActions()
         fun dissmissDialog()
         fun updateUserPreview(user: User)
+        fun showAllUser(list: List<Post>)
     }
 
     interface Controller : BaseContract.Controller {

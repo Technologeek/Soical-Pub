@@ -6,6 +6,7 @@ import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
+import timber.log.Timber
 
 class PreviewProfileController(
     private val view: PreviewProfileContract.View
@@ -42,13 +43,36 @@ class PreviewProfileController(
                 if (user != null) {
                     previewUser = user
                     view.updateUserPreview(user)
+                    getPreviewUserPost(user)
                 } else {
                     view.dissmissDialog()
-                    view.onError("Unable to show preview...")
+                    view.hideLoading()
+                    view.onError("Unable to show profile...")
                 }
+            }.addOnFailureListener {
+                view.dissmissDialog()
+                view.hideLoading()
+                view.onError("Unable to show profile...")
+                Timber.e(it.localizedMessage)
             }
     }
 
+    private fun getPreviewUserPost(user: User) {
+        val postList = arrayListOf<Post>()
+        postSource.getAllPublishedPost(user.uid).addOnSuccessListener { querySnap ->
+            querySnap.forEach { docSnap ->
+                val post = docSnap.toObject(Post::class.java)
+                post?.let { postList.add(it) }
+
+            }
+            view.showAllUser(postList)
+            view.hideLoading()
+        }.addOnFailureListener {
+            view.hideLoading()
+            view.onError("Unable to show profile...")
+            Timber.e(it.localizedMessage)
+        }
+    }
 
 
 }
