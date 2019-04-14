@@ -10,6 +10,7 @@
         android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -92,9 +93,21 @@
 
 
             <FrameLayout
-                    android:id="@+id/container_map"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp"/>
+                    android:layout_height="300dp">
+
+                <FrameLayout
+                        android:id="@+id/container_map"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                <FrameLayout
+                        android:id="@+id/external_scroll_blocker"
+                        android:background="@android:color/transparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+            </FrameLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/text_location_address"

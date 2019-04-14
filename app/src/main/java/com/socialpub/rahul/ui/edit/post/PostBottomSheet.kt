@@ -2,6 +2,7 @@ package com.socialpub.rahul.ui.edit.post
 
 import android.content.Intent
 import android.location.Location
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -103,6 +104,20 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
                 onError("Error getting location...Cant tag your post!")
                 Timber.e(it.localizedMessage)
             }
+
+        external_scroll_blocker.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
+                    scroll.requestDisallowInterceptTouchEvent(true)
+                    false
+                }
+                MotionEvent.ACTION_UP -> {
+                    scroll.requestDisallowInterceptTouchEvent(false);
+                    true
+                }
+                else -> true
+            }
+        }
     }
 
     private fun updateMapCamera(latLng: LatLng) {
