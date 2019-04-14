@@ -37,13 +37,11 @@ class UserProfileController(
 
         view.showLoading("loading..")
 
-        var following: List<String>? = null
-
         userSource.getUser(userPrefs.userId).addOnSuccessListener { doc ->
             val user = doc.toObject(User::class.java)
             if (user != null) {
                 localUser = user
-                following = user.following
+                followerFilter(userId, user.following)
             } else {
                 error(Exception("user is null"))
             }
@@ -52,6 +50,9 @@ class UserProfileController(
             error(it)
         }
 
+    }
+
+    private fun followerFilter(userId: String, following: List<String>?) {
         userSource.getUser(userId)
             .addOnSuccessListener { doc ->
                 val user = doc.toObject(User::class.java)
