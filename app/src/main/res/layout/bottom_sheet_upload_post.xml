@@ -47,7 +47,8 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="match_parent"
-                    android:text="Select profile picture"
+                    android:text="Select post picture"
+                    android:layout_marginBottom="8dp"
                     android:textSize="12sp"
                     android:layout_height="wrap_content"/>
 
@@ -56,9 +57,11 @@
                     android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/image_profile"
+                        android:id="@+id/image_post_content"
                         android:layout_width="match_parent"
-                        android:layout_height="280dp"/>
+                        android:layout_height="280dp"
+                        app:srcCompat="@drawable/ic_empty_image"
+                />
 
                 <androidx.appcompat.widget.AppCompatImageView
                         android:layout_margin="16dp"
@@ -77,7 +80,7 @@
                     android:hint="Caption">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edit_new_username"
+                        android:id="@+id/edit_post_caption"
                         android:layout_width="match_parent"
                         android:inputType="text"
                         android:layout_height="wrap_content"/>
@@ -127,7 +130,7 @@
 
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_update_profile"
+            android:id="@+id/btn_post_submit"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

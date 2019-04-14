@@ -4,7 +4,7 @@ import android.content.Intent
 import com.cloudinary.android.callback.ErrorInfo
 import com.esafirm.imagepicker.features.ImagePicker
 import com.socialpub.rahul.data.local.prefs.AppPrefs
-import com.socialpub.rahul.data.model.User
+import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
@@ -27,77 +27,84 @@ class PostUploadController(
         view.attachActions()
     }
 
-    override fun updateUserProfile(userName: String) {
-        if (!userName.isNullOrBlank() || !newProfileAvatarPath.isNullOrBlank()) {
-            uploadCloudnary(userName, newProfileAvatarPath)
-        } else {
-            view.onError("Please enter new details...")
-        }
-    }
 
-    private fun uploadCloudnary(username: String?, imagePath: String?) {
-
-        if (imagePath != null) {
-            postSource.uploadImageCloundary(imagePath)
-                .callback(object : CloudinaryUploadHelper() {
-
-                    override fun onStart(requestId: String?) {
-                        super.onStart(requestId)
-                        view.showLoading("Updating...")
-                    }
-
-                    override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
-                        super.onSuccess(requestId, resultData)
-                        val imageUrl = requireNotNull(resultData?.get("secure_url") as String?)
-                        updateRemoteUserProfile(username, imageUrl)
-                    }
-
-                    override fun onError(requestId: String?, error: ErrorInfo?) {
-                        super.onError(requestId, error)
-                        view.hideLoading()
-                        Timber.e(error?.description)
-                        view.onError("Something went wrong while uploading post..")
-                    }
-
-                }).dispatch()
-
-        } else {
-            updateRemoteUserProfile(username, null)
-        }
-
-    }
-
-    private fun updateRemoteUserProfile(username: String?, imageUrl: String?) {
-        userSource.createUser(
-            User(
-                username = username ?: userPrefs.displayName,
-                avatar = imageUrl ?: userPrefs.avatarUrl,
-                email = userPrefs.email,
-                uid = userPrefs.userId
-            )
-        ).addOnSuccessListener {
-            view.hideLoading()
-            view.dissmissDialog()
-        }.addOnFailureListener {
-            view.hideLoading()
-            view.onError("Something went wrong...")
-            Timber.e(it.localizedMessage)
-        }
-    }
-
-
-    var newProfileAvatarPath: String? = null
+    var postContentImagePath: String? = null
     override fun handleImagePickerRequest(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == PostContract.Controller.Const.IMAGE_PICKER_REQUEST) {
             try {
                 val image = ImagePicker.getFirstImageOrNull(data)
                 val path = image.path
                 view.showSelectedImage(path)
-                newProfileAvatarPath = path
+                postContentImagePath = path
             } catch (e: Exception) {
                 view.onError(e.localizedMessage)
             }
         }
     }
+
+    //============= Create Post =================//
+
+    override fun uploadPost(post: Post) {
+        uploadImageClouinary(post)
+    }
+
+    //uploaded image to cloundiary to get a public key which will become postId and imageUrl
+    private fun uploadImageClouinary(post: Post) =
+        Injector.postSource().uploadImageCloundary(post.imagePath)
+            .callback(object : CloudinaryUploadHelper() {
+                override fun onStart(requestId: String?) {
+                    super.onStart(requestId)
+                    view.showLoading("Uploading...")
+                    //test
+                }
+
+                override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
+                    super.onSuccess(requestId, resultData)
+                    view.hideLoading()
+                    val publicKey = requireNotNull(resultData?.get("public_id") as String?)
+                    val imageUrl = requireNotNull(resultData?.get("secure_url") as String?)
+                    val newPost = post.copy(
+                        postId = publicKey,
+                        username = userPrefs.displayName,
+                        userAvatar = userPrefs.avatarUrl,
+                        uid = userPrefs.userId,
+                        imageUrl = imageUrl
+                    )
+                    uploadUserPost(newPost)
+                }
+
+                override fun onError(requestId: String?, error: ErrorInfo?) {
+                    super.onError(requestId, error)
+                    view.hideLoading()
+                    Timber.e(error?.description)
+                    view.onError("Something went wrong while uploading post..")
+                }
+
+            }).dispatch()
+
+
+    //push post to userId
+    private fun uploadUserPost(post: Post) {
+        postSource.createPost(post)
+            .addOnSuccessListener {
+                uploadGlobalPost(post)
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError(it.localizedMessage)
+            }
+    }
+
+    //push post to global feeds
+    private fun uploadGlobalPost(post: Post) {
+        postSource.addPostGlobally(post)
+            .addOnCompleteListener {
+                view.hideLoading()
+                view.onPostSubmittedSuccess()
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError(it.localizedMessage)
+            }
+    }
+
 
 }

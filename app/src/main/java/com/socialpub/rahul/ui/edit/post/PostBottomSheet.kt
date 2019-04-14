@@ -1,26 +1,27 @@
 package com.socialpub.rahul.ui.edit.post
 
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
-import android.location.Location
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import com.esafirm.imagepicker.features.ImagePicker
+import com.esafirm.imagepicker.features.ReturnMode
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseBottomSheet
+import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.service.android.location.LocationManger
+import com.socialpub.rahul.ui.home.members.post.PostContract
 import com.squareup.picasso.Picasso
-import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_upload_post.*
 import timber.log.Timber
-import java.lang.Exception
 
 
 class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
@@ -48,29 +49,44 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
 
         initMap()
 
+        image_post_content.run {
 
-//        image_profile.run {
-//
-//            Picasso.get()
-//                .load(profileUrl)
-//                .placeholder(R.mipmap.ic_launcher_round)
-//                .fit()
-//                .centerInside()
-//                .into(this)
-//
-//            setOnClickListener {
-//                ImagePicker.create(this@PostBottomSheet)
-//                    .returnMode(ReturnMode.ALL)
-//                    .includeVideo(false)
-//                    .single()
-//                    .showCamera(true)
-//                    .start(PostContract.Controller.Const.IMAGE_PICKER_REQUEST)
-//            }
-//        }
+            setOnClickListener {
+                ImagePicker.create(this@PostBottomSheet)
+                    .returnMode(ReturnMode.ALL)
+                    .includeVideo(false)
+                    .single()
+                    .showCamera(true)
+                    .start(PostContract.Controller.Const.IMAGE_PICKER_REQUEST)
+            }
+        }
 
         btn_upload_post_close.setOnClickListener { this.dismiss() }
-        // btn_update_profile.setOnClickListener { controller.updateUserProfile(edit_new_username.text.toString()) }
+
+
+        edit_post_caption.setOnEditorActionListener { view, actionId, event ->
+            return@setOnEditorActionListener when {
+                event?.action == KeyEvent.KEYCODE_ENTER ||
+                        actionId == EditorInfo.IME_ACTION_DONE ||
+                        actionId == EditorInfo.IME_ACTION_GO ||
+                        actionId == EditorInfo.IME_ACTION_NEXT -> {
+                    scroll.fullScroll(View.FOCUS_DOWN)
+                    val imm = attachedContext.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager?
+                    imm?.hideSoftInputFromWindow(edit_post_caption.windowToken, 0)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        btn_post_submit.isEnabled = false
     }
+
+    override fun onPostSubmittedSuccess() {
+        toast("Post submitted...")
+        dissmissDialog()
+    }
+
 
     private var googleMap: GoogleMap? = null
     private fun initMap() {
@@ -136,6 +152,7 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
 
     }
 
+
     override fun onDestroyView() {
         super.onDestroyView()
         val mapFragement = childFragmentManager.findFragmentByTag("post_map")
@@ -146,15 +163,37 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
                 .commitNowAllowingStateLoss()
     }
 
-
     override fun onError(message: String) = toast(message)
 
     override fun showSelectedImage(path: String) {
         Picasso.get()
             .load("file://$path")
             .placeholder(R.mipmap.ic_launcher_round)
-            .transform(CropCircleTransformation())
-            .into(image_profile)
+            .fit()
+            .centerInside()
+            .into(image_post_content)
+
+
+        btn_post_submit.run {
+            isEnabled = true
+            setOnClickListener {
+
+                if (!edit_post_caption.text.toString().isBlank()) {
+                    controller.uploadPost(
+                        Post(
+                            imagePath = path,
+                            caption = edit_post_caption.text.toString(),
+                            location = text_location_address.text.toString(),
+                            likeCount = 0,
+                            commentCount = 0
+                        )
+                    )
+
+                } else {
+                    onError("Please enter a caption that describes your post the best!")
+                }
+            }
+        }
     }
 
 

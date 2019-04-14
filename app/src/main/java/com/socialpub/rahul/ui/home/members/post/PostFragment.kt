@@ -78,14 +78,6 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
                 )
             }
 
-
-
-//            ImagePicker.create(this)
-//                .returnMode(ReturnMode.ALL)
-//                .includeVideo(false)
-//                .single()
-//                .showCamera(true)
-//                .start(PostContract.Controller.Const.IMAGE_PICKER_REQUEST)
         }
 
         btn_sort.setOnClickListener {
@@ -163,22 +155,6 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
             .subscribe {
                 list_global_post.smoothScrollToPosition(0)
             }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        controller.handleImagePickerRequest(requestCode, resultCode, data)
-    }
-
-    override fun onImagePickerSuccess(path: String) {
-        controller.uploadPost(
-            Post(
-                likeCount = 50,
-                commentCount = 50,
-                imagePath = path,
-                caption = "Pokemon pokemon pokemon"
-            )
-        )
     }
 
     override fun updatePost(globalPost: List<Post>) {

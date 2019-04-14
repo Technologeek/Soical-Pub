@@ -8,7 +8,6 @@ interface PostContract {
 
     interface View : BaseContract.View {
         fun attachActions()
-        fun onImagePickerSuccess(path: String)
         fun updatePost(globalPost: List<Post>)
         fun listScrollToTop()
     }
@@ -19,8 +18,6 @@ interface PostContract {
             const val IMAGE_PICKER_REQUEST = 1001
         }
 
-        fun handleImagePickerRequest(requestCode: Int, resultCode: Int, data: Intent?)
-        fun uploadPost(post: Post)
         fun startObservingGlobalFeeds()
         fun stopObservingGlobalFeeds()
         fun filterLatest()
