@@ -24,7 +24,7 @@ class PostUploadController(
         userPrefs = Injector.userPrefs()
         userSource = Injector.userSource()
         postSource = Injector.postSource()
-        view.attachActions(userPrefs.avatarUrl)
+        view.attachActions()
     }
 
     override fun updateUserProfile(userName: String) {

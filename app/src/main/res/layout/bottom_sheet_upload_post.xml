@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:weightSum="1"
         android:background="@color/white"
@@ -31,6 +32,14 @@
                         android:layout_marginBottom="16dp"
                         android:text="Upload Post"
                 />
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_upload_post_close"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_gravity="end"
+                        app:icon="@drawable/ic_close"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"/>
 
 
             </FrameLayout>
@@ -81,14 +90,21 @@
                     android:textSize="12sp"
                     android:layout_height="wrap_content"/>
 
+
             <FrameLayout
-                    android:id="@+id/map"
-                    android:background="@color/background"
+                    android:id="@+id/container_map"
                     android:layout_width="match_parent"
-                    android:layout_height="300dp">
+                    android:layout_height="300dp"/>
 
-
-            </FrameLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_location_address"
+                    android:layout_width="match_parent"
+                    tools:text="address"
+                    android:padding="8dp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"/>
 
 
         </androidx.appcompat.widget.LinearLayoutCompat>

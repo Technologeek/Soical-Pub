@@ -1,6 +1,7 @@
 package com.socialpub.rahul.ui.home.members.post
 
 
+import android.Manifest
 import android.content.Intent
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
@@ -12,18 +13,22 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.edit.post.PostBottomSheet
+import com.socialpub.rahul.ui.edit.post.REQUEST_LOCATION_PERMISSION
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
 import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import io.reactivex.Completable
+import kotlinx.android.synthetic.main.bottom_sheet_upload_post.*
 import kotlinx.android.synthetic.main.fragment_feeds.*
+import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
-class PostFragment : BaseFragment(), PostContract.View {
+class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.PermissionCallbacks {
 
 
     override val contentLayout: Int
@@ -56,8 +61,24 @@ class PostFragment : BaseFragment(), PostContract.View {
 
         fab_upload.setOnClickListener {
 
-            val uploadSheet = PostBottomSheet.newInstance()
-            uploadSheet.show(childFragmentManager, "UploadPost")
+            //check permission
+            val perms = arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+
+            if (EasyPermissions.hasPermissions(attachedContext, *perms)) {
+
+                val uploadSheet = PostBottomSheet.newInstance()
+                uploadSheet.show(childFragmentManager, "UploadPost")
+
+            } else {
+                EasyPermissions.requestPermissions(
+                    this,
+                    "Please provide location permission for tagging pictures",
+                    REQUEST_LOCATION_PERMISSION,
+                    *perms
+                )
+            }
+
+
 
 //            ImagePicker.create(this)
 //                .returnMode(ReturnMode.ALL)
@@ -118,6 +139,24 @@ class PostFragment : BaseFragment(), PostContract.View {
         }
 
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            onError("Please grant permissions from setting if you want to post...")
+            AppSettingsDialog.Builder(this).build().show()
+        }
+
+    }
+
 
     override fun listScrollToTop() {
         Completable.timer(300, TimeUnit.MILLISECONDS)
