@@ -51,10 +51,34 @@ class PostSource private constructor(
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
-    fun likePost(userPost: Post) = firebaseStore
+    fun likeUserPost(userPost: Post, userId: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(userId)
+        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .document(userPost.postId)
+        .set(userPost, SetOptions.merge())
+
+    fun likeGlobalPost(globalPost: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .document(globalPost.postId)
+        .set(globalPost, SetOptions.merge())
+
+    fun observePost(post: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(post.uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(post.postId)
+
+
+    fun commentOnUserPost(userPost: Post) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(userPost.uid)
-        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(userPost.postId)
+        .set(userPost)
+
+    fun commentOnGlobalPost(userPost: Post) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
@@ -63,9 +87,41 @@ class PostSource private constructor(
         .document(globalPost.postId)
         .set(globalPost, SetOptions.merge())
 
-    fun getPost(postId:String) = firebaseStore
+    fun getGlobalPost(postId: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_POST)
         .document(postId)
         .get()
+
+    fun getUserPost(postId: String, uid: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(postId)
+        .get()
+
+    fun getAllPublishedPost(uid: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .get()
+
+    fun deleteUserPost(postId: String, uid: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.PUBLISHED_POSTS)
+        .document(postId)
+        .delete()
+
+    fun deleteLikedPost(postId: String, uid: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .document(postId)
+        .delete()
+
+    fun deleteGlobalPost(postId: String) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_POST)
+        .document(postId)
+        .delete()
 
 }

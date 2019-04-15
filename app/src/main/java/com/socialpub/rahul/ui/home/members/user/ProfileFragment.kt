@@ -9,7 +9,10 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
-import com.socialpub.rahul.ui.profile.edit.ProfileEditBottomSheet
+import com.socialpub.rahul.ui.home.members.user.adapter.LikePostAdapter
+import com.socialpub.rahul.ui.home.members.user.adapter.LikePostListener
+import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
+import com.socialpub.rahul.ui.edit.profile.EditUserProfileBottomSheet
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -30,7 +33,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     lateinit var publishedPostAdapter: SearchPostAdapter
-    lateinit var likedPostAdapter: SearchPostAdapter
+    lateinit var likedPostAdapter: LikePostAdapter
 
     override fun attachActions() {
 
@@ -38,7 +41,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         list_profile_liked_post.visibility = View.GONE
 
         btn_edit_profile.setOnClickListener {
-            ProfileEditBottomSheet.newInstance().show(childFragmentManager, "Profile_Bottom_Sheet")
+            EditUserProfileBottomSheet.newInstance().show(childFragmentManager, "Profile_Bottom_Sheet")
         }
 
         btn_profile_user_post.setOnClickListener {
@@ -56,7 +59,10 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         publishedPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
-                    toast("clicked $position")
+                    val post = publishedPostAdapter.getPostAt(position)
+                    val bottomSheet =
+                        PreviewPostBottomSheet.newInstance(post.postId, enableDelete = true, globalUserId = "")
+                    bottomSheet.showNow(childFragmentManager, "PREVIEW_POST")
                 }
             }
         )
@@ -67,10 +73,17 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         }
 
 
-        likedPostAdapter = SearchPostAdapter.newInstance(
-            object : SearchPostListener {
-                override fun onPostClicked(position: Int) {
-                    toast("clicked $position")
+        likedPostAdapter = LikePostAdapter.newInstance(
+            object : LikePostListener {
+                override fun onPostPreviewCicked(position: Int) {
+                    val post = likedPostAdapter.getPostAt(position)
+                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
+                    postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
+                }
+
+                override fun onPostDelete(position: Int) {
+                    val post = likedPostAdapter.getPostAt(position)
+                    controller.deleteLikedPost(post)
                 }
             }
         )
@@ -94,7 +107,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     override fun updateLikedList(postList: List<Post>) {
-        //likedPostAdapter.submitList(postList)
+        likedPostAdapter.submitList(postList)
     }
 
     override fun updatePublishList(postList: List<Post>) {

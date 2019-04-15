@@ -27,6 +27,9 @@ class SearchUserAdapter private constructor(
 
             override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
                 return (oldItem.uid == newItem.uid &&
+                        oldItem.username == newItem.username &&
+                        oldItem.following == newItem.following &&
+                        oldItem.avatar == newItem.avatar &&
                         oldItem.email == newItem.email)
             }
         }

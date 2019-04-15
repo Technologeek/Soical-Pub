@@ -55,7 +55,6 @@ class RegisterController(
             isUserLoggedIn = true
 
             val newUser = User(
-                name = firebaseUser.displayName.toString(),
                 username = firebaseUser.displayName.toString(),
                 email = firebaseUser.email.toString(),
                 avatar = firebaseUser.photoUrl.toString(),

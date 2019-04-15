@@ -1,4 +1,4 @@
-package com.socialpub.rahul.ui.profile.edit
+package com.socialpub.rahul.ui.edit.profile
 
 import android.content.Intent
 import android.view.View
@@ -11,21 +11,21 @@ import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_edit_profile.*
 
-class ProfileEditBottomSheet : BaseBottomSheet(), ProfileEditContract.View {
+class EditUserProfileBottomSheet : BaseBottomSheet(), EditUserProfileContract.View {
 
     override val contentLayout: Int
         get() = R.layout.bottom_sheet_edit_profile
 
-    lateinit var controller: ProfileEditController
+    lateinit var userProfileController: EditUserProfileController
 
     override fun setup(view: View) {
-        controller = ProfileEditController(this)
-        controller.onStart()
+        userProfileController = EditUserProfileController(this)
+        userProfileController.onStart()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        controller.handleImagePickerRequest(requestCode, resultCode, data)
+        userProfileController.handleImagePickerRequest(requestCode, resultCode, data)
     }
 
     override fun attachActions(profileUrl: String) {
@@ -37,7 +37,7 @@ class ProfileEditBottomSheet : BaseBottomSheet(), ProfileEditContract.View {
                 .transform(CropCircleTransformation())
                 .into(this)
             setOnClickListener {
-                ImagePicker.create(this@ProfileEditBottomSheet)
+                ImagePicker.create(this@EditUserProfileBottomSheet)
                     .returnMode(ReturnMode.ALL)
                     .includeVideo(false)
                     .single()
@@ -47,7 +47,7 @@ class ProfileEditBottomSheet : BaseBottomSheet(), ProfileEditContract.View {
         }
 
         btn_close.setOnClickListener { this.dismiss() }
-        btn_update_profile.setOnClickListener { controller.updateUserProfile(edit_new_username.text.toString()) }
+        btn_update_profile.setOnClickListener { userProfileController.updateUserProfile(edit_new_username.text.toString()) }
     }
 
     override fun onError(message: String) = toast(message)
@@ -73,7 +73,7 @@ class ProfileEditBottomSheet : BaseBottomSheet(), ProfileEditContract.View {
     }
 
     companion object {
-        fun newInstance() = ProfileEditBottomSheet()
+        fun newInstance() = EditUserProfileBottomSheet()
     }
 
 }

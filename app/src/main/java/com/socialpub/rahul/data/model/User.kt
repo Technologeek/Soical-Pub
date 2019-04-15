@@ -6,10 +6,6 @@ import com.google.gson.annotations.SerializedName
 
 data class User(
 
-    @SerializedName("name")
-    @Expose
-    var name: String = "",
-
     @SerializedName("username")
     @Expose
     var username: String = "",
@@ -21,14 +17,6 @@ data class User(
     @SerializedName("follows")
     @Expose
     var following: List<String> = emptyList(),
-
-    @SerializedName("followers")
-    @Expose
-    var followers: List<String> = emptyList(),
-
-    @SerializedName("bio")
-    @Expose
-    var bio: String? = null,
 
     @SerializedName("avatar")
     @Expose

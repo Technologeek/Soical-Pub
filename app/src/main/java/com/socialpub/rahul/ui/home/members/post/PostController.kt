@@ -5,6 +5,7 @@ import com.cloudinary.android.callback.ErrorInfo
 import com.esafirm.imagepicker.features.ImagePicker
 import com.google.firebase.firestore.ListenerRegistration
 import com.socialpub.rahul.data.local.prefs.AppPrefs
+import com.socialpub.rahul.data.model.Like
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
@@ -58,6 +59,14 @@ class PostController(
             }
     }
 
+
+    override fun stopObservingGlobalFeeds() {
+        globalfeedsListener?.remove()
+    }
+
+
+    //============= Filter Post =================//
+
     override fun filterLatest() {
         stopObservingGlobalFeeds()
         userPrefs.filterType = AppConst.POST_FILTER_LATEST
@@ -79,84 +88,65 @@ class PostController(
         view.listScrollToTop()
     }
 
-    override fun stopObservingGlobalFeeds() {
-        globalfeedsListener?.remove()
-    }
 
-    override fun handleImagePickerRequest(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PostContract.Controller.Const.IMAGE_PICKER_REQUEST) {
-            try {
-                val image = ImagePicker.getFirstImageOrNull(data)
-                val path = image.path
-                view.onError("todo : show Dilaog which show inputs for other post details")
-                view.onImagePickerSuccess(path)
-            } catch (e: Exception) {
-                view.onError(e.localizedMessage)
-            }
+    //============= LIKE =================//
+
+    override fun addLike(post: Post?) {
+
+        post?.run {
+            view.showLoading("Liking...")
+
+            postSource.getGlobalPost(post.postId)
+                .addOnSuccessListener {
+
+                    val globalPost = it.toObject(Post::class.java)
+
+                    globalPost?.let {
+                        val likers = it.likedBy.toMutableList()
+                        likers.add(
+                            Like(
+                                uid = userPrefs.userId,
+                                username = userPrefs.displayName,
+                                userAvatar = userPrefs.avatarUrl
+                            )
+                        )
+                        val newPost = globalPost.copy(
+                            likedBy = likers,
+                            likeCount = likers.size.toLong()
+                        )
+                        updateGlobalLike(newPost)
+                    }
+
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    view.onError("Unable to like post")
+                    Timber.e(it.localizedMessage)
+                }
         }
     }
 
-
-    override fun uploadPost(post: Post) {
-        uploadImageClouinary(post)
-    }
-
-    //uploaded image to cloundiary to get a public key which will become postId and imageUrl
-    private fun uploadImageClouinary(post: Post) =
-        Injector.postSource().uploadImageCloundary(post.imagePath)
-            .callback(object : CloudinaryUploadHelper() {
-                override fun onStart(requestId: String?) {
-                    super.onStart(requestId)
-                    view.showLoading("Uploading...")
-                    //test
-                }
-
-
-                override fun onSuccess(requestId: String?, resultData: MutableMap<Any?, Any?>?) {
-                    super.onSuccess(requestId, resultData)
-                    view.hideLoading()
-                    val publicKey = requireNotNull(resultData?.get("public_id") as String?)
-                    val imageUrl = requireNotNull(resultData?.get("secure_url") as String?)
-                    val newPost = post.copy(
-                        postId = publicKey,
-                        userAvatar = userPrefs.avatarUrl,
-                        uid = userPrefs.userId,
-                        username = userPrefs.displayName,
-                        imageUrl = imageUrl
-                    )
-
-                    uploadUserPost(newPost)
-                }
-
-                override fun onError(requestId: String?, error: ErrorInfo?) {
-                    super.onError(requestId, error)
-                    view.hideLoading()
-                    Timber.e(error?.description)
-                    view.onError("Something went wrong while uploading post..")
-                }
-
-            }).dispatch()
-
-    //push post to userId
-    private fun uploadUserPost(post: Post) {
-        postSource.createPost(post)
+    private fun updateGlobalLike(globalPost: Post) {
+        postSource.likeGlobalPost(globalPost)
             .addOnSuccessListener {
-            uploadGlobalPost(post)
-        }.addOnFailureListener {
-            view.hideLoading()
-            view.onError(it.localizedMessage)
-        }
+                updateUserLike(globalPost)
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Oh Snap..couldn't like")
+                Timber.e(it.localizedMessage)
+            }
     }
 
-    //push post to global feeds
-    private fun uploadGlobalPost(post: Post) {
-        postSource.addPostGlobally(post)
-            .addOnCompleteListener {
-            view.hideLoading()
-        }.addOnFailureListener {
-            view.hideLoading()
-            view.onError(it.localizedMessage)
-        }
+    private fun updateUserLike(globalPost: Post) {
+        postSource.likeUserPost(globalPost,userPrefs.userId)
+            .addOnSuccessListener {
+                view.hideLoading()
+                view.onError("Post liked!")
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Oh Snap..couldn't like")
+                Timber.e(it.localizedMessage)
+            }
     }
+
 
 }

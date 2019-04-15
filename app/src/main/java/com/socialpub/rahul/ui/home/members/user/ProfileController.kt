@@ -22,7 +22,6 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
         postSource = Injector.postSource()
         view.updateProfileInfo(
             User(
-                name = userPrefs.displayName,
                 username = userPrefs.displayName,
                 email = userPrefs.email,
                 avatar = userPrefs.avatarUrl,
@@ -49,15 +48,14 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
                         val profile = documentSnapshot.toObject(User::class.java)
                         if (profile != null) {
                             profile.avatar?.apply { avatarUrl = this }
-                            followers = profile.followers.size.toLong()
                             following = profile.following.size.toLong()
-                            displayName = profile.name
+                            displayName = profile.username
                             view.updateProfileInfo(profile)
                         }
                     }
 
                 }
-        }
+            }
     }
 
     override fun stopProfileObserving() {
@@ -117,6 +115,23 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
 
     override fun stopObservingLikedPost() {
         likedPostListener?.remove()
+    }
+
+    override fun deleteLikedPost(post: Post?) {
+        view.showLoading("Deleting...")
+
+        post?.run {
+            postSource.deleteLikedPost(post.postId, userPrefs.userId)
+                .addOnSuccessListener {
+                    view.onError("Post deleted...")
+                    view.hideLoading()
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    view.onError("Woops..failed to delete")
+                    Timber.e(it.localizedMessage)
+                }
+
+        }
     }
 
 

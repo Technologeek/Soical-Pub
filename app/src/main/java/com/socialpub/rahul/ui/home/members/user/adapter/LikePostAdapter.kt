@@ -1,4 +1,4 @@
-package com.socialpub.rahul.ui.home.members.search.adapter
+package com.socialpub.rahul.ui.home.members.user.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +11,15 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.Post
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.item_search_post.view.*
+import kotlinx.android.synthetic.main.item_like_post.view.*
 import timber.log.Timber
 import java.text.DateFormat
 
-class SearchPostAdapter private constructor(
+class LikePostAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<Post>,
-    private val listener: SearchPostListener
+    private val listener: LikePostListener
 ) :
-    ListAdapter<Post, SearchPostAdapter.PostViewHolder>(diffCallback) {
+    ListAdapter<Post, LikePostAdapter.PostViewHolder>(diffCallback) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Post>() {
@@ -42,13 +42,13 @@ class SearchPostAdapter private constructor(
             }
         }
 
-        fun newInstance(listener: SearchPostListener) = SearchPostAdapter(DIFF_CALLBACK, listener)
+        fun newInstance(listener: LikePostListener) = LikePostAdapter(DIFF_CALLBACK, listener)
     }
 
     fun getPostAt(position: Int) = getItem(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_search_post, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_like_post, parent, false)
         return PostViewHolder(view)
     }
 
@@ -82,8 +82,11 @@ class SearchPostAdapter private constructor(
                     .into(image_post_preview)
             }
 
-            container_search_post.setOnClickListener {
-                listener.onPostClicked(adapterPosition)
+            btn_delete_liked.setOnClickListener {
+                listener.onPostDelete(adapterPosition)
+            }
+            container_like_post.setOnClickListener {
+                listener.onPostPreviewCicked(adapterPosition)
             }
 
         }
@@ -99,10 +102,12 @@ class SearchPostAdapter private constructor(
         val text_post_caption = view.text_published_post_caption
         val image_post_preview = view.image_published_post_preview
         val image_post_publisher_avatar = view.image_publisher_post_avatar
-        val container_search_post = view.container_published_post
+        val btn_delete_liked = view.btn_like_post_delete
+        val container_like_post = view.container_like_post
     }
 }
 
-interface SearchPostListener {
-    fun onPostClicked(position: Int)
+interface LikePostListener {
+    fun onPostDelete(position: Int)
+    fun onPostPreviewCicked(position: Int)
 }

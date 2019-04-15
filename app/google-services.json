@@ -29,6 +29,18 @@
             "package_name": "com.socialpub.rahul",
             "certificate_hash": "1aea685737a80296fa79d199d3c44a076603927e"
           }
+        },
+        {
+          "client_id": "75068433761-ajetua19km031a1a75dpfttprb838jga.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.socialpub.rahul",
+            "certificate_hash": "52817010df257167942b4c607b266daba558bfae"
+          }
+        },
+        {
+          "client_id": "75068433761-su7d55s0htg53v0fqp60aoam255rqpjs.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

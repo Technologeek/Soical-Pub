@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <FrameLayout
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="24sp"
+                        android:layout_gravity="start"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"
+                        android:text="Post"
+                />
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_close"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_gravity="end"
+                        app:icon="@drawable/ic_close"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"/>
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                    android:padding="8dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                <include layout="@layout/item_search_post"/>
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_post_delete"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_gravity="end|top"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginTop="16dp"
+                        android:background="?selectableItemBackgroundBorderless"
+                        app:icon="@drawable/ic_delete"
+                        android:layout_width="40dp"
+                        android:layout_height="36dp"/>
+
+            </FrameLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:paddingBottom="36dp"
+                    android:background="@android:color/holo_orange_dark"
+                    android:id="@+id/list_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Add new comment">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_new_comment"
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>
