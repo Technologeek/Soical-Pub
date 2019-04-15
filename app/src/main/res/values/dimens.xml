@@ -1,3 +1,38 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+
+
+    <dimen name="module_0_5">4dp</dimen>
+    <dimen name="module_0_75">6dp</dimen>
+    <dimen name="module_1">8dp</dimen>
+    <dimen name="module_1_5">12dp</dimen>
+    <dimen name="module_2_5">20dp</dimen>
+    <dimen name="module_3">24dp</dimen>
+    <dimen name="module_4">32dp</dimen>
+    <dimen name="module_5">40dp</dimen>
+    <dimen name="module_6">48dp</dimen>
+    <dimen name="module_14">108dp</dimen>
+    <dimen name="module_16">126dp</dimen>
+    <dimen name="module_2">16dp</dimen>
+
+    <dimen name="font_headline_large">36sp</dimen>
+    <dimen name="font_headline_regular">24sp</dimen>
+
+    <dimen name="font_title">20sp</dimen>
+    <dimen name="font_lable">18sp</dimen>
+
+    <dimen name="font_hint">14sp</dimen>
+
+    <dimen name="font_body_1">14sp</dimen>
+    <dimen name="font_body_2">16sp</dimen>
+    <dimen name="font_body_3">20sp</dimen>
+
+    <dimen name="font_caption_1">12sp</dimen>
+    <dimen name="font_caption_2">10sp</dimen>
+
+    <dimen name="default_bottom_nav_bar_height">48dp</dimen>
+    <dimen name="default_toolbar_height">56dip</dimen>
+
+
+
 </resources>

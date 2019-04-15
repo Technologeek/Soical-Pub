@@ -27,6 +27,15 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"/>
 
+            <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/btn_signout"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="56dp"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_signout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"/>
+
         </FrameLayout>
 
     </androidx.appcompat.widget.Toolbar>
