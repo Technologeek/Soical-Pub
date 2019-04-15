@@ -35,6 +35,8 @@ class HomeActivity : BaseActivity(), NavController {
 
     }
 
+    override fun signoutUser() = navigator.restartApp()
+
     override fun goto(screen: String) {
         navigator.goto(screen)
     }

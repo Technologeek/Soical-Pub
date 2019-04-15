@@ -8,4 +8,6 @@ import com.socialpub.rahul.base.BaseNavController
  */
 interface NavController : BaseNavController {
 
+    fun signoutUser()
+
 }

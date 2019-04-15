@@ -25,6 +25,7 @@ interface AppPrefs {
         var filterType: Int
         var followers:Long
         var following:Long
+        fun clearPrefs()
     }
 
 

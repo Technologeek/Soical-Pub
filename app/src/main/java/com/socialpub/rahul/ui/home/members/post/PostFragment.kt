@@ -130,6 +130,11 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
             adapter = postAdapter
         }
 
+        btn_signout.setOnClickListener {
+            Injector.userPrefs().clearPrefs()
+            navigator.signoutUser()
+        }
+
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

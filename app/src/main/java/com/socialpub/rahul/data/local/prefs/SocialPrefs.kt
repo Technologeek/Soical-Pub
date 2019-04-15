@@ -9,6 +9,10 @@ class SocialPrefs private constructor(context: Context) {
 
     inner class UserPref() : AppPrefs.User {
 
+        override fun clearPrefs() {
+            prefs.edit().clear().apply()
+        }
+
         override var isUserLoggedIn: Boolean
             get() = prefs.getBoolean(AppPrefs.User.Key.IS_USER_LOGGEDIN, false)
             set(value) = prefs.edit().putBoolean(AppPrefs.User.Key.IS_USER_LOGGEDIN, value).apply()
@@ -40,6 +44,7 @@ class SocialPrefs private constructor(context: Context) {
         override var following: Long
             get() = prefs.getLong(AppPrefs.User.Key.FOLLOWING, 0)
             set(value) = prefs.edit().putLong(AppPrefs.User.Key.FOLLOWING, value).apply()
+
 
     }
 
