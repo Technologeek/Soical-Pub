@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class Post(
+
     @SerializedName("postId")
     @Expose
     var postId: String = "",

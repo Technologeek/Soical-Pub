@@ -18,6 +18,10 @@ data class User(
     @Expose
     var following: List<String> = emptyList(),
 
+    @SerializedName("follows")
+    @Expose
+    var followedBy: List<String> = emptyList(),
+
     @SerializedName("avatar")
     @Expose
     var avatar: String? = null,

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools" package="com.socialpub.rahul">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.socialpub.rahul">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -14,23 +15,22 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".ui.navigation.FollowerActivity">
+        </activity>
 
         <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>
-
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/google_map_api_key"/>
-
-
         <meta-data
                 android:name="CLOUDINARY_URL"
                 android:value="cloudinary://787682759425367:TW7viAZkD17DAhFw_8s0uYpgW0w@social-pup"/>
 
         <uses-library
                 android:name="org.apache.http.legacy"
-                android:required="false" />
+                android:required="false"/>
 
         <activity
                 android:name=".ui.home.HomeActivity"

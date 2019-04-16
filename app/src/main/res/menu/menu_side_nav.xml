@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/action_favourite"
+          android:enabled="true"
+          android:icon="@mipmap/ic_launcher_round"
+          android:title="Manage favourite"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/action_profile"
+          android:enabled="true"
+          android:icon="@mipmap/ic_launcher_round"
+          android:title="Manage followers"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/action_post"
+          android:enabled="true"
+          android:icon="@mipmap/ic_launcher_round"
+          android:title="Manage post"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/action_search"
+          android:enabled="true"
+          android:icon="@mipmap/ic_launcher_round"
+          android:title="Edit Profile"
+          app:showAsAction="always"/>
+
+
+    <item android:id="@+id/action_settings"
+          android:enabled="true"
+          android:icon="@mipmap/ic_launcher_round"
+          android:title="settings"
+          app:showAsAction="always"/>
+
+</menu>

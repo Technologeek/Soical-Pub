@@ -25,7 +25,7 @@ class SplashFragment : BaseFragment() {
     override fun setup(view: View) {
         navigator = attachedContext as NavController
 
-        Completable.timer(1, TimeUnit.SECONDS)
+        Completable.timer(2, TimeUnit.SECONDS)
             .subscribe {
                 val appPrefs = Injector.userPrefs()
                 if (appPrefs.isUserLoggedIn) {

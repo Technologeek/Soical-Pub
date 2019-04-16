@@ -2,12 +2,9 @@ package com.socialpub.rahul.ui.home.members.post
 
 
 import android.Manifest
-import android.content.Intent
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.esafirm.imagepicker.features.ImagePicker
-import com.esafirm.imagepicker.features.ReturnMode
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
@@ -20,7 +17,6 @@ import com.socialpub.rahul.ui.home.navigation.NavController
 import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import io.reactivex.Completable
-import kotlinx.android.synthetic.main.bottom_sheet_upload_post.*
 import kotlinx.android.synthetic.main.fragment_feeds.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -32,7 +28,7 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
 
 
     override val contentLayout: Int
-        get() = com.socialpub.rahul.R.layout.fragment_feeds
+        get() = R.layout.fragment_feeds
 
     lateinit var controller: PostController
     lateinit var navigator: NavController
@@ -143,8 +139,10 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        val uploadSheet = PostBottomSheet.newInstance()
+        uploadSheet.show(childFragmentManager, "UploadPost")
     }
-
+    
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
 
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {

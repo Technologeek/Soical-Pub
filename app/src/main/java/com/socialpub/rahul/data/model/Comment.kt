@@ -7,7 +7,10 @@ data class Comment(
     @SerializedName("uid")
     @Expose
     val uid: String = "",
-    @SerializedName("username")
+    @SerializedName("userName")
+    @Expose
+    val userName: String = "",
+    @SerializedName("userAvatar")
     @Expose
     val userAvatar: String = "",
     @SerializedName("text")
