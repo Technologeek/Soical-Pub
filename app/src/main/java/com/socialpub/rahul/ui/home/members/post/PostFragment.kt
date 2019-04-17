@@ -34,7 +34,6 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
     lateinit var navigator: NavController
 
     override fun setup(view: View) {
-
         navigator = attachedContext as NavController
 
         controller = PostController(this)
@@ -124,11 +123,6 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
         list_global_post.run {
             layoutManager = LinearLayoutManager(attachedContext)
             adapter = postAdapter
-        }
-
-        btn_signout.setOnClickListener {
-            Injector.userPrefs().clearPrefs()
-            navigator.signoutUser()
         }
 
     }

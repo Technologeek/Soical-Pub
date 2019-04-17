@@ -89,6 +89,10 @@ class HomeActivity : BaseActivity(), NavController {
 
     }
 
+    override fun openSideNavigator() {
+        drawer_container_home.openDrawer(side_drawer_home)
+    }
+
     override fun signoutUser() {
         with(Injector) {
             firebaseManager().auth.signOut()

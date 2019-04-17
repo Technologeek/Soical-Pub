@@ -1,4 +1,4 @@
-package com.socialpub.rahul.ui.home.members.user.adapter
+package com.socialpub.rahul.ui.edit.favourites
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,20 +6,19 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.Post
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_like_post.view.*
-import timber.log.Timber
 import java.text.DateFormat
 
-class LikePostAdapter private constructor(
+class FavPostAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<Post>,
-    private val listener: LikePostListener
+    private val listener: FavPostActionListener
 ) :
-    ListAdapter<Post, LikePostAdapter.PostViewHolder>(diffCallback) {
+    ListAdapter<Post, FavPostAdapter.PostViewHolder>(diffCallback) {
+
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Post>() {
@@ -42,7 +41,7 @@ class LikePostAdapter private constructor(
             }
         }
 
-        fun newInstance(listener: LikePostListener) = LikePostAdapter(DIFF_CALLBACK, listener)
+        fun newInstance(listener: FavPostActionListener) = FavPostAdapter(DIFF_CALLBACK, listener)
     }
 
     fun getPostAt(position: Int) = getItem(position)
@@ -56,8 +55,6 @@ class LikePostAdapter private constructor(
         with(holder) {
 
             val post = getItem(position)
-
-            Timber.d(Gson().toJson(post))
 
             text_username.text = post.username
             text_post_location.text = post.location
@@ -80,11 +77,20 @@ class LikePostAdapter private constructor(
                     .into(image_post_preview)
             }
 
-            container_like_post.setOnClickListener {
-                listener.onPostPreviewCicked(adapterPosition)
+            checkbox_post.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked)
+                    listener.onMutiSelectAddPost(adapterPosition)
+                else
+                    listener.onMutiSelectRemovePost(adapterPosition)
             }
 
         }
+    }
+
+    private var isMultiSelect: Boolean = false
+
+    fun onMutliSelectDisabled() {
+        isMultiSelect = false
     }
 
 
@@ -96,11 +102,12 @@ class LikePostAdapter private constructor(
         val text_post_date = view.text_published_post_date
         val image_post_preview = view.image_published_post_preview
         val image_post_publisher_avatar = view.image_publisher_post_avatar
+        val checkbox_post = view.checkbox_post
         val container_like_post = view.container_like_post
     }
 }
 
-interface LikePostListener {
-    fun onPostDelete(position: Int)
-    fun onPostPreviewCicked(position: Int)
+interface FavPostActionListener {
+    fun onMutiSelectAddPost(position: Int)
+    fun onMutiSelectRemovePost(position: Int)
 }

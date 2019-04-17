@@ -31,6 +31,7 @@
     <dimen name="font_caption_2">10sp</dimen>
 
     <dimen name="default_bottom_nav_bar_height">48dp</dimen>
+    <dimen name="default_card_radius">12dp</dimen>
     <dimen name="default_toolbar_height">56dip</dimen>
 
 
