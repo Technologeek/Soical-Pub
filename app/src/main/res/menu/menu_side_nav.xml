@@ -4,33 +4,39 @@
 
     <item android:id="@+id/action_favourite"
           android:enabled="true"
-          android:icon="@mipmap/ic_launcher_round"
+          android:icon="@drawable/ic_favorite"
           android:title="Manage favourite"
           app:showAsAction="always"/>
 
     <item android:id="@+id/action_profile"
           android:enabled="true"
-          android:icon="@mipmap/ic_launcher_round"
+          android:icon="@drawable/ic_followers"
           android:title="Manage followers"
           app:showAsAction="always"/>
 
     <item android:id="@+id/action_post"
           android:enabled="true"
-          android:icon="@mipmap/ic_launcher_round"
+          android:icon="@drawable/ic_post"
           android:title="Manage post"
           app:showAsAction="always"/>
 
     <item android:id="@+id/action_search"
           android:enabled="true"
-          android:icon="@mipmap/ic_launcher_round"
+          android:icon="@drawable/ic_profile"
           android:title="Edit Profile"
           app:showAsAction="always"/>
 
 
     <item android:id="@+id/action_settings"
           android:enabled="true"
-          android:icon="@mipmap/ic_launcher_round"
+          android:icon="@drawable/ic_settings"
           android:title="settings"
+          app:showAsAction="always"/>
+
+    <item android:id="@+id/action_logout"
+          android:enabled="true"
+          android:icon="@drawable/ic_signout"
+          android:title="Sign-out"
           app:showAsAction="always"/>
 
 </menu>

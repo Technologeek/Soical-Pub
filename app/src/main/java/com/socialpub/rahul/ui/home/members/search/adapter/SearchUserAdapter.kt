@@ -6,13 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.User
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.item_search_user.view.*
-import timber.log.Timber
 
 class SearchUserAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<User>,
@@ -53,8 +51,6 @@ class SearchUserAdapter private constructor(
 
             val userProfile: User = getItem(position)
 
-            Timber.e(Gson().toJson(userProfile))
-
             text_userEmail.text = userProfile.email
             text_userName.text = userProfile.username
 
@@ -66,7 +62,6 @@ class SearchUserAdapter private constructor(
             }
         }
     }
-
 
     class UserViewHolder(
         view: View,

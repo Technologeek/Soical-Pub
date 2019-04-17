@@ -10,26 +10,41 @@
         tools:context=".ui.home.HomeActivity">
 
     <androidx.drawerlayout.widget.DrawerLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <FrameLayout
-                android:id="@+id/screen_home"
-                android:layout_marginBottom="56dp"
-                android:background="@color/background"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-                android:id="@+id/bottom_nave_home"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_gravity="bottom"
+            <FrameLayout
+                    android:id="@+id/screen_home"
+                    android:background="@color/background"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="56dp"
+                    android:layout_height="match_parent"/>
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottom_nave_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_gravity="bottom"
+                    android:background="@color/pub_background"
+                    app:itemIconTint="@null"
+                    app:itemTextColor="@color/black"
+                    app:menu="@menu/menu_bottom_nav_home"/>
+
+        </FrameLayout>
+
+        <com.google.android.material.navigation.NavigationView
+                app:headerLayout="@layout/layout_home_side_nav_header"
+                android:id="@+id/drawer_actions"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
                 android:background="@color/white"
-                app:itemIconTint="@null"
-                app:itemTextColor="@color/black"
-                app:menu="@menu/menu_bottom_nav_home"/>
-
+                app:menu="@menu/menu_side_nav"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>
 
