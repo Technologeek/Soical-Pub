@@ -15,6 +15,16 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".ui.settings.SettingsActivity">
+        </activity>
+        <activity android:name=".ui.edit.profile.EditProfileActivity">
+        </activity>
+        <activity android:name=".ui.edit.post.PostActivity">
+        </activity>
+        <activity android:name=".ui.edit.followers.FollowersActivity">
+        </activity>
+        <activity android:name=".ui.edit.favourites.FavPostActivity">
+        </activity>
         <activity android:name=".ui.navigation.FollowerActivity">
         </activity>
 
