@@ -51,8 +51,8 @@ class HomeActivity : BaseActivity(), NavController {
                         navigator.openManageFollowers()
                         true
                     }
-                    R.id.action_post -> {
-                        navigator.openManagePost()
+                    R.id.action_notification -> {
+                        navigator.openNotifications()
                         true
                     }
                     R.id.action_edit_profile -> {

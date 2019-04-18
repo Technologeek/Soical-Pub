@@ -36,7 +36,6 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
         controller.onStart()
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         controller.handleImagePickerRequest(requestCode, resultCode, data)

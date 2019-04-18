@@ -2,6 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <item android:id="@+id/action_notification"
+          android:enabled="true"
+          android:icon="@drawable/ic_notifications"
+          android:title="Notifications"
+          app:showAsAction="always"/>
+
     <item android:id="@+id/action_favourite"
           android:enabled="true"
           android:icon="@drawable/ic_favorite"
@@ -12,12 +19,6 @@
           android:enabled="true"
           android:icon="@drawable/ic_followers"
           android:title="Manage followers"
-          app:showAsAction="always"/>
-
-    <item android:id="@+id/action_post"
-          android:enabled="true"
-          android:icon="@drawable/ic_post"
-          android:title="Manage post"
           app:showAsAction="always"/>
 
     <item android:id="@+id/action_edit_profile"

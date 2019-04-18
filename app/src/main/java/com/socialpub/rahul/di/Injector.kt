@@ -5,6 +5,7 @@ import com.socialpub.rahul.data.local.prefs.AppPrefs
 import com.socialpub.rahul.data.local.prefs.SocialPrefs
 import com.socialpub.rahul.data.remote.cloudinary.config.CloudinaryManager
 import com.socialpub.rahul.data.remote.firebase.config.FirebaseManager
+import com.socialpub.rahul.data.remote.firebase.sources.notifications.NotificationSource
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.service.android.location.LocationManger
@@ -31,6 +32,8 @@ class Injector {
         fun postSource() = PostSource.getInstance(firebaseManager(), cloudinaryManager())
 
         fun locationManager() = LocationManger.getInstance(appContext)
+
+        fun notificationSource() = NotificationSource.getInstance(firebaseManager())
     }
 
 }

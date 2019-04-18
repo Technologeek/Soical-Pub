@@ -7,13 +7,12 @@ import com.socialpub.rahul.base.BaseNavigator
 import com.socialpub.rahul.base.NavFlow
 import com.socialpub.rahul.ui.edit.favourites.FavPostActivity
 import com.socialpub.rahul.ui.edit.followers.FollowersActivity
-import com.socialpub.rahul.ui.edit.post.PostActivity
+import com.socialpub.rahul.ui.preview.notifications.NotificationsActivity
 import com.socialpub.rahul.ui.edit.profile.EditProfileActivity
 import com.socialpub.rahul.ui.home.HomeActivity
 import com.socialpub.rahul.ui.home.members.post.PostFragment
 import com.socialpub.rahul.ui.home.members.search.SearchFragment
 import com.socialpub.rahul.ui.home.members.user.ProfileFragment
-import com.socialpub.rahul.ui.navigation.FollowerActivity
 import com.socialpub.rahul.ui.onboarding.OnboardingActivity
 import com.socialpub.rahul.ui.preview.profile.ProfilePreviewActivity
 import com.socialpub.rahul.ui.settings.SettingsActivity
@@ -41,8 +40,8 @@ class Navigator(
         activity.startActivity(Intent(activity, FollowersActivity::class.java))
     }
 
-    fun openManagePost() {
-        activity.startActivity(Intent(activity, PostActivity::class.java))
+    fun openNotifications() {
+        activity.startActivity(Intent(activity, NotificationsActivity::class.java))
     }
 
     fun openEditProfile() {
