@@ -30,6 +30,8 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
 
     private var userProfileListener: ListenerRegistration? = null
     override fun startObservingFollowers() {
+
+
         userProfileListener = userSource.observeUserProfile(userPrefs.userId)
             .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
@@ -40,9 +42,6 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
                 }
 
                 if (documentSnapshot != null) {
-
-                    view.showLoading()
-
                     followedByList.clear()
                     followinglist.clear()
                     val userProfile = documentSnapshot.toObject(User::class.java)
@@ -54,8 +53,6 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
                             getFollowingUser(userID)
                         }
                     }
-
-
                 }
             }
     }
@@ -69,7 +66,6 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
                 followedByList.add(this)
             } ?: kotlin.run { Timber.e("user is null") }
             view.updateFollowerList(followedByList)
-            view.hideLoading()
         }
     }
 
@@ -81,21 +77,11 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
                 followinglist.add(this)
             } ?: kotlin.run { Timber.e("user is null") }
             view.updateFollowingList(followinglist)
-            view.hideLoading()
         }
     }
 
     override fun stopObservingFollowers() {
         userProfileListener?.remove()
     }
-
-    override fun unfollowUser(user: User) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun followUser(user: User) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 
 }

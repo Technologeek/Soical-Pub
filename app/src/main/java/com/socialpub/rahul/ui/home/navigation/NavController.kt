@@ -10,5 +10,6 @@ interface NavController : BaseNavController {
 
     fun signoutUser()
     fun openSideNavigator()
+    fun openProfilePreview(showFollow: Boolean, PreviewUserId: String)
 
 }

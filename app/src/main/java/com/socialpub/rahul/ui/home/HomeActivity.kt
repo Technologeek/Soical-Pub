@@ -89,6 +89,10 @@ class HomeActivity : BaseActivity(), NavController {
 
     }
 
+    override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String) {
+        navigator.openProfilePreview(showFollow, PreviewUserId)
+    }
+
     override fun openSideNavigator() {
         drawer_container_home.openDrawer(side_drawer_home)
     }

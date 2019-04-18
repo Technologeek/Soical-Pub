@@ -15,7 +15,6 @@ import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
 import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
-import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import io.reactivex.Completable
 import kotlinx.android.synthetic.main.fragment_feeds.*
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -99,11 +98,9 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
         postAdapter = GlobalPostAdapter.newInstance(object : PostClickListener {
             override fun onProfileClicked(position: Int) {
                 val post = postAdapter.getPostAt(position)
-
                 val userPrefs = Injector.userPrefs()
                 if (post.uid != userPrefs.userId) {
-                    UserProfileBottomSheet.newInstance(post.uid, true)
-                        .show(childFragmentManager, "Preview_Profile_Bottom_Sheet")
+                    navigator.openProfilePreview(true, post.uid)
                 }
             }
 

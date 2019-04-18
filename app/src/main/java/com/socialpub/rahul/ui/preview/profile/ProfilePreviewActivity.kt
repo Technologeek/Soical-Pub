@@ -1,10 +1,9 @@
 package com.socialpub.rahul.ui.preview.profile
 
-import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
-import com.socialpub.rahul.base.BaseBottomSheet
+import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
@@ -14,15 +13,14 @@ import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_proifle.*
 
-class UserProfileBottomSheet : BaseBottomSheet(),
-    UserProfileContract.View {
+class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
 
     override val contentLayout: Int
         get() = R.layout.bottom_sheet_preview_proifle
 
     lateinit var controller: UserProfileController
 
-    override fun setup(view: View) {
+    override fun setup() {
         controller = UserProfileController(this)
         controller.onStart()
     }
@@ -31,7 +29,7 @@ class UserProfileBottomSheet : BaseBottomSheet(),
 
     override fun attachActions() {
 
-        val showFollow = arguments?.getBoolean("showFollow", true) ?: true
+        val showFollow = intent?.getBooleanExtra("showFollow", true) ?: true
 
         if (showFollow) {
             btn_preview_follow.visibility = View.VISIBLE
@@ -40,7 +38,7 @@ class UserProfileBottomSheet : BaseBottomSheet(),
         }
 
 
-        val userId = arguments?.getString("userId")
+        val userId = intent?.getStringExtra("userId")
 
         isFollowing(false)
 
@@ -55,19 +53,19 @@ class UserProfileBottomSheet : BaseBottomSheet(),
                 override fun onPostClicked(position: Int) {
                     val post = searchPostAdapter.getPostAt(position)
                     val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
-                    postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
+                    postPreview.showNow(supportFragmentManager, "Post_Profile_Preview_post")
                 }
             }
         )
 
         list_preview_profile_published_post.run {
-            layoutManager = LinearLayoutManager(attachedContext)
+            layoutManager = LinearLayoutManager(this@ProfilePreviewActivity)
             adapter = searchPostAdapter
         }
     }
 
     override fun isFollowing(following: Boolean) {
-        val userId = arguments?.getString("userId")
+        val userId = intent?.getStringExtra("userId")
 
         if (following) {
             btn_preview_follow.text = "unfollow"
@@ -97,10 +95,6 @@ class UserProfileBottomSheet : BaseBottomSheet(),
         searchPostAdapter.submitList(list)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
     override fun onError(message: String) = toast(message)
 
 
@@ -113,16 +107,6 @@ class UserProfileBottomSheet : BaseBottomSheet(),
     }
 
     override fun dissmissDialog() {
-        this.dismiss()
+        finish()
     }
-
-    companion object {
-        fun newInstance(userId: String, showFollow: Boolean) = UserProfileBottomSheet().also {
-            it.arguments = Bundle().apply {
-                putBoolean("showFollow", showFollow)
-                putString("userId", userId)
-            }
-        }
-    }
-
 }

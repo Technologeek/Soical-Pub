@@ -9,22 +9,14 @@
         android:layout_height="match_parent"
 >
 
-    <FrameLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:paddingTop="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="24sp"
-                android:layout_gravity="start"
-                android:textStyle="bold"
-                android:layout_marginBottom="16dp"
-                android:text="Profile"
-        />
 
         <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_preview_profile_close"
@@ -34,8 +26,19 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:layout_marginStart="@dimen/module_2_5"
+                android:layout_gravity="start"
+                android:textStyle="bold"
+                android:layout_marginBottom="16dp"
+                android:text="Profile"
+        />
 
-    </FrameLayout>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <androidx.appcompat.widget.LinearLayoutCompat

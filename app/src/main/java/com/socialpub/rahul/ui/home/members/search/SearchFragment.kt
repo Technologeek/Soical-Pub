@@ -8,11 +8,11 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.di.Injector
-import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
+import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.UserProfileListener
-import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
+import com.socialpub.rahul.ui.home.navigation.NavController
 import com.socialpub.rahul.utils.AppConst
 import kotlinx.android.synthetic.main.fragment_search.*
 
@@ -25,8 +25,11 @@ class SearchFragment : BaseFragment(), SearchContract.View {
 
 
     lateinit var controller: SearchController
+    lateinit var navigator: NavController
 
     override fun setup(view: View) {
+        navigator = attachedContext as NavController
+
         controller = SearchController(this)
         controller.onStart()
     }
@@ -43,8 +46,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
                     val profile = followerProfileAdapter.getProfileAt(position)
                     val userPrefs = Injector.userPrefs()
                     if (profile.uid != userPrefs.userId) {
-                        val userBottomSheet = UserProfileBottomSheet.newInstance(profile.uid, true)
-                        userBottomSheet.show(childFragmentManager, "SEARCH_USER_PROFILE")
+                        navigator.openProfilePreview(true, profile.uid)
                     }
                 }
             }
@@ -56,8 +58,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
                     val profile = searchProfileAdapter.getProfileAt(position)
                     val userPrefs = Injector.userPrefs()
                     if (profile.uid != userPrefs.userId) {
-                        val userBottomSheet = UserProfileBottomSheet.newInstance(profile.uid, true)
-                        userBottomSheet.show(childFragmentManager, "SEARCH_USER_PROFILE")
+                        navigator.openProfilePreview(true, profile.uid)
                     }
                 }
             }
@@ -69,8 +70,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
                     val post = globalPostsAdapter.getPostAt(position)
                     val userPrefs = Injector.userPrefs()
                     if (post.uid != userPrefs.userId) {
-                        val userBottomSheet = UserProfileBottomSheet.newInstance(post.uid, true)
-                        userBottomSheet.show(childFragmentManager, "SEARCH_USER_PROFILE")
+                        navigator.openProfilePreview(true, post.uid)
                     }
                 }
             }

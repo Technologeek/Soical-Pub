@@ -16,8 +16,6 @@ interface FollowerContract {
         fun getUser(userId: String)
         fun startObservingFollowers()
         fun stopObservingFollowers()
-        fun unfollowUser(user: User)
-        fun followUser(user: User)
     }
 
 }

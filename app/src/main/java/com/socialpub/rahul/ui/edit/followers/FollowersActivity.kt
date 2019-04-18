@@ -6,9 +6,9 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.di.Injector
+import com.socialpub.rahul.ui.edit.followers.navigator.Navigator
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.UserProfileListener
-import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import kotlinx.android.synthetic.main.activity_followers.*
 
 class FollowersActivity : BaseActivity(), FollowerContract.View {
@@ -19,11 +19,15 @@ class FollowersActivity : BaseActivity(), FollowerContract.View {
     lateinit var controller: FollowerController
     lateinit var followerAdapter: SearchUserAdapter
     lateinit var followingAdapter: SearchUserAdapter
+    lateinit var navigator: Navigator
 
     override fun setup() {
         initToolbar()
+
+        navigator = Navigator(0, this)
         controller = FollowerController(this)
         controller.onStart()
+
     }
 
     override fun attachActions() {
@@ -47,8 +51,7 @@ class FollowersActivity : BaseActivity(), FollowerContract.View {
                         val profile = followerAdapter.getProfileAt(position)
                         val userPrefs = Injector.userPrefs()
                         if (profile.uid != userPrefs.userId) {
-                            val userBottomSheet = UserProfileBottomSheet.newInstance(profile.uid, true)
-                            userBottomSheet.show(supportFragmentManager, "SEARCH_USER_PROFILE")
+                            navigator.openProfilePreview(true, profile.uid)
                         }
                     }
                 }
@@ -64,8 +67,7 @@ class FollowersActivity : BaseActivity(), FollowerContract.View {
                         val profile = followingAdapter.getProfileAt(position)
                         val userPrefs = Injector.userPrefs()
                         if (profile.uid != userPrefs.userId) {
-                            val userBottomSheet = UserProfileBottomSheet.newInstance(profile.uid, true)
-                            userBottomSheet.show(supportFragmentManager, "SEARCH_USER_PROFILE")
+                            navigator.openProfilePreview(true, profile.uid)
                         }
                     }
                 }

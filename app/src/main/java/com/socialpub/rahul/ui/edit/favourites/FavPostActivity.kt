@@ -55,7 +55,6 @@ class FavPostActivity : BaseActivity(), FavContract.View {
     override fun onDeletedComplted() {
         deletePostList.clear()
         updateText()
-
     }
 
     private fun updateText() {
