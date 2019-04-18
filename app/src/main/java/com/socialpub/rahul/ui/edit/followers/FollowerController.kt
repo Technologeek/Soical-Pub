@@ -43,6 +43,8 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
 
                     view.showLoading()
 
+                    followedByList.clear()
+                    followinglist.clear()
                     val userProfile = documentSnapshot.toObject(User::class.java)
                     userProfile?.run {
                         followedBy.forEach { userID ->
@@ -58,26 +60,27 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
             }
     }
 
+    private var followedByList = arrayListOf<User>()
     private fun getFollowedByUser(userID: String) {
-        val followedBy = arrayListOf<User>()
+
         userSource.getUser(userID).addOnSuccessListener {
             val user = it.toObject(User::class.java)
             user?.apply {
-                followedBy.add(this)
+                followedByList.add(this)
             } ?: kotlin.run { Timber.e("user is null") }
-            view.updateFollowerList(followedBy)
+            view.updateFollowerList(followedByList)
             view.hideLoading()
         }
     }
 
+    private var followinglist = arrayListOf<User>()
     private fun getFollowingUser(userID: String) {
-        val following = arrayListOf<User>()
         userSource.getUser(userID).addOnSuccessListener {
             val user = it.toObject(User::class.java)
             user?.apply {
-                following.add(this)
+                followinglist.add(this)
             } ?: kotlin.run { Timber.e("user is null") }
-            view.updateFollowingList(following)
+            view.updateFollowingList(followinglist)
             view.hideLoading()
         }
     }
