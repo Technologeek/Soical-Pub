@@ -47,6 +47,7 @@ class FavPostActivity : BaseActivity(), FavContract.View {
         }
 
         btn_multi_delete.setOnClickListener {
+            showLoading("Deleting....")
             controller.deleteFavPost(deletePostList)
         }
 
@@ -64,13 +65,9 @@ class FavPostActivity : BaseActivity(), FavContract.View {
         list_fav_post.smoothScrollToPosition(0)
     }
 
-    override fun showLoading(message: String) {
-        showLoading(message)
-    }
+    override fun showLoading(message: String) = showProgress(message)
 
-    override fun hideLoading() {
-        hideLoading()
-    }
+    override fun hideLoading() = hideProgress()
 
     override fun onError(message: String) {
         snack(root_fav, message)

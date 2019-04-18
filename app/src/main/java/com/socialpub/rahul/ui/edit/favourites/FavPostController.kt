@@ -52,12 +52,14 @@ class FavPostController(private val view: FavContract.View) : FavContract.Contro
     }
 
     override fun deleteFavPost(postList: List<Post>) {
+
+        view.showLoading("Deleting...")
         if (postList.isEmpty()) {
             return
         }
 
         var completed = 0
-        view.showLoading("Deleting...")
+
         postList.forEach {
             postSource.deleteLikedPost(it.postId, userPrefs.userId)
                 .addOnSuccessListener {

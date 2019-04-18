@@ -77,6 +77,10 @@ class FavPostAdapter private constructor(
                     .into(image_post_preview)
             }
 
+            container_like_post.setOnClickListener {
+                checkbox_post.isChecked = !checkbox_post.isChecked
+            }
+
             checkbox_post.setOnCheckedChangeListener { buttonView, isChecked ->
                 if (isChecked)
                     listener.onMutiSelectAddPost(adapterPosition)
@@ -85,12 +89,6 @@ class FavPostAdapter private constructor(
             }
 
         }
-    }
-
-    private var isMultiSelect: Boolean = false
-
-    fun onMutliSelectDisabled() {
-        isMultiSelect = false
     }
 
 
