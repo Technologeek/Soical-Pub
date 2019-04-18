@@ -32,6 +32,7 @@ class UserSource private constructor(private val firebaseManager: FirebaseManage
         .document(uId)
         .get()
 
+
     fun getAllProfiles() = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .orderBy("username")

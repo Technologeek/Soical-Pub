@@ -1,50 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<com.google.android.material.card.MaterialCardView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/container_profile"
-        android:background="@color/white"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/default_card_radius"
+        android:layout_marginTop="@dimen/module_1"
+        android:layout_marginStart="@dimen/module_1"
+        android:layout_marginEnd="@dimen/module_1"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatImageView
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_margin="8dp"
-            android:layout_width="48dp"
-            android:id="@+id/image_user_search_avatar"
-            android:layout_gravity="center_vertical"
-            android:layout_height="48dp"/>
-
     <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:layout_marginTop="4dp"
-                android:id="@+id/text_search_user_name"
-                tools:text="User Name"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.AppCompatImageView
+                android:src="@mipmap/ic_launcher_round"
+                android:layout_margin="8dp"
+                android:layout_width="48dp"
+                android:id="@+id/image_user_search_avatar"
+                android:layout_gravity="center_vertical"
+                android:layout_height="48dp"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/text_search_user_email"
-                tools:text="User Name"
-                android:textSize="12sp"
-                android:textStyle="bold"
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginTop="4dp"
+                    android:id="@+id/text_search_user_name"
+                    tools:text="User Name"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/text_search_user_email"
+                    tools:text="User Name"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</com.google.android.material.card.MaterialCardView>

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.socialpub.rahul.base.BaseNavigator
 import com.socialpub.rahul.base.NavFlow
 import com.socialpub.rahul.ui.edit.favourites.FavPostActivity
+import com.socialpub.rahul.ui.edit.followers.FollowersActivity
 import com.socialpub.rahul.ui.edit.post.PostActivity
 import com.socialpub.rahul.ui.edit.profile.EditProfileActivity
 import com.socialpub.rahul.ui.home.HomeActivity
@@ -36,7 +37,7 @@ class Navigator(
     }
 
     fun openManageFollowers() {
-        activity.startActivity(Intent(activity, FollowerActivity::class.java))
+        activity.startActivity(Intent(activity, FollowersActivity::class.java))
     }
 
     fun openManagePost() {
