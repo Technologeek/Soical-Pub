@@ -21,12 +21,13 @@ class SearchUserAdapter private constructor(
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<User>() {
 
-            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean = oldItem.uid == newItem.uid
+            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean = oldItem == newItem
 
             override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
                 return (oldItem.uid == newItem.uid &&
                         oldItem.username == newItem.username &&
                         oldItem.following == newItem.following &&
+                        oldItem.followedBy == newItem.followedBy &&
                         oldItem.avatar == newItem.avatar &&
                         oldItem.email == newItem.email)
             }

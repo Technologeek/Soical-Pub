@@ -37,7 +37,6 @@
                 android:text="Profile"
         />
 
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

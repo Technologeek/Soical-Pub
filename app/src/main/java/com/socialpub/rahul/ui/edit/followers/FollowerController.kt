@@ -31,7 +31,6 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
     private var userProfileListener: ListenerRegistration? = null
     override fun startObservingFollowers() {
 
-
         userProfileListener = userSource.observeUserProfile(userPrefs.userId)
             .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
@@ -46,6 +45,15 @@ class FollowerController(private val view: FollowerContract.View) : FollowerCont
                     followinglist.clear()
                     val userProfile = documentSnapshot.toObject(User::class.java)
                     userProfile?.run {
+
+                        if (followedBy.isEmpty()) {
+                            view.updateFollowerList(emptyList())
+                        }
+
+                        if (following.isEmpty()) {
+                            view.updateFollowingList(emptyList())
+                        }
+
                         followedBy.forEach { userID ->
                             getFollowedByUser(userID)
                         }

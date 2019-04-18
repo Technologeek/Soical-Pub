@@ -36,10 +36,15 @@ class FavPostController(private val view: FavContract.View) : FavContract.Contro
 
                 if (querySnapshot != null) {
                     val updatePostList = arrayListOf<Post>()
+
                     querySnapshot.forEach { queryDocument ->
                         val post = queryDocument.toObject(Post::class.java)
-                        Timber.e(post.toString())
                         updatePostList.add(post)
+                    }
+
+                    if (updatePostList.isEmpty()) {
+                        view.updateLikedList(emptyList())
+                    } else {
                         view.updateLikedList(updatePostList)
                     }
                 }

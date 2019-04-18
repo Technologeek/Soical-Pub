@@ -78,12 +78,20 @@ class FollowersActivity : BaseActivity(), FollowerContract.View {
 
     override fun updateFollowerList(followerList: List<User>) {
         text_follower_count.text = "You are followed by (${followerList.size}) :"
-        followerAdapter.submitList(followerList)
+        followerAdapter.submitList(followerList) {
+            if (followerList.isEmpty()) {
+                followingAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun updateFollowingList(followerList: List<User>) {
         text_following_count.text = "You are following (${followerList.size}) :"
-        followingAdapter.submitList(followerList)
+        followingAdapter.submitList(followerList) {
+            if (followerList.isEmpty()) {
+                followingAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
 

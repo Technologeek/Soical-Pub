@@ -62,7 +62,11 @@ class FavPostActivity : BaseActivity(), FavContract.View {
     }
 
     override fun updateLikedList(postList: List<Post>) {
-        favPostAdapter.submitList(postList)
+        favPostAdapter.submitList(postList) {
+            if (postList.isEmpty()) {
+                favPostAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun listScrollToTop() {

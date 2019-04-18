@@ -22,7 +22,7 @@ class FavPostAdapter private constructor(
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.postId == newItem.postId
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return (oldItem.postId == newItem.postId &&
@@ -36,8 +36,7 @@ class FavPostAdapter private constructor(
                         oldItem.likedBy == newItem.likedBy &&
                         oldItem.likeCount == newItem.likeCount &&
                         oldItem.commentCount == newItem.commentCount &&
-                        oldItem.timestamp == newItem.timestamp &&
-                        oldItem.imageUrl == newItem.imageUrl)
+                        oldItem.timestamp == newItem.timestamp)
             }
         }
 
