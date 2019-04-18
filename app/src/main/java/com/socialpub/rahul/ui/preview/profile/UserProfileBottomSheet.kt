@@ -27,24 +27,24 @@ class UserProfileBottomSheet : BaseBottomSheet(),
         controller.onStart()
     }
 
-
     private lateinit var searchPostAdapter: SearchPostAdapter
 
     override fun attachActions() {
 
-        val userId = arguments?.getString("userId")
         val showFollow = arguments?.getBoolean("showFollow", true) ?: true
 
-        controller.getUserProfile(userId)
-
         if (showFollow) {
-            btn_preview_follow.run {
-                visibility = View.VISIBLE
-                setOnClickListener {
-                    controller.followGlobalUser(userId)
-                }
-            }
+            btn_preview_follow.visibility = View.VISIBLE
+        } else {
+            btn_preview_follow.visibility = View.GONE
         }
+
+
+        val userId = arguments?.getString("userId")
+
+        isFollowing(false)
+
+        controller.getUserProfile(userId)
 
         btn_preview_profile_close.setOnClickListener {
             dissmissDialog()
@@ -66,10 +66,19 @@ class UserProfileBottomSheet : BaseBottomSheet(),
         }
     }
 
-    override fun disableFollowing() {
-        btn_preview_follow.isEnabled = false
-    }
+    override fun isFollowing(following: Boolean) {
+        val userId = arguments?.getString("userId")
 
+        if (following) {
+            btn_preview_follow.text = "unfollow"
+        } else {
+            btn_preview_follow.text = "follow"
+        }
+
+        btn_preview_follow.setOnClickListener {
+            controller.updatefollowing(following, userId)
+        }
+    }
 
     override fun updateUserPreview(user: User) {
         with(user) {
@@ -78,7 +87,6 @@ class UserProfileBottomSheet : BaseBottomSheet(),
                 .placeholder(R.mipmap.ic_launcher_round)
                 .transform(CropCircleTransformation())
                 .into(image_preview_profile_avatar)
-
 
             text_preview_profile_user_email.text = username
             text_preview_profile_user_name.text = email

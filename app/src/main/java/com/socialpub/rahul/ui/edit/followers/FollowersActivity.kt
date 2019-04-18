@@ -5,8 +5,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.User
+import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.UserProfileListener
+import com.socialpub.rahul.ui.preview.profile.UserProfileBottomSheet
 import kotlinx.android.synthetic.main.activity_followers.*
 
 class FollowersActivity : BaseActivity(), FollowerContract.View {
@@ -27,36 +29,44 @@ class FollowersActivity : BaseActivity(), FollowerContract.View {
     override fun attachActions() {
 
         btn_following.setOnClickListener {
-            container_followers.visibility = View.GONE
-            container_followedBy.visibility = View.VISIBLE
-        }
-
-        btn_followers.setOnClickListener {
-            container_followers.visibility = View.VISIBLE
+            container_following.visibility = View.VISIBLE
             container_followedBy.visibility = View.GONE
         }
 
+        btn_followers.setOnClickListener {
+            container_following.visibility = View.GONE
+            container_followedBy.visibility = View.VISIBLE
+        }
+
         list_followers.run {
-            visibility = View.GONE
+            container_followedBy.visibility = View.GONE
             layoutManager = LinearLayoutManager(this@FollowersActivity)
             adapter = SearchUserAdapter.newInstance(
                 object : UserProfileListener {
                     override fun onClickUserProfile(position: Int) {
-
-
+                        val profile = followerAdapter.getProfileAt(position)
+                        val userPrefs = Injector.userPrefs()
+                        if (profile.uid != userPrefs.userId) {
+                            val userBottomSheet = UserProfileBottomSheet.newInstance(profile.uid, true)
+                            userBottomSheet.show(supportFragmentManager, "SEARCH_USER_PROFILE")
+                        }
                     }
                 }
             ).also { followerAdapter = it }
         }
 
         list_following.run {
-            visibility = View.VISIBLE
+            container_following.visibility = View.VISIBLE
             layoutManager = LinearLayoutManager(this@FollowersActivity)
             adapter = SearchUserAdapter.newInstance(
                 object : UserProfileListener {
                     override fun onClickUserProfile(position: Int) {
-
-
+                        val profile = followingAdapter.getProfileAt(position)
+                        val userPrefs = Injector.userPrefs()
+                        if (profile.uid != userPrefs.userId) {
+                            val userBottomSheet = UserProfileBottomSheet.newInstance(profile.uid, true)
+                            userBottomSheet.show(supportFragmentManager, "SEARCH_USER_PROFILE")
+                        }
                     }
                 }
             ).also { followingAdapter = it }

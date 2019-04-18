@@ -10,6 +10,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.ui.onboarding.navigation.NavController
 import kotlinx.android.synthetic.main.fragment_register.*
+import timber.log.Timber
 
 /**
  * Social login fragment uses firebase Auth services to onboard user.
@@ -52,6 +53,9 @@ class RegisterFragment : BaseFragment(), RegisterContract.View {
 
     override fun onboardedSuccessfully() {
         navigator.gotoHome()
+        initGoogleClient().signOut().addOnSuccessListener {
+            Timber.e("SignedOut")
+        }
     }
 
     override fun showLoading(message: String) = showProgress(message)

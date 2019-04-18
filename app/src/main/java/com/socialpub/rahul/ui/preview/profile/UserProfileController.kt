@@ -7,7 +7,6 @@ import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
 import timber.log.Timber
-import java.lang.Exception
 
 class UserProfileController(
     private val view: UserProfileContract.View
@@ -25,7 +24,6 @@ class UserProfileController(
     }
 
 
-    var previewUser: User? = null
     var localUser: User? = null
     override fun getUserProfile(userId: String?) {
 
@@ -41,7 +39,7 @@ class UserProfileController(
             val user = doc.toObject(User::class.java)
             if (user != null) {
                 localUser = user
-                followerFilter(userId, user.following)
+                checkIsFollower(userId, user.following, user.followedBy)
             } else {
                 error(Exception("user is null"))
             }
@@ -52,20 +50,24 @@ class UserProfileController(
 
     }
 
-    private fun followerFilter(userId: String, following: List<String>?) {
-        userSource.getUser(userId)
-            .addOnSuccessListener { doc ->
+    var previewUser: User? = null
+    private fun checkIsFollower(userId: String, following: List<String>, followedBy: List<String>) {
+
+        userSource.getUser(userId).addOnSuccessListener { doc ->
                 val user = doc.toObject(User::class.java)
                 if (user != null) {
+
                     previewUser = user
 
-                    following?.forEach { userFollowing ->
-                        if (user.uid == userFollowing) {
-                            view.disableFollowing()
-                        }
-                    }
                     view.updateUserPreview(user)
                     getPreviewUserPost(user)
+
+                    following.forEach { previewUserID ->
+                        if (user.uid == previewUserID) {
+                            view.isFollowing(true)
+                        }
+                    }
+
                 } else {
                     error(Exception("error in null"))
                 }
@@ -77,24 +79,87 @@ class UserProfileController(
 
 
     override fun followGlobalUser(userId: String?) {
-        view.showLoading("Following...")
-        userId?.run {
-            val newFollowers = localUser!!.following.toMutableList()
-            newFollowers.add(userId)
+        userId?.let { previewUserId ->
 
-            val newUser = localUser!!.copy(
-                following = newFollowers
+            view.showLoading("following...")
+
+            //update local user
+            val updatedFollowers = localUser!!.following.toMutableList()
+            updatedFollowers.add(previewUserId)
+            val updatedUser = localUser!!.copy(
+                following = updatedFollowers
             )
+            localUser = updatedUser
+            userSource.createUser(updatedUser).addOnSuccessListener {
 
-            userSource.createUser(newUser).addOnSuccessListener {
-                view.hideLoading()
-                view.disableFollowing()
+                //update global user
+                val updatedGlobalFollowedby = previewUser!!.followedBy.toMutableList()
+                updatedGlobalFollowedby.add(userPrefs.userId)
+                val updatedGlobalUser = previewUser!!.copy(
+                    followedBy = updatedGlobalFollowedby
+                )
+                userSource.createUser(updatedGlobalUser).addOnSuccessListener {
+                    view.hideLoading()
+                    //refresh
+                    view.attachActions()
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    Timber.e(it)
+                }
+
             }.addOnFailureListener {
-                error(it)
+                view.hideLoading()
+                Timber.e(it)
             }
+
 
         }
 
+    }
+
+    override fun updatefollowing(following: Boolean, userId: String?) {
+        if (following) {
+            unfollowGlobalUser(userId)
+        } else {
+            followGlobalUser(userId)
+        }
+    }
+
+    override fun unfollowGlobalUser(userId: String?) {
+
+        userId?.let { previewUserId ->
+
+            view.showLoading("Un-following...")
+
+            //update local user
+            val updatedFollowers = localUser!!.following.toMutableList()
+            updatedFollowers.remove(previewUserId)
+            val updatedUser = localUser!!.copy(
+                following = updatedFollowers
+            )
+            localUser = updatedUser
+            userSource.createUser(updatedUser).addOnSuccessListener {
+
+                //update global user
+                val updatedGlobalFollowedby = previewUser!!.followedBy.toMutableList()
+                updatedGlobalFollowedby.remove(userPrefs.userId)
+                val updatedGlobalUser = previewUser!!.copy(
+                    followedBy = updatedGlobalFollowedby
+                )
+                userSource.createUser(updatedGlobalUser).addOnSuccessListener {
+                    view.hideLoading()
+                    //refresh
+                    view.attachActions()
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    Timber.e(it)
+                }
+
+            }.addOnFailureListener {
+                view.hideLoading()
+                Timber.e(it)
+            }
+        }
     }
 
 

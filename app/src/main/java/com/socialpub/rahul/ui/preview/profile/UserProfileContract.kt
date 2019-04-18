@@ -11,11 +11,13 @@ interface UserProfileContract {
         fun dissmissDialog()
         fun updateUserPreview(user: User)
         fun showAllUser(list: List<Post>)
-        fun disableFollowing()
+        fun isFollowing(boolean: Boolean)
     }
 
     interface Controller : BaseContract.Controller {
         fun getUserProfile(userId: String?)
         fun followGlobalUser(userId: String?)
+        fun unfollowGlobalUser(userId: String?)
+        fun updatefollowing(following: Boolean,userId: String?)
     }
 }

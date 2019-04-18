@@ -35,7 +35,6 @@ class FavPostController(private val view: FavContract.View) : FavContract.Contro
                 }
 
                 if (querySnapshot != null) {
-
                     val updatePostList = arrayListOf<Post>()
                     querySnapshot.forEach { queryDocument ->
                         val post = queryDocument.toObject(Post::class.java)
@@ -53,19 +52,20 @@ class FavPostController(private val view: FavContract.View) : FavContract.Contro
 
     override fun deleteFavPost(postList: List<Post>) {
 
-        view.showLoading("Deleting...")
         if (postList.isEmpty()) {
             return
         }
 
+        view.showLoading("Deleting...")
         var completed = 0
 
         postList.forEach {
             postSource.deleteLikedPost(it.postId, userPrefs.userId)
                 .addOnSuccessListener {
-                    completed++
+                    completed += 1
                     if (completed <= postList.size) {
                         view.hideLoading()
+                        view.onDeletedComplted()
                     }
                 }.addOnFailureListener {
                     view.hideLoading()

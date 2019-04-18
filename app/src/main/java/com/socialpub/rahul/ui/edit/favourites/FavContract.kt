@@ -9,6 +9,7 @@ interface FavContract {
         fun attachActions()
         fun updateLikedList(postList: List<Post>)
         fun listScrollToTop()
+        fun onDeletedComplted()
     }
 
     interface Controller : BaseContract.Controller {

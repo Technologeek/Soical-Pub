@@ -47,9 +47,14 @@ class FavPostActivity : BaseActivity(), FavContract.View {
         }
 
         btn_multi_delete.setOnClickListener {
-            showLoading("Deleting....")
             controller.deleteFavPost(deletePostList)
         }
+
+    }
+
+    override fun onDeletedComplted() {
+        deletePostList.clear()
+        updateText()
 
     }
 

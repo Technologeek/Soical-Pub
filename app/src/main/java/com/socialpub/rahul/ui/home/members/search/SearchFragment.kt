@@ -76,7 +76,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             }
         )
 
-        container_followers.visibility = View.VISIBLE
+        container_following.visibility = View.VISIBLE
         container_search.visibility = View.GONE
         container_search_post.visibility = View.GONE
 
@@ -151,7 +151,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             && !chip_sort_name.isChecked
             && !chip_sort_location.isChecked
         ) {
-            container_followers.visibility = View.VISIBLE
+            container_following.visibility = View.VISIBLE
             container_search.visibility = View.GONE
             container_search_post.visibility = View.GONE
             controller.getUserFollowers()
@@ -160,12 +160,12 @@ class SearchFragment : BaseFragment(), SearchContract.View {
         } else {
             if (chip_sort_location.isChecked) {
                 container_search_post.visibility = View.VISIBLE
-                container_followers.visibility = View.GONE
+                container_following.visibility = View.GONE
                 container_search.visibility = View.GONE
 
             } else {
                 container_search_post.visibility = View.GONE
-                container_followers.visibility = View.GONE
+                container_following.visibility = View.GONE
                 container_search.visibility = View.VISIBLE
             }
 
