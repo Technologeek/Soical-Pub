@@ -8,7 +8,6 @@ import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationAdapter
 import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationListener
 import com.socialpub.rahul.ui.preview.notifications.navigator.Navigator
-import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import kotlinx.android.synthetic.main.activity_notification.*
 
 class NotificationsActivity : BaseActivity(), NotificationContract.View {
@@ -37,11 +36,10 @@ class NotificationsActivity : BaseActivity(), NotificationContract.View {
             layoutManager = LinearLayoutManager(this@NotificationsActivity)
             adapter = NotificationAdapter.newInstance(
                 object : NotificationListener {
+
                     override fun onNotifClickedOpenPost(position: Int) {
                         val notif = notifAdapter.getNotifAt(position)
-                        val postPreview =
-                            PreviewPostBottomSheet.newInstance(notif.actionOnPostId, false, Injector.userPrefs().userId)
-                        postPreview.showNow(supportFragmentManager, "Post_Profile_Preview_post")
+                        navigator.openPostPreview(false, notif.actionOnPostId, Injector.userPrefs().userId)
                     }
 
                     override fun onNotifClickedOpenProfile(position: Int) {

@@ -124,6 +124,11 @@ class HomeActivity : BaseActivity(), NavController {
         navigator.openProfilePreview(showFollow, PreviewUserId)
     }
 
+    override fun openPostPreview(enableDelete: Boolean, PreviewPostId: String, PreviewUserId: String) {
+        navigator.openPostPreview(enableDelete, PreviewPostId, PreviewUserId)
+    }
+
+
     override fun openSideNavigator() {
         drawer_container_home.openDrawer(side_drawer_home)
     }

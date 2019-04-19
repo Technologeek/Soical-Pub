@@ -15,6 +15,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".ui.preview.post.PreviewPostActivity">
+        </activity>
         <activity android:name=".ui.preview.location.MapActivity">
         </activity>
         <activity android:name=".ui.preview.profile.ProfilePreviewActivity">

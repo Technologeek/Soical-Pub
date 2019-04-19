@@ -13,5 +13,6 @@ interface NavController : BaseNavController {
     fun openSideNavigator()
     fun openProfilePreview(showFollow: Boolean, PreviewUserId: String)
     fun openPostLocationOnMap(post: Post)
+    fun openPostPreview(enableDelete: Boolean, PreviewPostId: String, PreviewUserId: String)
 
 }

@@ -8,7 +8,6 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
-import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_proifle.*
@@ -19,8 +18,10 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
         get() = R.layout.bottom_sheet_preview_proifle
 
     lateinit var controller: UserProfileController
+    lateinit var navigator: Navigator
 
     override fun setup() {
+        navigator = Navigator(0, this)
         controller = UserProfileController(this)
         controller.onStart()
     }
@@ -52,8 +53,7 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
             object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
                     val post = searchPostAdapter.getPostAt(position)
-                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
-                    postPreview.showNow(supportFragmentManager, "Post_Profile_Preview_post")
+                    navigator.openPostPreview(false, post.postId, post.uid)
                 }
             }
         )

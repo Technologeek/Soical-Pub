@@ -16,7 +16,6 @@ import com.socialpub.rahul.ui.edit.post.REQUEST_LOCATION_PERMISSION
 import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
-import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import com.socialpub.rahul.utils.AppConst
 import io.reactivex.Completable
 import kotlinx.android.synthetic.main.fragment_feeds.*
@@ -120,8 +119,7 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
 
             override fun onCommentClicked(position: Int) {
                 val post = postAdapter.getPostAt(position)
-                val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
-                postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
+                navigator.openPostPreview(false, post.postId, post.uid)
             }
 
         })
@@ -130,7 +128,6 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
             layoutManager = LinearLayoutManager(attachedContext)
             adapter = postAdapter
         }
-
     }
 
     private fun showOptionsDialog(post: Post) {

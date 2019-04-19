@@ -1,11 +1,10 @@
 package com.socialpub.rahul.ui.preview.post
 
-import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
-import com.socialpub.rahul.base.BaseBottomSheet
+import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.ui.preview.post.adapter.CommentProfileListener
 import com.socialpub.rahul.ui.preview.post.adapter.CommentsAdapter
@@ -15,14 +14,15 @@ import kotlinx.android.synthetic.main.bottom_sheet_preview_post.*
 import kotlinx.android.synthetic.main.item_search_post.*
 import java.text.DateFormat
 
-class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
+class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
 
     override val contentLayout: Int
         get() = R.layout.bottom_sheet_preview_post
 
+
     lateinit var controller: PreviewPostController
 
-    override fun setup(view: View) {
+    override fun setup() {
         controller = PreviewPostController(this)
         controller.onStart()
     }
@@ -30,13 +30,13 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
     private lateinit var commentsAdapter: CommentsAdapter
 
     override fun attachActions() {
-        val postId = arguments?.getString("postId")
-        val enableDelete = arguments?.getBoolean("enableDelete", false) ?: false
+
+        val postId: String? = intent?.extras?.getString("postId")
+        val enableDelete: Boolean = intent?.extras?.getBoolean("enableDelete", false) ?: false
 
         btn_close.setOnClickListener {
-            dissmissDialog()
+            finish()
         }
-
 
         commentsAdapter = CommentsAdapter.newInstance(
             object : CommentProfileListener {
@@ -48,7 +48,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
 
 
         list_comments.run {
-            layoutManager = LinearLayoutManager(attachedContext)
+            layoutManager = LinearLayoutManager(this@PreviewPostActivity)
             adapter = commentsAdapter
         }
 
@@ -57,7 +57,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
 
             //global user
             btn_post_delete.visibility = View.GONE
-            val globalUserId = arguments?.getString("globalUserId")
+            val globalUserId = intent?.extras?.getString("globalUserId")
             controller.getGlobalUserPost(postId, globalUserId)
 
 
@@ -134,8 +134,8 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         controller.stopObservingComments()
     }
 
@@ -151,17 +151,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
     }
 
     override fun dissmissDialog() {
-        this.dismiss()
-    }
-
-    companion object {
-        fun newInstance(postId: String, enableDelete: Boolean, globalUserId: String) = PreviewPostBottomSheet().also {
-            it.arguments = Bundle().apply {
-                putString("postId", postId)
-                putBoolean("enableDelete", enableDelete)
-                putString("globalUserId", globalUserId)
-            }
-        }
+        finish()
     }
 
 }

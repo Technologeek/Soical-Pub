@@ -11,7 +11,7 @@ import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.user.adapter.LikePostAdapter
 import com.socialpub.rahul.ui.home.members.user.adapter.LikePostListener
-import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
+import com.socialpub.rahul.ui.home.navigation.NavController
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -26,7 +26,9 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
 
     lateinit var controller: ProfileController
+    lateinit var navigator: NavController
     override fun setup(view: View) {
+        navigator = attachedContext as NavController
         controller = ProfileController(this)
         controller.onStart()
     }
@@ -55,9 +57,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             object : SearchPostListener {
                 override fun onPostClicked(position: Int) {
                     val post = publishedPostAdapter.getPostAt(position)
-                    val bottomSheet =
-                        PreviewPostBottomSheet.newInstance(post.postId, enableDelete = true, globalUserId = "")
-                    bottomSheet.showNow(childFragmentManager, "PREVIEW_POST")
+                    navigator.openPostPreview(true, post.postId, "")
                 }
             }
         )
@@ -72,8 +72,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             object : LikePostListener {
                 override fun onPostPreviewCicked(position: Int) {
                     val post = likedPostAdapter.getPostAt(position)
-                    val postPreview = PreviewPostBottomSheet.newInstance(post.postId, false, post.uid)
-                    postPreview.showNow(childFragmentManager, "Post_Profile_Preview_post")
+                    navigator.openPostPreview(false, post.postId, post.uid)
                 }
 
                 override fun onPostDelete(position: Int) {

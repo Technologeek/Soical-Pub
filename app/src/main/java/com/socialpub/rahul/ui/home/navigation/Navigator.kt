@@ -15,6 +15,7 @@ import com.socialpub.rahul.ui.home.members.search.SearchFragment
 import com.socialpub.rahul.ui.home.members.user.ProfileFragment
 import com.socialpub.rahul.ui.onboarding.OnboardingActivity
 import com.socialpub.rahul.ui.preview.location.MapActivity
+import com.socialpub.rahul.ui.preview.post.PreviewPostActivity
 import com.socialpub.rahul.ui.preview.profile.ProfilePreviewActivity
 import com.socialpub.rahul.ui.settings.SettingsActivity
 
@@ -66,6 +67,13 @@ class Navigator(
         })
     }
 
+    fun openPostPreview(enableDelete: Boolean, PreviewPostId: String, PreviewUserId: String) {
+        activity.startActivity(Intent(activity, PreviewPostActivity::class.java).also {
+            it.putExtra("postId", PreviewPostId)
+            it.putExtra("enableDelete", enableDelete)
+            it.putExtra("globalUserId", PreviewUserId)
+        })
+    }
 
     fun getFragment(screen: String): Fragment = when (screen) {
         NavFlow.Home.FEEDS -> PostFragment.newInstance()
