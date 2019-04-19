@@ -24,6 +24,8 @@ interface PostContract {
         fun filterCommented()
         fun filterLiked()
         fun addLike(post: Post?)
+        fun addFav(post: Post?)
+        fun reportPost(post: Post?)
     }
 
 }

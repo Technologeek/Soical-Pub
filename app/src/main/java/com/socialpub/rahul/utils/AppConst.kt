@@ -13,10 +13,13 @@ object AppConst {
     const val SEARCH_FILTER_EMAIL = 2
     const val SEARCH_FILTER_LOCATION = 3
 
-
     const val NOTIF_ACTION_LIKE = 0
     const val NOTIF_ACTION_COMMENT = 1
     const val NOTIF_ACTION_FOLLOWED = 2
+
+    const val POST_ADD_FAV = 0
+    const val POST_VIEW_MAP = 1
+    const val POST_REPORT = 2
 
 
 }

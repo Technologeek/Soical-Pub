@@ -96,7 +96,6 @@ class PostController(
     //============= LIKE =================//
 
     override fun addLike(post: Post?) {
-
         post?.run {
             view.showLoading("Liking...")
 
@@ -152,6 +151,42 @@ class PostController(
                 Timber.e(it.localizedMessage)
             }
     }
+
+
+    //============= ADD FAV =================//
+
+    override fun addFav(post: Post?) {
+        post?.run {
+
+            view.showLoading()
+
+            postSource.getGlobalPost(post.postId)
+                .addOnSuccessListener {
+                    val globalPost = it.toObject(Post::class.java)
+                    globalPost?.let {
+                        val likers = it.likedBy.toMutableList()
+                        likers.add(
+                            Like(
+                                uid = userPrefs.userId,
+                                username = userPrefs.displayName,
+                                userAvatar = userPrefs.avatarUrl
+                            )
+                        )
+                        val newPost = globalPost.copy(
+                            likedBy = likers,
+                            likeCount = likers.size.toLong()
+                        )
+                        updateGlobalLike(newPost)
+                    }
+
+                }.addOnFailureListener {
+                    view.hideLoading()
+                    view.onError("Unable to like post")
+                    Timber.e(it.localizedMessage)
+                }
+        }
+    }
+
 
 
     //============= Notification =================//

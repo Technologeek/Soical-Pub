@@ -95,7 +95,12 @@ class GlobalPostAdapter private constructor(
         val text_post_location = view.text_post_location
         val text_post_date = view.text_post_date
         val text_post_caption = view.text_post_caption
-        val image_post_preview = view.image_post_preview
+        val image_post_preview = view.image_post_preview.also {
+            it.setOnLongClickListener {
+                listener.onLongPressPost(adapterPosition)
+                return@setOnLongClickListener true
+            }
+        }
         val image_post_publisher_avatar = view.image_post_publisher_avatar.also {
             it.setOnClickListener {
                 listener.onProfileClicked(adapterPosition)
@@ -118,7 +123,8 @@ class GlobalPostAdapter private constructor(
 }
 
 interface PostClickListener {
-    fun onlikeClicked(adapterPosition: Int)
+    fun onlikeClicked(position: Int)
     fun onCommentClicked(position: Int)
     fun onProfileClicked(position: Int)
+    fun onLongPressPost(position: Int)
 }

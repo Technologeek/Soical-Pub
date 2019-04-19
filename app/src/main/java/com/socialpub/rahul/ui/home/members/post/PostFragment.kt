@@ -2,7 +2,9 @@ package com.socialpub.rahul.ui.home.members.post
 
 
 import android.Manifest
+import android.content.DialogInterface
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
@@ -15,6 +17,7 @@ import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
 import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.navigation.NavController
 import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
+import com.socialpub.rahul.utils.AppConst
 import io.reactivex.Completable
 import kotlinx.android.synthetic.main.fragment_feeds.*
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -96,6 +99,12 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
 
 
         postAdapter = GlobalPostAdapter.newInstance(object : PostClickListener {
+
+            override fun onLongPressPost(position: Int) {
+                val post = postAdapter.getPostAt(position)
+                showOptionsDialog(post)
+            }
+
             override fun onProfileClicked(position: Int) {
                 val post = postAdapter.getPostAt(position)
                 val userPrefs = Injector.userPrefs()
@@ -122,6 +131,23 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
             adapter = postAdapter
         }
 
+    }
+
+    private fun showOptionsDialog(post: Post?) {
+        val items = arrayOf<String>("Add to favourite", "View location", "report")
+        val builder = AlertDialog.Builder(attachedContext)
+        builder.setTitle("Post Options")
+        builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
+            when (itemPos) {
+                AppConst.POST_ADD_FAV -> controller.addFav(post)
+                AppConst.POST_VIEW_MAP -> toast("todo update location model")
+                AppConst.POST_REPORT -> controller.reportPost(post)
+                else -> {
+                }
+            }
+        })
+        val alert = builder.create()
+        if (isAdded) alert.show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
