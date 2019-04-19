@@ -51,5 +51,9 @@ data class Post(
 
     @SerializedName("timestamp")
     @Expose
-    var timestamp: Long = System.currentTimeMillis()
+    var timestamp: Long = System.currentTimeMillis(),
+
+    @SerializedName("reported")
+    @Expose
+    var reported: Long = 0
 )

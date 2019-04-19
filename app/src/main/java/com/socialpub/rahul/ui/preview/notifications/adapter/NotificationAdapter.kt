@@ -59,8 +59,8 @@ class NotificationAdapter private constructor(
             val action = when (notif.action) {
                 AppConst.NOTIF_ACTION_COMMENT -> "commented on your post"
                 AppConst.NOTIF_ACTION_LIKE -> "liked your post"
-                AppConst.NOTIF_ACTION_FOLLOWED -> " followed you"
-                AppConst.NOTIF_ACTION_REPORT -> " REPORTED your post"
+                AppConst.NOTIF_ACTION_FOLLOWED -> "followed you"
+                AppConst.NOTIF_ACTION_REPORT -> "REPORTED your post"
                 else -> "Error"
             }
 
@@ -71,6 +71,7 @@ class NotificationAdapter private constructor(
                     AppConst.NOTIF_ACTION_COMMENT -> listener.onNotifClickedOpenPost(adapterPosition)
                     AppConst.NOTIF_ACTION_LIKE -> listener.onNotifClickedOpenPost(adapterPosition)
                     AppConst.NOTIF_ACTION_FOLLOWED -> listener.onNotifClickedOpenProfile(adapterPosition)
+                    AppConst.NOTIF_ACTION_REPORT -> listener.onNotifClickedOpenPost(adapterPosition)
                     else -> Timber.e("Illegal value of action")
                 }
             }

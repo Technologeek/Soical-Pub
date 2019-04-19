@@ -10,6 +10,8 @@ import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.utils.AppConst
 import timber.log.Timber
+import java.lang.Exception
+import java.lang.NullPointerException
 
 
 class PostController(
@@ -140,7 +142,7 @@ class PostController(
             .addOnSuccessListener {
                 view.hideLoading()
                 view.onError("Post liked!")
-                notifyGlobalUser(globalPost)
+                notifyGlobalUser(globalPost, AppConst.NOTIF_ACTION_LIKE)
             }.addOnFailureListener {
                 view.hideLoading()
                 view.onError("Oh Snap..couldn't like")
@@ -169,17 +171,46 @@ class PostController(
     //============= Report =================//
 
     override fun reportPost(post: Post?) {
+        view.showLoading()
+        post?.run {
+            postSource.getUserPost(post.postId, post.uid)
+                .addOnSuccessListener {
+                    val userPost = it.toObject(Post::class.java)
+                    if (userPost != null) {
+                        val updatedPost = userPost.copy(
+                            reported = userPost.reported + 1
+                        )
+                        postSource.createPost(updatedPost)
+                            .addOnSuccessListener {
+                                notifyGlobalUser(updatedPost, AppConst.NOTIF_ACTION_REPORT)
+                                view.hideLoading()
+                            }.addOnFailureListener {
+                                firebaseError(it)
+                            }
+                    } else {
+                        firebaseError(NullPointerException("Empty user post"))
+                    }
+                }.addOnFailureListener {
+                    firebaseError(it)
+                }
 
+        }
+    }
+
+    private fun firebaseError(it: Exception) {
+        view.hideLoading()
+        view.onError("Something went wrong...")
+        Timber.e(it)
     }
 
     //============= Notification =================//
-    private fun notifyGlobalUser(globalPost: Post) {
+    private fun notifyGlobalUser(globalPost: Post, action: Int) {
         val notif = Notif(
             actionOnPostId = globalPost.postId,
             actionByuid = userPrefs.userId,
             actionByUsername = userPrefs.displayName,
             actionByUserAvatar = userPrefs.avatarUrl,
-            action = AppConst.NOTIF_ACTION_LIKE
+            action = action
         )
         notificationSource.notifyUser(globalPost.uid, notif).addOnSuccessListener {
             Timber.e("notified user success")
