@@ -1,8 +1,6 @@
 package com.socialpub.rahul.ui.edit.profile
 
 import android.content.Intent
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.esafirm.imagepicker.features.ImagePicker
 import com.esafirm.imagepicker.features.ReturnMode
 import com.socialpub.rahul.R
@@ -20,6 +18,7 @@ class EditProfileActivity : BaseActivity(), EditUserProfileContract.View {
     lateinit var userProfileController: EditUserProfileController
 
     override fun setup() {
+        initToolbar()
         userProfileController = EditUserProfileController(this)
         userProfileController.onStart()
     }
@@ -47,7 +46,6 @@ class EditProfileActivity : BaseActivity(), EditUserProfileContract.View {
             }
         }
 
-        btn_close.setOnClickListener { dissmissDialog() }
         btn_update_profile.setOnClickListener { userProfileController.updateUserProfile(edit_new_username.text.toString()) }
     }
 
@@ -73,4 +71,16 @@ class EditProfileActivity : BaseActivity(), EditUserProfileContract.View {
         finish()
     }
 
+    private fun initToolbar() = setSupportActionBar(toolbar_profile).let {
+        with(requireNotNull(supportActionBar)) {
+            setDefaultDisplayHomeAsUpEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 }
+

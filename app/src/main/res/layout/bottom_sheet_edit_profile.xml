@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto" android:background="@color/background"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/background"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -12,32 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <FrameLayout
-                android:padding="@dimen/module_2"
-                android:background="@color/white"
+        <androidx.appcompat.widget.Toolbar
+                app:theme="@style/ThemeToolbar"
+                android:id="@+id/toolbar_profile"
+                android:background="@color/colorAccent"
+                app:title="Edit Profile"
+                app:titleTextColor="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="24sp"
-                    android:layout_gravity="start"
-                    android:textStyle="bold"
-                    android:text="Edit Profile"
-            />
-
-            <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_close"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_gravity="end"
-                    app:icon="@drawable/ic_close"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"/>
-
-
-        </FrameLayout>
-
+                android:layout_height="wrap_content"/>
 
         <com.google.android.material.textfield.TextInputLayout
                 android:layout_margin="@dimen/module_2"

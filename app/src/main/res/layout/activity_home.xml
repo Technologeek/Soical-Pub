@@ -32,9 +32,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:layout_gravity="bottom"
-                    android:background="@color/pub_background"
-                    app:itemIconTint="@null"
-                    app:itemTextColor="@color/black"
+                    style="@style/bottom_navigation"
+                    app:itemTextColor="@color/white"
                     app:menu="@menu/menu_bottom_nav_home"/>
 
         </FrameLayout>
@@ -45,7 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
-                android:background="@color/white"
                 app:menu="@menu/menu_side_nav"/>
 
     </androidx.drawerlayout.widget.DrawerLayout>

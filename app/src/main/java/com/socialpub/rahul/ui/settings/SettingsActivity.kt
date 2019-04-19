@@ -41,13 +41,6 @@ class SettingsActivity : BaseActivity(), SettingsContract.View {
         switch_email_search.isChecked = isEmailVisible
     }
 
-    private fun initToolbar() = setSupportActionBar(toolbar_settings).let {
-        with(requireNotNull(supportActionBar)) {
-            setDefaultDisplayHomeAsUpEnabled(true)
-            setDisplayHomeAsUpEnabled(true)
-        }
-    }
-
     override fun showLoading(message: String) = showProgress(message)
 
     override fun hideLoading() = hideProgress()
@@ -59,6 +52,13 @@ class SettingsActivity : BaseActivity(), SettingsContract.View {
     override fun onDestroy() {
         super.onDestroy()
         controller.stopObservingSettings()
+    }
+
+    private fun initToolbar() = setSupportActionBar(toolbar_settings).let {
+        with(requireNotNull(supportActionBar)) {
+            setDefaultDisplayHomeAsUpEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
