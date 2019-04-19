@@ -4,9 +4,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Notif
+import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationAdapter
 import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationListener
 import com.socialpub.rahul.ui.preview.notifications.navigator.Navigator
+import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
 import kotlinx.android.synthetic.main.activity_notification.*
 
 class NotificationsActivity : BaseActivity(), NotificationContract.View {
@@ -36,7 +38,10 @@ class NotificationsActivity : BaseActivity(), NotificationContract.View {
             adapter = NotificationAdapter.newInstance(
                 object : NotificationListener {
                     override fun onNotifClickedOpenPost(position: Int) {
-                        toast("wip $position")
+                        val notif = notifAdapter.getNotifAt(position)
+                        val postPreview =
+                            PreviewPostBottomSheet.newInstance(notif.actionOnPostId, false, Injector.userPrefs().userId)
+                        postPreview.showNow(supportFragmentManager, "Post_Profile_Preview_post")
                     }
 
                     override fun onNotifClickedOpenProfile(position: Int) {
@@ -50,8 +55,8 @@ class NotificationsActivity : BaseActivity(), NotificationContract.View {
     }
 
     override fun showAllNotifications(list: List<Notif>) {
-        notifAdapter.submitList(list){
-            if (list.isEmpty()){
+        notifAdapter.submitList(list) {
+            if (list.isEmpty()) {
                 onError("No notifications...")
             }
         }
