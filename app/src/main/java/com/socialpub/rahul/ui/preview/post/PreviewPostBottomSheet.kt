@@ -58,7 +58,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
             //global user
             btn_post_delete.visibility = View.GONE
             val globalUserId = arguments?.getString("globalUserId")
-            controller.getGlobalUserPost(postId,globalUserId)
+            controller.getGlobalUserPost(postId, globalUserId)
 
 
             edit_new_comment.setOnEditorActionListener { view, actionId, event ->
@@ -71,7 +71,6 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
                     else -> false
                 }
             }
-
 
 
         } else {

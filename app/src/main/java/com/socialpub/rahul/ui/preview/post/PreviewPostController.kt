@@ -3,10 +3,13 @@ package com.socialpub.rahul.ui.preview.post
 import com.google.firebase.firestore.ListenerRegistration
 import com.socialpub.rahul.data.local.prefs.AppPrefs
 import com.socialpub.rahul.data.model.Comment
+import com.socialpub.rahul.data.model.Notif
 import com.socialpub.rahul.data.model.Post
+import com.socialpub.rahul.data.remote.firebase.sources.notifications.NotificationSource
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
+import com.socialpub.rahul.utils.AppConst
 import timber.log.Timber
 
 class PreviewPostController(
@@ -16,11 +19,13 @@ class PreviewPostController(
     private lateinit var userPrefs: AppPrefs.User
     private lateinit var userSource: UserSource
     private lateinit var postSource: PostSource
+    private lateinit var notifSource: NotificationSource
 
     override fun onStart() {
         userPrefs = Injector.userPrefs()
         userSource = Injector.userSource()
         postSource = Injector.postSource()
+        notifSource = Injector.notificationSource()
 
         view.attachActions()
     }
@@ -214,10 +219,28 @@ class PreviewPostController(
 
     private fun updateGlobalCommnets(updatedPost: Post) {
         postSource.commentOnGlobalPost(updatedPost).addOnSuccessListener {
-            view.hideLoading()
+            notifyGlobalUser(updatedPost)
         }.addOnFailureListener {
             view.hideLoading()
             Timber.e(it.localizedMessage)
+        }
+    }
+
+
+    //============= Notification =================//
+    private fun notifyGlobalUser(globalPost: Post) {
+        val notif = Notif(
+            actionOnPostId = globalPost.postId,
+            actionByuid = userPrefs.userId,
+            actionByUsername = userPrefs.displayName,
+            actionByUserAvatar = userPrefs.avatarUrl,
+            action = AppConst.NOTIF_ACTION_COMMENT
+        )
+        notifSource.notifyUser(globalPost.uid, notif).addOnSuccessListener {
+            Timber.e("notified user success")
+            view.hideLoading()
+        }.addOnFailureListener {
+            Timber.e("notified user failed : $it")
         }
     }
 
