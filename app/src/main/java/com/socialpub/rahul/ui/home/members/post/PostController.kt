@@ -68,6 +68,10 @@ class PostController(
         globalfeedsListener?.remove()
     }
 
+    override fun reportPost(post: Post?) {
+
+    }
+
 
     //============= Filter Post =================//
 
