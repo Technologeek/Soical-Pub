@@ -48,7 +48,7 @@ class UserSource private constructor(private val firebaseManager: FirebaseManage
     fun observeUserLikedPost(uid: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(uid)
-        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .collection(FirebaseApi.FireStore.Collection.FAV_POSTS)
         .orderBy("timestamp", Query.Direction.DESCENDING)
 
     fun observeUserProfile(uid: String) = firebaseStore

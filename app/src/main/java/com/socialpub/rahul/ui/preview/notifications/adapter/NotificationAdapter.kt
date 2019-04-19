@@ -57,9 +57,10 @@ class NotificationAdapter private constructor(
             }
 
             val action = when (notif.action) {
-                AppConst.NOTIF_ACTION_COMMENT -> "Commented on your post"
+                AppConst.NOTIF_ACTION_COMMENT -> "commented on your post"
                 AppConst.NOTIF_ACTION_LIKE -> "liked your post"
                 AppConst.NOTIF_ACTION_FOLLOWED -> " followed you"
+                AppConst.NOTIF_ACTION_REPORT -> " REPORTED your post"
                 else -> "Error"
             }
 

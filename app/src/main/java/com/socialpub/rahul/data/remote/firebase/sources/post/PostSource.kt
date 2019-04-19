@@ -51,10 +51,10 @@ class PostSource private constructor(
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
-    fun likeUserPost(userPost: Post, userId: String) = firebaseStore
+    fun saveFavPost(userPost: Post, userId: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(userId)
-        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .collection(FirebaseApi.FireStore.Collection.FAV_POSTS)
         .document(userPost.postId)
         .set(userPost, SetOptions.merge())
 
@@ -115,7 +115,7 @@ class PostSource private constructor(
     fun deleteLikedPost(postId: String, uid: String) = firebaseStore
         .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
         .document(uid)
-        .collection(FirebaseApi.FireStore.Collection.LIKED_POSTS)
+        .collection(FirebaseApi.FireStore.Collection.FAV_POSTS)
         .document(postId)
         .delete()
 

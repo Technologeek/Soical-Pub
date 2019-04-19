@@ -16,6 +16,7 @@ object AppConst {
     const val NOTIF_ACTION_LIKE = 0
     const val NOTIF_ACTION_COMMENT = 1
     const val NOTIF_ACTION_FOLLOWED = 2
+    const val NOTIF_ACTION_REPORT = 3
 
     const val POST_ADD_FAV = 0
     const val POST_VIEW_MAP = 1

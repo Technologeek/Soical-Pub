@@ -1,8 +1,5 @@
 package com.socialpub.rahul.ui.home.members.post
 
-import android.content.Intent
-import com.cloudinary.android.callback.ErrorInfo
-import com.esafirm.imagepicker.features.ImagePicker
 import com.google.firebase.firestore.ListenerRegistration
 import com.socialpub.rahul.data.local.prefs.AppPrefs
 import com.socialpub.rahul.data.model.Like
@@ -12,7 +9,6 @@ import com.socialpub.rahul.data.remote.firebase.sources.notifications.Notificati
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.utils.AppConst
-import com.socialpub.rahul.utils.helper.CloudinaryUploadHelper
 import timber.log.Timber
 
 
@@ -66,10 +62,6 @@ class PostController(
 
     override fun stopObservingGlobalFeeds() {
         globalfeedsListener?.remove()
-    }
-
-    override fun reportPost(post: Post?) {
-
     }
 
 
@@ -144,7 +136,7 @@ class PostController(
     }
 
     private fun updateUserLike(globalPost: Post) {
-        postSource.likeUserPost(globalPost, userPrefs.userId)
+        postSource.saveFavPost(globalPost, userPrefs.userId)
             .addOnSuccessListener {
                 view.hideLoading()
                 view.onError("Post liked!")
@@ -160,38 +152,25 @@ class PostController(
     //============= ADD FAV =================//
 
     override fun addFav(post: Post?) {
+        view.showLoading()
         post?.run {
-
-            view.showLoading()
-
-            postSource.getGlobalPost(post.postId)
+            postSource.saveFavPost(post, userPrefs.userId)
                 .addOnSuccessListener {
-                    val globalPost = it.toObject(Post::class.java)
-                    globalPost?.let {
-                        val likers = it.likedBy.toMutableList()
-                        likers.add(
-                            Like(
-                                uid = userPrefs.userId,
-                                username = userPrefs.displayName,
-                                userAvatar = userPrefs.avatarUrl
-                            )
-                        )
-                        val newPost = globalPost.copy(
-                            likedBy = likers,
-                            likeCount = likers.size.toLong()
-                        )
-                        updateGlobalLike(newPost)
-                    }
-
+                    view.hideLoading()
+                    view.onError("Post saved!")
                 }.addOnFailureListener {
                     view.hideLoading()
-                    view.onError("Unable to like post")
+                    view.onError("Oh Snap..couldn't save")
                     Timber.e(it.localizedMessage)
                 }
         }
     }
 
+    //============= Report =================//
 
+    override fun reportPost(post: Post?) {
+
+    }
 
     //============= Notification =================//
     private fun notifyGlobalUser(globalPost: Post) {
