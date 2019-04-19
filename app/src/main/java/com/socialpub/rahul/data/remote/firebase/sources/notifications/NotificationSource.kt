@@ -1,6 +1,8 @@
 package com.socialpub.rahul.data.remote.firebase.sources.notifications
 
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
+import com.socialpub.rahul.data.model.Notif
 import com.socialpub.rahul.data.remote.firebase.config.FirebaseApi
 import com.socialpub.rahul.data.remote.firebase.config.FirebaseManager
 
@@ -25,5 +27,13 @@ class NotificationSource private constructor(private val firebaseManager: Fireba
         .document(uid)
         .collection(FirebaseApi.FireStore.Collection.NOTIFICATIONS)
         .orderBy("timestamp", Query.Direction.DESCENDING)
+
+
+    fun notifyUser(uid: String, notification: Notif) = firebaseStore
+        .collection(FirebaseApi.FireStore.Collection.ALL_USERS)
+        .document(uid)
+        .collection(FirebaseApi.FireStore.Collection.NOTIFICATIONS)
+        .add(notification)
+
 
 }

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
-        android:orientation="vertical"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:id="@+id/root_notif"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.preview.notifications.NotificationsActivity">
@@ -11,7 +12,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
         <FrameLayout
                 android:paddingStart="16dp"
@@ -41,14 +42,15 @@
 
         </FrameLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+                android:paddingBottom="36dp"
+                android:background="@color/background"
+                android:id="@+id/list_notification"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:paddingBottom="36dp"
-            android:background="@android:color/holo_orange_dark"
-            android:id="@+id/list_notification"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

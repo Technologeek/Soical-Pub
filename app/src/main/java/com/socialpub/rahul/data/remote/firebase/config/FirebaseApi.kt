@@ -16,6 +16,7 @@ object FirebaseApi {
         object Documents {
             const val LIKE = "liked"
             const val POST = "post"
+            const val NOTIF = "notification"
         }
 
     }

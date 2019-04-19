@@ -6,7 +6,9 @@ import com.esafirm.imagepicker.features.ImagePicker
 import com.google.firebase.firestore.ListenerRegistration
 import com.socialpub.rahul.data.local.prefs.AppPrefs
 import com.socialpub.rahul.data.model.Like
+import com.socialpub.rahul.data.model.Notif
 import com.socialpub.rahul.data.model.Post
+import com.socialpub.rahul.data.remote.firebase.sources.notifications.NotificationSource
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.utils.AppConst
@@ -20,11 +22,13 @@ class PostController(
 
     private lateinit var userPrefs: AppPrefs.User
     private lateinit var postSource: PostSource
+    private lateinit var notificationSource: NotificationSource
 
     override fun onStart() {
         view.attachActions()
         userPrefs = Injector.userPrefs()
         postSource = Injector.postSource()
+        notificationSource = Injector.notificationSource()
     }
 
     private var globalfeedsListener: ListenerRegistration? = null
@@ -137,15 +141,33 @@ class PostController(
     }
 
     private fun updateUserLike(globalPost: Post) {
-        postSource.likeUserPost(globalPost,userPrefs.userId)
+        postSource.likeUserPost(globalPost, userPrefs.userId)
             .addOnSuccessListener {
                 view.hideLoading()
                 view.onError("Post liked!")
+                notifyGlobalUser(globalPost)
             }.addOnFailureListener {
                 view.hideLoading()
                 view.onError("Oh Snap..couldn't like")
                 Timber.e(it.localizedMessage)
             }
+    }
+
+
+    //============= Notification =================//
+    private fun notifyGlobalUser(globalPost: Post) {
+        val notif = Notif(
+            actionOnPostId = globalPost.postId,
+            actionByuid = userPrefs.userId,
+            actionByUsername = userPrefs.displayName,
+            actionByUserAvatar = userPrefs.avatarUrl,
+            action = AppConst.NOTIF_ACTION_LIKE
+        )
+        notificationSource.notifyUser(globalPost.uid, notif).addOnSuccessListener {
+            Timber.e("notified user success")
+        }.addOnFailureListener {
+            Timber.e("notified user failed : $it")
+        }
     }
 
 

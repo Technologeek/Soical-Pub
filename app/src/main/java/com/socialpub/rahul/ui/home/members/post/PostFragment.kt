@@ -133,7 +133,7 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
         val uploadSheet = PostBottomSheet.newInstance()
         uploadSheet.show(childFragmentManager, "UploadPost")
     }
-    
+
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
 
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {

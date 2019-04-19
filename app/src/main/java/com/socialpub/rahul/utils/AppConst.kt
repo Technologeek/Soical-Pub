@@ -12,4 +12,11 @@ object AppConst {
     const val SEARCH_FILTER_NAME = 1
     const val SEARCH_FILTER_EMAIL = 2
     const val SEARCH_FILTER_LOCATION = 3
+
+
+    const val NOTIF_ACTION_LIKE = 0
+    const val NOTIF_ACTION_COMMENT = 1
+    const val NOTIF_ACTION_FOLLOWED = 2
+
+
 }

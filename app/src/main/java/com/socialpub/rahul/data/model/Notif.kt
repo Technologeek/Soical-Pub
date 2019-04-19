@@ -13,23 +13,23 @@ data class Notif(
     //username unfollowed post
     //0->like , 1->commented , 2->followed, 3-> unfollowed
 
-    @SerializedName("postId")
+    @SerializedName("actionOnPostId")
     @Expose
     var actionOnPostId: String = "",
 
-    @SerializedName("uid")
+    @SerializedName("actionByuid")
     @Expose
     var actionByuid: String = "",
 
-    @SerializedName("username")
+    @SerializedName("actionByUsername")
     @Expose
     var actionByUsername: String = "",
 
-    @SerializedName("username")
+    @SerializedName("action")
     @Expose
     var action: Int = 0,
 
-    @SerializedName("userAvatar")
+    @SerializedName("actionByUserAvatar")
     @Expose
     var actionByUserAvatar: String = "",
 

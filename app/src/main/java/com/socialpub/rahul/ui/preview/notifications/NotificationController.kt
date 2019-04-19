@@ -2,6 +2,7 @@ package com.socialpub.rahul.ui.preview.notifications
 
 import com.socialpub.rahul.data.local.prefs.AppPrefs
 import com.socialpub.rahul.data.model.Notif
+import com.socialpub.rahul.data.remote.firebase.config.FirebaseApi
 import com.socialpub.rahul.data.remote.firebase.sources.notifications.NotificationSource
 import com.socialpub.rahul.data.remote.firebase.sources.post.PostSource
 import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
@@ -23,14 +24,16 @@ class NotificationController(
         postSource = Injector.postSource()
         notifSource = Injector.notificationSource()
         view.attachActions()
+        getAllNotifications(userPrefs.userId)
     }
 
 
     override fun getAllNotifications(userId: String) {
 
+        view.showLoading()
+
         notifSource.observeUserNotifications(userPrefs.userId)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-
                 if (firebaseFirestoreException != null) {
                     view.onError("notifications not available...try again later")
                     Timber.e(firebaseFirestoreException)
@@ -38,17 +41,18 @@ class NotificationController(
                 }
 
                 if (querySnapshot != null) {
-
                     val notifList = arrayListOf<Notif>()
-                    querySnapshot.forEach { queryDocument ->
-                        val notification = queryDocument.toObject(Notif::class.java)
-                        Timber.e(notification.toString())
-                        notifList.add(notification)
-                        view.showAllNotifications(notifList)
+                    querySnapshot.forEach { doc ->
+                        val noti = doc.toObject(Notif::class.java)
+                        notifList.add(noti)
                     }
+                    view.showAllNotifications(notifList)
+                    view.hideLoading()
+                }else{
+                    view.onError("No notifications...")
+                    view.hideLoading()
                 }
             }
-
     }
 
 
