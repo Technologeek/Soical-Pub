@@ -134,7 +134,7 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
     }
 
     private fun showOptionsDialog(post: Post) {
-        val items = arrayOf<String>("Add to favourite", "View location", "report")
+        val items = arrayOf<String>("Add to favourite", "View location", "Report")
         val builder = AlertDialog.Builder(attachedContext)
         builder.setTitle("Post Options")
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->

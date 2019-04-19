@@ -138,16 +138,14 @@ class PostController(
     }
 
     private fun updateUserLike(globalPost: Post) {
-        postSource.saveFavPost(globalPost, userPrefs.userId)
+        postSource.createPost(globalPost)
             .addOnSuccessListener {
                 view.hideLoading()
-                view.onError("Post liked!")
                 notifyGlobalUser(globalPost, AppConst.NOTIF_ACTION_LIKE)
             }.addOnFailureListener {
-                view.hideLoading()
-                view.onError("Oh Snap..couldn't like")
-                Timber.e(it.localizedMessage)
+                firebaseError(it)
             }
+
     }
 
 
