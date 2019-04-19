@@ -15,6 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseBottomSheet
+import com.socialpub.rahul.data.model.Location
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.service.android.location.LocationManger
@@ -135,6 +136,7 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
         }
     }
 
+    private var sharingLocation: Location = Location()
     private fun updateMapCamera(latLng: LatLng) {
         googleMap?.moveCamera(
             CameraUpdateFactory
@@ -145,8 +147,10 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
         )
 
         val address = locationManager.getAddressFromLocation(latLng)
-        text_location_address.text = address.get(0).getAddressLine(0)
+        val displayLocation = address.get(0).getAddressLine(0)
+        text_location_address.text = displayLocation
 
+        sharingLocation = Location(latLng.latitude, latLng.longitude, displayLocation)
         googleMap?.addMarker(locationManager.makeMarker(latLng))
 
     }
@@ -182,7 +186,7 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
                         Post(
                             imagePath = path,
                             caption = edit_post_caption.text.toString(),
-                            location = text_location_address.text.toString(),
+                            location = sharingLocation,
                             likeCount = 0,
                             commentCount = 0
                         )

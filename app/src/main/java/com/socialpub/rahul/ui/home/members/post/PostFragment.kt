@@ -133,14 +133,14 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
 
     }
 
-    private fun showOptionsDialog(post: Post?) {
+    private fun showOptionsDialog(post: Post) {
         val items = arrayOf<String>("Add to favourite", "View location", "report")
         val builder = AlertDialog.Builder(attachedContext)
         builder.setTitle("Post Options")
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
             when (itemPos) {
                 AppConst.POST_ADD_FAV -> controller.addFav(post)
-                AppConst.POST_VIEW_MAP -> toast("todo update location model")
+                AppConst.POST_VIEW_MAP -> navigator.openPostLocationOnMap(post)
                 AppConst.POST_REPORT -> controller.reportPost(post)
                 else -> {
                 }

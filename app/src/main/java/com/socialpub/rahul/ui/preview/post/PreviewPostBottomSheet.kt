@@ -126,7 +126,7 @@ class PreviewPostBottomSheet : BaseBottomSheet(), PreviewPostContract.View {
                 .into(image_published_post_preview)
 
             text_publisher_user_name.text = username
-            text_published_post_location.text = location
+            text_published_post_location.text = location.name
             val date = DateFormat.getInstance().format(timestamp)
             text_published_post_date.text = date
             text_published_post_caption.text = caption

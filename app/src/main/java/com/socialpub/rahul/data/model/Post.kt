@@ -31,7 +31,7 @@ data class Post(
 
     @SerializedName("location")
     @Expose
-    var location: String = "",
+    var location: Location = Location(),
 
     @SerializedName("comments")
     @Expose

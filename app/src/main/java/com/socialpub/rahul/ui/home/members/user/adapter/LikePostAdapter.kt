@@ -60,7 +60,7 @@ class LikePostAdapter private constructor(
             Timber.d(Gson().toJson(post))
 
             text_username.text = post.username
-            text_post_location.text = post.location
+            text_post_location.text = post.location.name
 
             val date = DateFormat.getInstance().format(post.timestamp)
             text_post_date.text = date

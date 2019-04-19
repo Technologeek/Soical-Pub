@@ -10,8 +10,8 @@ data class Notif(
     //username liked your post
     //username commented on your post
     //username followed you post
-    //username unfollowed post
-    //0->like , 1->commented , 2->followed, 3-> unfollowed
+    //username reported your post
+    //0->like , 1->commented , 2->followed, 3-> reported
 
     @SerializedName("actionOnPostId")
     @Expose

@@ -60,7 +60,7 @@ class GlobalPostAdapter private constructor(
             Timber.d(Gson().toJson(post))
 
             text_username.text = post.username
-            text_post_location.text = post.location
+            text_post_location.text = post.location.name
             text_post_caption.text = post.caption
             btn_like.text = "${post.likeCount} Likes"
             btn_comments.text = "${post.commentCount} Comments"

@@ -60,7 +60,7 @@ class SearchPostAdapter private constructor(
             Timber.d(Gson().toJson(post))
 
             text_username.text = post.username
-            text_post_location.text = post.location
+            text_post_location.text = post.location.name
             text_post_caption.text = post.caption
             text_post_caption.text = post.caption
 

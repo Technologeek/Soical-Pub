@@ -6,6 +6,7 @@ import com.google.android.material.navigation.NavigationView
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.base.NavFlow
+import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.home.navigation.NavController
 import com.socialpub.rahul.ui.home.navigation.Navigator
@@ -113,6 +114,10 @@ class HomeActivity : BaseActivity(), NavController {
             navHeader.text_side_nav_home_username.text = Injector.userPrefs().displayName
 
         }
+    }
+
+    override fun openPostLocationOnMap(post: Post) {
+        navigator.openMapLocation(post.postId)
     }
 
     override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String) {
