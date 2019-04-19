@@ -26,6 +26,14 @@ data class User(
     @Expose
     var avatar: String? = null,
 
+    @SerializedName("isVisibletoLocationSearch")
+    @Expose
+    var isVisibletoLocationSearch: Boolean = true,
+
+    @SerializedName("isVisibletoEmailSearch")
+    @Expose
+    var isVisibletoEmailSearch: Boolean = true,
+
     @SerializedName("uid")
     @Expose
     var uid: String = ""
