@@ -68,14 +68,22 @@ class EditUserProfileController(
     }
 
     private fun updateRemoteUserProfile(username: String?, imageUrl: String?) {
+        val newName = if (username.isNullOrBlank()) {
+            userPrefs.displayName
+        } else {
+            username
+        }
+
         userSource.createUser(
             User(
-                username = username ?: userPrefs.displayName,
+                username = newName,
                 avatar = imageUrl ?: userPrefs.avatarUrl,
                 email = userPrefs.email,
                 uid = userPrefs.userId
             )
         ).addOnSuccessListener {
+            userPrefs.displayName = newName
+            userPrefs.avatarUrl = imageUrl ?: userPrefs.avatarUrl
             view.hideLoading()
             view.dissmissDialog()
         }.addOnFailureListener {

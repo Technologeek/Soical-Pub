@@ -12,7 +12,6 @@ import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.user.adapter.LikePostAdapter
 import com.socialpub.rahul.ui.home.members.user.adapter.LikePostListener
 import com.socialpub.rahul.ui.preview.post.PreviewPostBottomSheet
-import com.socialpub.rahul.ui.edit.profile.EditUserProfileBottomSheet
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -39,10 +38,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
         list_profile_published_post.visibility = View.VISIBLE
         list_profile_liked_post.visibility = View.GONE
-
-        btn_edit_profile.setOnClickListener {
-            EditUserProfileBottomSheet.newInstance().show(childFragmentManager, "Profile_Bottom_Sheet")
-        }
 
         btn_profile_user_post.setOnClickListener {
             listScrollToTop()

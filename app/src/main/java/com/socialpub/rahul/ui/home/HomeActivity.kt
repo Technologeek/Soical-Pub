@@ -1,5 +1,8 @@
 package com.socialpub.rahul.ui.home
 
+import android.view.View
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.base.NavFlow
@@ -71,22 +74,45 @@ class HomeActivity : BaseActivity(), NavController {
                 }
             }
 
-            val navHeader = it.getHeaderView(0)
+            drawer_container_home.addDrawerListener(object : DrawerLayout.DrawerListener {
+                override fun onDrawerStateChanged(newState: Int) {
 
-            with(requireNotNull(navHeader)) {
+                }
 
-                Picasso.get()
-                    .load(Injector.userPrefs().avatarUrl)
-                    .placeholder(R.mipmap.ic_launcher_round)
-                    .transform(CropCircleTransformation())
-                    .into(navHeader.image_side_nav_home_useravatar)
+                override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
 
-                navHeader.text_side_nav_home_username.text = Injector.userPrefs().displayName
+                }
 
-            }
+                override fun onDrawerClosed(drawerView: View) {
+                    updateDrawerHeader(it)
+                }
+
+                override fun onDrawerOpened(drawerView: View) {
+
+                }
+
+            })
+
+            updateDrawerHeader(it)
 
         }
 
+    }
+
+    private fun updateDrawerHeader(it: NavigationView) {
+        val navHeader = it.getHeaderView(0)
+
+        with(requireNotNull(navHeader)) {
+
+            Picasso.get()
+                .load(Injector.userPrefs().avatarUrl)
+                .placeholder(R.mipmap.ic_launcher_round)
+                .transform(CropCircleTransformation())
+                .into(navHeader.image_side_nav_home_useravatar)
+
+            navHeader.text_side_nav_home_username.text = Injector.userPrefs().displayName
+
+        }
     }
 
     override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String) {
