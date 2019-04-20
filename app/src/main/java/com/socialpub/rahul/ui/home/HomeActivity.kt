@@ -1,6 +1,8 @@
 package com.socialpub.rahul.ui.home
 
+import android.content.DialogInterface
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 import com.socialpub.rahul.R
@@ -120,8 +122,8 @@ class HomeActivity : BaseActivity(), NavController {
         navigator.openMapLocation(post.postId)
     }
 
-    override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String,fromSearchResults:Boolean) {
-        navigator.openProfilePreview(showFollow, PreviewUserId , fromSearchResults)
+    override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String, fromSearchResults: Boolean) {
+        navigator.openProfilePreview(showFollow, PreviewUserId, fromSearchResults)
     }
 
     override fun openPostPreview(enableDelete: Boolean, PreviewPostId: String, PreviewUserId: String) {
@@ -134,11 +136,7 @@ class HomeActivity : BaseActivity(), NavController {
     }
 
     override fun signoutUser() {
-        with(Injector) {
-            firebaseManager().auth.signOut()
-            userPrefs().clearPrefs()
-        }
-        navigator.restartApp()
+        actionSignoutConfirm()
     }
 
     override fun goto(screen: String) {
@@ -146,6 +144,28 @@ class HomeActivity : BaseActivity(), NavController {
     }
 
     override fun goBack() = navigator.goBack()
+
+    private fun actionSignoutConfirm() {
+        val builder = AlertDialog.Builder(this)
+
+        with(builder)
+        {
+            setTitle("SignOut")
+            setMessage("Are you sure you want to Signout from Social-pup?")
+            setPositiveButton("Yes", DialogInterface.OnClickListener(function = { dialog, which ->
+                with(Injector) {
+                    firebaseManager().auth.signOut()
+                    userPrefs().clearPrefs()
+                }
+                navigator.restartApp()
+            }))
+            setNegativeButton("No", DialogInterface.OnClickListener(function = { dialog, which ->
+                dialog.dismiss()
+            }))
+            if (!isFinishing) show()
+        }
+    }
+
 }
 
 
