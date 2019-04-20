@@ -1,5 +1,7 @@
 package com.socialpub.rahul.ui.edit.favourites
 
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
@@ -47,9 +49,26 @@ class FavPostActivity : BaseActivity(), FavContract.View {
         }
 
         btn_multi_delete.setOnClickListener {
-            controller.deleteFavPost(deletePostList)
+            actionDelePostConfirm()
         }
 
+    }
+
+    private fun actionDelePostConfirm() {
+        val builder = AlertDialog.Builder(this)
+
+        with(builder)
+        {
+            setTitle("Delete Selected?")
+            setMessage("are you sure you want to delete selected post?")
+            setPositiveButton("Yes", DialogInterface.OnClickListener(function = { dialog, which ->
+                controller.deleteFavPost(deletePostList)
+            }))
+            setNegativeButton("No", DialogInterface.OnClickListener(function = { dialog, which ->
+                dialog.dismiss()
+            }))
+            if (!isFinishing) show()
+        }
     }
 
     override fun onDeletedComplted() {
