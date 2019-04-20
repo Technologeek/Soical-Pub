@@ -26,20 +26,24 @@ class UserProfileController(
 
     var localUser: User? = null
     override fun getUserProfile(userId: String?) {
-
         if (userId.isNullOrBlank()) {
             view.dissmissDialog()
             view.onError("Unable to show preview...")
             return
         }
 
+        val globalUserID = userId
         view.showLoading("loading..")
-
         userSource.getUser(userPrefs.userId).addOnSuccessListener { doc ->
             val user = doc.toObject(User::class.java)
             if (user != null) {
                 localUser = user
-                checkIsFollower(userId, user.following, user.followedBy)
+                user.following.forEach { followerid ->
+                    if (followerid == globalUserID) {
+                        view.isFollowing(true)
+                    }
+                }
+                getUserData(globalUserID)
             } else {
                 error(Exception("user is null"))
             }
@@ -51,30 +55,21 @@ class UserProfileController(
     }
 
     var previewUser: User? = null
-    private fun checkIsFollower(userId: String, following: List<String>, followedBy: List<String>) {
+    private fun getUserData(globalUserID: String) {
 
-        userSource.getUser(userId).addOnSuccessListener { doc ->
-                val user = doc.toObject(User::class.java)
-                if (user != null) {
-
-                    previewUser = user
-
-                    view.updateUserPreview(user)
-                    getPreviewUserPost(user)
-
-                    following.forEach { previewUserID ->
-                        if (user.uid == previewUserID) {
-                            view.isFollowing(true)
-                        }
-                    }
-
-                } else {
-                    error(Exception("error in null"))
-                }
-
-            }.addOnFailureListener {
-                error(it)
+        userSource.getUser(globalUserID).addOnSuccessListener { doc ->
+            val globalUser = doc.toObject(User::class.java)
+            if (globalUser != null) {
+                previewUser = globalUser
+                view.updateUserPreview(globalUser)
+                getPreviewUserPost(globalUser)
+            } else {
+                error(Exception("error in null"))
             }
+
+        }.addOnFailureListener {
+            error(it)
+        }
     }
 
 
@@ -176,7 +171,6 @@ class UserProfileController(
             querySnap.forEach { docSnap ->
                 val post = docSnap.toObject(Post::class.java)
                 post?.let { postList.add(it) }
-
             }
             view.showAllUser(postList)
             view.hideLoading()

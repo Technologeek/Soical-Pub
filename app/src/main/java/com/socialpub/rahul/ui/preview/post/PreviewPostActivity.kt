@@ -21,7 +21,6 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
     override val contentLayout: Int
         get() = R.layout.bottom_sheet_preview_post
 
-
     lateinit var controller: PreviewPostController
     lateinit var navigator: Navigator
 

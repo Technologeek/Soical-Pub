@@ -6,6 +6,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
+import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.squareup.picasso.Picasso
@@ -21,6 +22,7 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
     lateinit var navigator: Navigator
 
     override fun setup() {
+        initToolbar()
         navigator = Navigator(0, this)
         controller = UserProfileController(this)
         controller.onStart()
@@ -38,16 +40,14 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
             btn_preview_follow.visibility = View.GONE
         }
 
-
         val userId = intent?.getStringExtra("userId")
 
-        isFollowing(false)
-
-        controller.getUserProfile(userId)
-
-        btn_preview_profile_close.setOnClickListener {
+        if (userId == Injector.userPrefs().userId) {
             dissmissDialog()
         }
+
+        isFollowing(false)
+        controller.getUserProfile(userId)
 
         searchPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
@@ -65,7 +65,8 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
     }
 
     override fun isFollowing(following: Boolean) {
-        val userId = intent?.getStringExtra("userId")
+
+        val userId = intent?.extras?.getString("userId")
 
         if (following) {
             btn_preview_follow.text = "unfollow"
@@ -109,4 +110,17 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
     override fun dissmissDialog() {
         finish()
     }
+
+    private fun initToolbar() = setSupportActionBar(toolbar_profile).let {
+        with(requireNotNull(supportActionBar)) {
+            setDefaultDisplayHomeAsUpEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 }

@@ -14,11 +14,11 @@ data class User(
     @Expose
     var email: String = "",
 
-    @SerializedName("follows")
+    @SerializedName("following")
     @Expose
     var following: List<String> = emptyList(),
 
-    @SerializedName("follows")
+    @SerializedName("followedBy")
     @Expose
     var followedBy: List<String> = emptyList(),
 

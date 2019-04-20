@@ -11,7 +11,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.data.model.Post
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
-import kotlinx.android.synthetic.main.item_search_post.view.*
+import kotlinx.android.synthetic.main.item_post.view.*
 import timber.log.Timber
 import java.text.DateFormat
 
@@ -48,31 +48,21 @@ class SearchPostAdapter private constructor(
     fun getPostAt(position: Int) = getItem(position)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_search_post, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_post, parent, false)
         return PostViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         with(holder) {
 
+            container_profile.visibility = View.GONE
+            btn_like.visibility = View.GONE
+            btn_comments.visibility = View.GONE
+
             val post = getItem(position)
 
             Timber.d(Gson().toJson(post))
 
-            text_username.text = post.username
-            text_post_location.text = post.location.name
-            text_post_caption.text = post.caption
-            text_post_caption.text = post.caption
-
-            val date = DateFormat.getInstance().format(post.timestamp)
-            text_post_date.text = date
-
-            if (!post.userAvatar.isEmpty()) {
-                Picasso.get()
-                    .load(post.userAvatar)
-                    .transform(CropCircleTransformation())
-                    .into(image_post_publisher_avatar)
-            }
             if (!post.imageUrl.isEmpty()) {
                 Picasso.get()
                     .load(post.imageUrl)
@@ -82,9 +72,11 @@ class SearchPostAdapter private constructor(
                     .into(image_post_preview)
             }
 
-            container_search_post.setOnClickListener {
+            image_post_preview.setOnClickListener {
                 listener.onPostClicked(adapterPosition)
             }
+
+            text_post_caption.text = post.caption
 
         }
     }
@@ -93,13 +85,12 @@ class SearchPostAdapter private constructor(
     class PostViewHolder(
         view: View
     ) : RecyclerView.ViewHolder(view) {
-        val text_username = view.text_publisher_user_name
-        val text_post_location = view.text_published_post_location
-        val text_post_date = view.text_published_post_date
-        val text_post_caption = view.text_published_post_caption
-        val image_post_preview = view.image_published_post_preview
-        val image_post_publisher_avatar = view.image_publisher_post_avatar
-        val container_search_post = view.container_published_post
+
+        val container_profile = view.container_profile
+        val btn_comments = view.btn_comments
+        val btn_like = view.btn_like
+        val image_post_preview = view.image_post_preview
+        val text_post_caption = view.text_post_caption
     }
 }
 
