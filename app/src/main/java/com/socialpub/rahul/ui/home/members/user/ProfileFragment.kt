@@ -129,13 +129,31 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
             when (itemPos) {
                 AppConst.USER_PROFILE_VIEW_MAP -> navigator.openPostLocationOnMap(post)
-                AppConst.USER_PROFILE_DELETE -> controller.deletePublishedPost(post.postId)
+                AppConst.USER_PROFILE_DELETE -> actionDelePostConfirm(post.postId)
                 else -> {
                 }
             }
         })
         val alert = builder.create()
         if (isVisible) alert.show()
+    }
+
+
+    private fun actionDelePostConfirm(postId: String) {
+        val builder = AlertDialog.Builder(attachedContext)
+
+        with(builder)
+        {
+            setTitle("Delete Post")
+            setMessage("are you sure you want to delete your post?")
+            setPositiveButton("Yes", DialogInterface.OnClickListener(function = { dialog, which ->
+                controller.deletePublishedPost(postId)
+            }))
+            setNegativeButton("No", DialogInterface.OnClickListener(function = { dialog, which ->
+                dialog.dismiss()
+            }))
+            if (isVisible) show()
+        }
     }
 
 }
