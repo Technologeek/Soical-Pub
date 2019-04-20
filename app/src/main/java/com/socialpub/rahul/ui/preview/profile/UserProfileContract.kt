@@ -19,5 +19,8 @@ interface UserProfileContract {
         fun followGlobalUser(userId: String?)
         fun unfollowGlobalUser(userId: String?)
         fun updatefollowing(following: Boolean,userId: String?)
+        fun reportPost(post: Post?)
+        fun addLike(post: Post?)
+        fun addFav(post: Post?)
     }
 }

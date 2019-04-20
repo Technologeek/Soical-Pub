@@ -56,8 +56,12 @@ class SearchPostAdapter private constructor(
         with(holder) {
 
             container_profile.visibility = View.GONE
-            btn_like.visibility = View.GONE
-            btn_comments.visibility = View.GONE
+            btn_like.setOnClickListener {
+                listener.onPostLikeClicked(adapterPosition)
+            }
+            btn_comments.setOnClickListener {
+                listener.onPostCommentClicked(adapterPosition)
+            }
 
             val post = getItem(position)
 
@@ -72,8 +76,9 @@ class SearchPostAdapter private constructor(
                     .into(image_post_preview)
             }
 
-            image_post_preview.setOnClickListener {
-                listener.onPostClicked(adapterPosition)
+            image_post_preview.setOnLongClickListener {
+                listener.onPostLongClicked(adapterPosition)
+                return@setOnLongClickListener true
             }
 
             text_post_caption.text = post.caption
@@ -95,5 +100,7 @@ class SearchPostAdapter private constructor(
 }
 
 interface SearchPostListener {
-    fun onPostClicked(position: Int)
+    fun onPostLongClicked(position: Int)
+    fun onPostLikeClicked(position: Int)
+    fun onPostCommentClicked(position: Int)
 }

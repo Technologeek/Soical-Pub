@@ -9,6 +9,7 @@ import com.socialpub.rahul.ui.edit.followers.FollowersActivity
 import com.socialpub.rahul.ui.home.members.post.PostFragment
 import com.socialpub.rahul.ui.home.members.search.SearchFragment
 import com.socialpub.rahul.ui.home.members.user.ProfileFragment
+import com.socialpub.rahul.ui.preview.location.MapActivity
 import com.socialpub.rahul.ui.preview.post.PreviewPostActivity
 import com.socialpub.rahul.ui.preview.profile.ProfilePreviewActivity
 
@@ -30,6 +31,13 @@ class Navigator(
             it.putExtra("globalUserId", PreviewUserId)
         })
     }
+
+    fun openMapLocation(postId: String) {
+        activity.startActivity(Intent(activity, MapActivity::class.java).also {
+            it.putExtra("postId", postId)
+        })
+    }
+
 
     fun getFragment(screen: String): Fragment = when (screen) {
         NavFlow.Home.FEEDS -> PostFragment.newInstance()

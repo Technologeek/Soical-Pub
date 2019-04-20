@@ -73,6 +73,7 @@
 
 
         <androidx.appcompat.widget.AppCompatImageView
+                android:layout_marginTop="@dimen/module_1"
                 android:id="@+id/image_post_preview"
                 android:layout_width="match_parent"
                 android:layout_height="360dp"

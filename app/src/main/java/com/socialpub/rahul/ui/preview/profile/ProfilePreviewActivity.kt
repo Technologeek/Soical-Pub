@@ -1,6 +1,8 @@
 package com.socialpub.rahul.ui.preview.profile
 
+import android.content.DialogInterface
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
@@ -9,6 +11,7 @@ import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
+import com.socialpub.rahul.utils.AppConst
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_proifle.*
@@ -51,10 +54,21 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
 
         searchPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
-                override fun onPostClicked(position: Int) {
+                override fun onPostLongClicked(position: Int) {
+                    val post = searchPostAdapter.getPostAt(position)
+                    showOptionsDialog(post)
+                }
+
+                override fun onPostLikeClicked(position: Int) {
+                    val post = searchPostAdapter.getPostAt(position)
+                    controller.addLike(post)
+                }
+
+                override fun onPostCommentClicked(position: Int) {
                     val post = searchPostAdapter.getPostAt(position)
                     navigator.openPostPreview(false, post.postId, post.uid)
                 }
+
             }
         )
 
@@ -122,5 +136,23 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
         onBackPressed()
         return true
     }
+
+    private fun showOptionsDialog(post: Post) {
+        val items = arrayOf<String>("Add to favourite", "View location", "Report")
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Post Options")
+        builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
+            when (itemPos) {
+                AppConst.PROFILE_PREVIEW_ADD_FAV -> controller.addFav(post)
+                AppConst.PROFILE_PREVIEW_VIEW_MAP -> navigator.openMapLocation(post.postId)
+                AppConst.PROFILE_PREVIEW_REPORT -> controller.reportPost(post)
+                else -> {
+                }
+            }
+        })
+        val alert = builder.create()
+        if (!isFinishing) alert.show()
+    }
+
 
 }

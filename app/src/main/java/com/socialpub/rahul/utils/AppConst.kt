@@ -22,5 +22,9 @@ object AppConst {
     const val POST_VIEW_MAP = 1
     const val POST_REPORT = 2
 
+    const val PROFILE_PREVIEW_ADD_FAV = 0
+    const val PROFILE_PREVIEW_VIEW_MAP = 1
+    const val PROFILE_PREVIEW_REPORT = 2
+
 
 }
