@@ -22,40 +22,6 @@ class SearchController(private val view: SearchContract.View) : SearchContract.C
         userPrefs = Injector.userPrefs()
         userSource = Injector.userSource()
         postSource = Injector.postSource()
-        getUserFollowers()
-    }
-
-    override fun getUserFollowers() {
-
-        userSource.getUser(userPrefs.userId).addOnSuccessListener {
-            val userProfile = it.toObject(User::class.java)
-            userProfile?.apply {
-                getFollowingList(following)
-            }
-        }.addOnFailureListener {
-            view.onError("Something went wrong...")
-            Timber.e(it.localizedMessage)
-        }
-    }
-
-    private fun getFollowingList(followingIds: List<String>) {
-        Timber.d(Gson().toJson(followingIds))
-        val followerList = arrayListOf<User>()
-
-        if (followingIds.isNotEmpty()) {
-            followingIds.forEach { followingId ->
-                userSource.getUser(followingId).addOnSuccessListener { documentSnapshot ->
-                    val followingProfile = documentSnapshot.toObject(User::class.java)
-                    followingProfile?.run {
-                        followerList.add(this)
-                        view.updateFollowingList(followerList)
-                    }
-                }
-            }
-        } else {
-            view.onError("You are not following anyone!")
-        }
-
     }
 
     private var searchType: Int = AppConst.SEARCH_FILTER_NONE

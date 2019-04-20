@@ -17,7 +17,9 @@ import java.text.DateFormat
 
 class SearchPostAdapter private constructor(
     diffCallback: DiffUtil.ItemCallback<Post>,
-    private val listener: SearchPostListener
+    private val listener: SearchPostListener,
+    private val showPostActions: Boolean,
+    private val showPostProfile: Boolean
 ) :
     ListAdapter<Post, SearchPostAdapter.PostViewHolder>(diffCallback) {
 
@@ -42,7 +44,11 @@ class SearchPostAdapter private constructor(
             }
         }
 
-        fun newInstance(listener: SearchPostListener) = SearchPostAdapter(DIFF_CALLBACK, listener)
+        fun newInstance(
+            listener: SearchPostListener,
+            showPostActions: Boolean = true,
+            showPostProfile: Boolean = false
+        ) = SearchPostAdapter(DIFF_CALLBACK, listener, showPostActions, showPostProfile)
     }
 
     fun getPostAt(position: Int) = getItem(position)
@@ -55,7 +61,15 @@ class SearchPostAdapter private constructor(
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         with(holder) {
 
-            container_profile.visibility = View.GONE
+
+            if (!showPostActions) {
+                container_post_actions.visibility = View.GONE
+            }
+
+            if (!showPostProfile) {
+                container_profile.visibility = View.GONE
+            }
+
             btn_like.setOnClickListener {
                 listener.onPostLikeClicked(adapterPosition)
             }
@@ -81,7 +95,23 @@ class SearchPostAdapter private constructor(
                 return@setOnLongClickListener true
             }
 
+            image_post_preview.setOnClickListener {
+                listener.onPostClicked(adapterPosition)
+            }
+
             text_post_caption.text = post.caption
+            text_user_name.text = post.username
+            text_post_location.text = post.location.name
+
+            val date = DateFormat.getInstance().format(post.timestamp)
+            text_post_date.text = date
+
+            if (!post.userAvatar.isEmpty()) {
+                Picasso.get()
+                    .load(post.userAvatar)
+                    .transform(CropCircleTransformation())
+                    .into(image_post_publisher_avatar)
+            }
 
         }
     }
@@ -96,11 +126,17 @@ class SearchPostAdapter private constructor(
         val btn_like = view.btn_like
         val image_post_preview = view.image_post_preview
         val text_post_caption = view.text_post_caption
+        val container_post_actions = view.container_post_actions
+        val text_user_name = view.text_user_name
+        val text_post_location = view.text_post_location
+        val text_post_date = view.text_post_date
+        val image_post_publisher_avatar = view.image_post_publisher_avatar
     }
 }
 
 interface SearchPostListener {
     fun onPostLongClicked(position: Int)
+    fun onPostClicked(position: Int)
     fun onPostLikeClicked(position: Int)
     fun onPostCommentClicked(position: Int)
 }

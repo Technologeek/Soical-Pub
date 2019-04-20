@@ -54,6 +54,10 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
 
         searchPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
+                override fun onPostClicked(position: Int) {
+                    toast("Long press for option menu")
+                }
+
                 override fun onPostLongClicked(position: Int) {
                     val post = searchPostAdapter.getPostAt(position)
                     showOptionsDialog(post)

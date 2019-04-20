@@ -8,6 +8,8 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.di.Injector
+import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
+import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
@@ -35,22 +37,9 @@ class SearchFragment : BaseFragment(), SearchContract.View {
     }
 
     private lateinit var searchProfileAdapter: SearchUserAdapter
-    private lateinit var followerProfileAdapter: SearchUserAdapter
-    private lateinit var globalPostsAdapter: SearchPostAdapter
+    private lateinit var searchPostAdapter: SearchPostAdapter
 
     override fun attachActions() {
-
-        followerProfileAdapter = SearchUserAdapter.newInstance(
-            object : UserProfileListener {
-                override fun onClickUserProfile(position: Int) {
-                    val profile = followerProfileAdapter.getProfileAt(position)
-                    val userPrefs = Injector.userPrefs()
-                    if (profile.uid != userPrefs.userId) {
-                        navigator.openProfilePreview(true, profile.uid)
-                    }
-                }
-            }
-        )
 
         searchProfileAdapter = SearchUserAdapter.newInstance(
             object : UserProfileListener {
@@ -64,26 +53,31 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             }
         )
 
-        globalPostsAdapter = SearchPostAdapter.newInstance(
-            object : SearchPostListener {
-                override fun onPostClicked(position: Int) {
-                    val post = globalPostsAdapter.getPostAt(position)
-                    val userPrefs = Injector.userPrefs()
-                    if (post.uid != userPrefs.userId) {
-                        navigator.openProfilePreview(true, post.uid)
-                    }
+        searchPostAdapter = SearchPostAdapter.newInstance(
+            showPostActions = false,
+            showPostProfile = true,
+            listener = object : SearchPostListener {
+                override fun onPostLongClicked(position: Int) {
+                    onClickedPost(position)
                 }
+
+                override fun onPostClicked(position: Int) {
+                    onClickedPost(position)
+                }
+
+                override fun onPostLikeClicked(position: Int) {
+                    onClickedPost(position)
+                }
+
+                override fun onPostCommentClicked(position: Int) {
+                    onClickedPost(position)
+                }
+
             }
         )
 
-        container_following.visibility = View.VISIBLE
         container_search.visibility = View.GONE
         container_search_post.visibility = View.GONE
-
-        list_following_users.run {
-            layoutManager = LinearLayoutManager(attachedContext)
-            adapter = followerProfileAdapter
-        }
 
         list_sort_users.run {
             layoutManager = LinearLayoutManager(attachedContext)
@@ -92,7 +86,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
 
         list_search_post.run {
             layoutManager = LinearLayoutManager(attachedContext)
-            adapter = globalPostsAdapter
+            adapter = searchPostAdapter
         }
 
         edit_search_user_name.run {
@@ -119,6 +113,11 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             onCheckUpdate(buttonView, isChecked)
         }
 
+    }
+
+    private fun onClickedPost(position: Int) {
+        val post = searchPostAdapter.getPostAt(position)
+        navigator.openProfilePreview(true, post.uid)
     }
 
     private fun onCheckUpdate(view: View, isChecked: Boolean) {
@@ -151,21 +150,17 @@ class SearchFragment : BaseFragment(), SearchContract.View {
             && !chip_sort_name.isChecked
             && !chip_sort_location.isChecked
         ) {
-            container_following.visibility = View.VISIBLE
             container_search.visibility = View.GONE
             container_search_post.visibility = View.GONE
-            controller.getUserFollowers()
             edit_search_user_name.hint = "Search user"
             controller.searchType(AppConst.SEARCH_FILTER_NONE)
         } else {
             if (chip_sort_location.isChecked) {
                 container_search_post.visibility = View.VISIBLE
-                container_following.visibility = View.GONE
                 container_search.visibility = View.GONE
 
             } else {
                 container_search_post.visibility = View.GONE
-                container_following.visibility = View.GONE
                 container_search.visibility = View.VISIBLE
             }
 
@@ -174,15 +169,11 @@ class SearchFragment : BaseFragment(), SearchContract.View {
     }
 
     override fun updatePostList(postList: List<Post>) {
-        globalPostsAdapter.submitList(postList)
+        searchPostAdapter.submitList(postList)
     }
 
     override fun updateSearchList(userList: List<User>) {
         searchProfileAdapter.submitList(userList)
-    }
-
-    override fun updateFollowingList(userList: List<User>) {
-        followerProfileAdapter.submitList(userList)
     }
 
     override fun listScrollToTop() {

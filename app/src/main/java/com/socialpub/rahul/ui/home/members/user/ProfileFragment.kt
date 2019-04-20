@@ -55,6 +55,18 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
         publishedPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
+                override fun onPostLongClicked(position: Int) {
+
+                }
+
+                override fun onPostLikeClicked(position: Int) {
+
+                }
+
+                override fun onPostCommentClicked(position: Int) {
+
+                }
+
                 override fun onPostClicked(position: Int) {
                     val post = publishedPostAdapter.getPostAt(position)
                     navigator.openPostPreview(true, post.postId, "")

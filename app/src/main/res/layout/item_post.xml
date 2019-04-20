@@ -94,6 +94,7 @@
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/container_post_actions"
                 android:orientation="horizontal"
                 android:weightSum="1"
                 android:layout_width="match_parent"

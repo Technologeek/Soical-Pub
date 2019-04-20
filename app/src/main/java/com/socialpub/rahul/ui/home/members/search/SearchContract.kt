@@ -10,14 +10,12 @@ interface SearchContract {
         fun attachActions()
         fun updateSearchList(userList: List<User>)
         fun updatePostList(postList: List<Post>)
-        fun updateFollowingList(userList: List<User>)
         fun listScrollToTop()
     }
 
     interface Controller : BaseContract.Controller {
         fun searchType(searchType: Int)
         fun getResult(query: String)
-        fun getUserFollowers()
 
     }
 

@@ -71,7 +71,6 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/container_search"
-            android:background="@android:color/holo_green_light"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -92,36 +91,15 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/container_following"
-            android:background="@android:color/holo_orange_dark"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:padding="8dp"
-                android:text="You are following"
-                android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/list_following_users"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/container_search_post"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/pub_text_color_primary_light"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:padding="8dp"
+                android:textColor="@color/white"
                 android:text="Post search result"
                 android:textStyle="bold"
                 android:textSize="14sp"
