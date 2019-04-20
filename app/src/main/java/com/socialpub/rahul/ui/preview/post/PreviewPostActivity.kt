@@ -6,12 +6,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
+import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
+import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
+import com.socialpub.rahul.ui.home.members.search.adapter.UserProfileListener
+import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationAdapter
+import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationListener
 import com.socialpub.rahul.ui.preview.post.adapter.CommentProfileListener
 import com.socialpub.rahul.ui.preview.post.adapter.CommentsAdapter
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_post.*
-import kotlinx.android.synthetic.main.item_search_post.*
+import kotlinx.android.synthetic.main.item_post.*
 import java.text.DateFormat
 
 class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
@@ -21,37 +26,67 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
 
 
     lateinit var controller: PreviewPostController
+    lateinit var navigator: Navigator
 
     override fun setup() {
+        initToolbar()
+
+        navigator = Navigator(0, this)
         controller = PreviewPostController(this)
         controller.onStart()
     }
 
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var likeAdapter: SearchUserAdapter
 
     override fun attachActions() {
 
         val postId: String? = intent?.extras?.getString("postId")
         val enableDelete: Boolean = intent?.extras?.getBoolean("enableDelete", false) ?: false
 
-        btn_close.setOnClickListener {
-            finish()
-        }
+        btn_like.visibility = View.GONE
+        btn_comments.visibility = View.GONE
+        container_view_liked_by.visibility = View.VISIBLE
+        container_view_comments.visibility = View.GONE
 
-        commentsAdapter = CommentsAdapter.newInstance(
-            object : CommentProfileListener {
-                override fun onClickCommentProfile(position: Int) {
-
+        likeAdapter = SearchUserAdapter.newInstance(
+            object : UserProfileListener {
+                override fun onClickUserProfile(position: Int) {
+                    val profile = likeAdapter.getProfileAt(position)
+                    navigator.openProfilePreview(true, profile.uid)
                 }
             }
         )
 
+        commentsAdapter = CommentsAdapter.newInstance(
+            object : CommentProfileListener {
+                override fun onClickCommentProfile(position: Int) {
+                    val profile = commentsAdapter.getProfileAt(position)
+                    navigator.openProfilePreview(true, profile.uid)
+                }
+            }
+        )
+
+
+        list_likedby.run {
+            layoutManager = LinearLayoutManager(this@PreviewPostActivity)
+            adapter = likeAdapter
+        }
 
         list_comments.run {
             layoutManager = LinearLayoutManager(this@PreviewPostActivity)
             adapter = commentsAdapter
         }
 
+        btn_view_like.setOnClickListener {
+            container_view_liked_by.visibility = View.VISIBLE
+            container_view_comments.visibility = View.GONE
+        }
+
+        btn_view_comments.setOnClickListener {
+            container_view_liked_by.visibility = View.GONE
+            container_view_comments.visibility = View.VISIBLE
+        }
 
         if (!enableDelete) {
 
@@ -118,18 +153,18 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
                 .load(userAvatar)
                 .placeholder(R.mipmap.ic_launcher_round)
                 .transform(CropCircleTransformation())
-                .into(image_publisher_post_avatar)
+                .into(image_post_publisher_avatar)
 
             Picasso.get()
                 .load(imageUrl)
                 .placeholder(R.drawable.ic_empty_image)
-                .into(image_published_post_preview)
+                .into(image_post_preview)
 
-            text_publisher_user_name.text = username
-            text_published_post_location.text = location.name
+            text_user_name.text = username
+            text_post_location.text = location.name
             val date = DateFormat.getInstance().format(timestamp)
-            text_published_post_date.text = date
-            text_published_post_caption.text = caption
+            text_post_date.text = date
+            text_post_caption.text = caption
             commentsAdapter.submitList(comments)
         }
     }
@@ -153,5 +188,18 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
     override fun dissmissDialog() {
         finish()
     }
+
+    private fun initToolbar() = setSupportActionBar(toolbar_post).let {
+        with(requireNotNull(supportActionBar)) {
+            setDefaultDisplayHomeAsUpEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
 
 }

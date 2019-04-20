@@ -103,7 +103,17 @@ class PostController(
                     val globalPost = it.toObject(Post::class.java)
 
                     globalPost?.let {
+
+                        likedBy.forEach { like ->
+                            if (like.uid == userPrefs.userId) {
+                                view.onError("You have already liked the post")
+                                view.hideLoading()
+                                return@addOnSuccessListener
+                            }
+                        }
+
                         val likers = it.likedBy.toMutableList()
+
                         likers.add(
                             Like(
                                 uid = userPrefs.userId,
