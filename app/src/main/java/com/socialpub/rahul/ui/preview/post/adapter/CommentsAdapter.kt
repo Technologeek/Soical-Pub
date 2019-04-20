@@ -54,6 +54,7 @@ class CommentsAdapter private constructor(
             Timber.e(Gson().toJson(comment))
 
             text_CommentMessage.text = comment.text
+            text_comment_user_name.text = comment.userName
             if (!comment.userAvatar.isNullOrBlank()) {
                 Picasso.get()
                     .load(comment.userAvatar)
@@ -72,6 +73,7 @@ class CommentsAdapter private constructor(
         view: View
     ) : RecyclerView.ViewHolder(view) {
         val text_CommentMessage = view.text_comment_message
+        val text_comment_user_name = view.text_comment_user_name
         val image_CommentAvatar = view.image_comment_avatar
         val container_Comment = view.container_comments
     }

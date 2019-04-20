@@ -6,13 +6,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
-import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
-import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.UserProfileListener
-import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationAdapter
-import com.socialpub.rahul.ui.preview.notifications.adapter.NotificationListener
 import com.socialpub.rahul.ui.preview.post.adapter.CommentProfileListener
 import com.socialpub.rahul.ui.preview.post.adapter.CommentsAdapter
+import com.socialpub.rahul.ui.preview.post.adapter.LikedeByAdapter
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_post.*
@@ -37,7 +34,7 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
     }
 
     private lateinit var commentsAdapter: CommentsAdapter
-    private lateinit var likeAdapter: SearchUserAdapter
+    private lateinit var likeAdapter: LikedeByAdapter
 
     override fun attachActions() {
 
@@ -48,8 +45,9 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
         btn_comments.visibility = View.GONE
         container_view_liked_by.visibility = View.VISIBLE
         container_view_comments.visibility = View.GONE
+        container_edit_comment.visibility = View.GONE
 
-        likeAdapter = SearchUserAdapter.newInstance(
+        likeAdapter = LikedeByAdapter.newInstance(
             object : UserProfileListener {
                 override fun onClickUserProfile(position: Int) {
                     val profile = likeAdapter.getProfileAt(position)
@@ -81,11 +79,13 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
         btn_view_like.setOnClickListener {
             container_view_liked_by.visibility = View.VISIBLE
             container_view_comments.visibility = View.GONE
+            container_edit_comment.visibility = View.GONE
         }
 
         btn_view_comments.setOnClickListener {
             container_view_liked_by.visibility = View.GONE
             container_view_comments.visibility = View.VISIBLE
+            container_edit_comment.visibility = View.VISIBLE
         }
 
         if (!enableDelete) {
@@ -165,7 +165,10 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
             val date = DateFormat.getInstance().format(timestamp)
             text_post_date.text = date
             text_post_caption.text = caption
+            text_comment_count.text = "Comments (${comments.size}) :"
             commentsAdapter.submitList(comments)
+            text_like_count.text = "Liked by (${likedBy.size}) :"
+            likeAdapter.submitList(likedBy)
         }
     }
 

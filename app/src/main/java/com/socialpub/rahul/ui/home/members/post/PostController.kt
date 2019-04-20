@@ -118,7 +118,8 @@ class PostController(
                             Like(
                                 uid = userPrefs.userId,
                                 username = userPrefs.displayName,
-                                userAvatar = userPrefs.avatarUrl
+                                userAvatar = userPrefs.avatarUrl,
+                                userEmail = userPrefs.email
                             )
                         )
                         val newPost = globalPost.copy(

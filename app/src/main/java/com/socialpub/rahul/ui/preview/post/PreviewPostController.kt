@@ -145,6 +145,7 @@ class PreviewPostController(
             val newComment = Comment(
                 uid = userPrefs.userId,
                 userAvatar = userPrefs.avatarUrl,
+                userName = userPrefs.displayName,
                 text = text
             )
 
@@ -185,6 +186,7 @@ class PreviewPostController(
             val newComment = Comment(
                 uid = userPrefs.userId,
                 userAvatar = userPrefs.avatarUrl,
+                userName = userPrefs.displayName,
                 text = text
             )
 
