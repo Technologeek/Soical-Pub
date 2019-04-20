@@ -120,8 +120,8 @@ class HomeActivity : BaseActivity(), NavController {
         navigator.openMapLocation(post.postId)
     }
 
-    override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String) {
-        navigator.openProfilePreview(showFollow, PreviewUserId)
+    override fun openProfilePreview(showFollow: Boolean, PreviewUserId: String,fromSearchResults:Boolean) {
+        navigator.openProfilePreview(showFollow, PreviewUserId , fromSearchResults)
     }
 
     override fun openPostPreview(enableDelete: Boolean, PreviewPostId: String, PreviewUserId: String) {

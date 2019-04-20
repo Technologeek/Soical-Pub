@@ -8,8 +8,6 @@ import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.di.Injector
-import com.socialpub.rahul.ui.home.members.post.adapter.GlobalPostAdapter
-import com.socialpub.rahul.ui.home.members.post.adapter.PostClickListener
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchUserAdapter
@@ -117,29 +115,33 @@ class SearchFragment : BaseFragment(), SearchContract.View {
 
     private fun onClickedPost(position: Int) {
         val post = searchPostAdapter.getPostAt(position)
-        navigator.openProfilePreview(true, post.uid)
+        navigator.openProfilePreview(true, post.uid, true)
     }
 
     private fun onCheckUpdate(view: View, isChecked: Boolean) {
+
+        searchProfileAdapter.submitList(emptyList())
+        edit_search_user_name.text?.clear()
+        til_error.error = " "
 
         when (view.id) {
             R.id.chip_sort_email -> {
                 controller.searchType(AppConst.SEARCH_FILTER_EMAIL)
                 chip_sort_name.isChecked = false
                 chip_sort_location.isChecked = false
-                edit_search_user_name.hint = "Search user by email"
+                til_error.hint = "Search user by email"
             }
             R.id.chip_sort_name -> {
                 controller.searchType(AppConst.SEARCH_FILTER_NAME)
                 chip_sort_email.isChecked = false
                 chip_sort_location.isChecked = false
-                edit_search_user_name.hint = "Search user by name"
+                til_error.hint = "Search user by name"
             }
             R.id.chip_sort_location -> {
                 controller.searchType(AppConst.SEARCH_FILTER_LOCATION)
                 chip_sort_email.isChecked = false
                 chip_sort_name.isChecked = false
-                edit_search_user_name.hint = "Search user by Post location"
+                til_error.hint = "Search user by Post location"
             }
             else -> {
             }
@@ -186,6 +188,7 @@ class SearchFragment : BaseFragment(), SearchContract.View {
 
     override fun onError(message: String) {
         toast(message)
+        til_error.error = message
     }
 
     companion object {

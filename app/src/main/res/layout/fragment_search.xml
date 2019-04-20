@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
-        android:background="@color/background"
+        android:background="@color/pub_text_color_primary_light"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.home.members.search.SearchFragment">
@@ -16,30 +16,17 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_margin="@dimen/module_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                    android:layout_marginTop="16dp"
-                    android:maxLines="1"
-                    android:maxLength="200"
-                    android:id="@+id/edit_search_user_name"
-                    android:foregroundTint="@color/white"
-                    android:hint="Search user"
-                    android:textColorHint="@color/white"
-                    android:textColor="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
             <com.google.android.material.chip.ChipGroup
-                    android:paddingBottom="4dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.chip.Chip
                         android:id="@+id/chip_sort_name"
+                        android:background="@color/background"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -47,6 +34,7 @@
 
                 <com.google.android.material.chip.Chip
                         android:id="@+id/chip_sort_email"
+                        android:background="@color/background"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -54,6 +42,7 @@
 
                 <com.google.android.material.chip.Chip
                         android:id="@+id/chip_sort_location"
+                        android:background="@color/background"
                         style="@style/Widget.MaterialComponents.Chip.Filter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -68,6 +57,20 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_error"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search name">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_search_user_name"
+                android:layout_width="match_parent"
+                android:inputType="text"
+                android:layout_height="wrap_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/container_search"
@@ -77,6 +80,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:padding="8dp"
+                android:textColor="@color/white"
                 android:text="Search result"
                 android:textStyle="bold"
                 android:textSize="14sp"
@@ -91,8 +95,8 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
+            android:weightSum="1"
             android:id="@+id/container_search_post"
-            android:background="@color/pub_text_color_primary_light"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -110,6 +114,7 @@
                 android:id="@+id/list_search_post"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

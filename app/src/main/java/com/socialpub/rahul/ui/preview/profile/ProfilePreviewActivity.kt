@@ -34,7 +34,6 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
     private lateinit var searchPostAdapter: SearchPostAdapter
 
     override fun attachActions() {
-
         val showFollow = intent?.getBooleanExtra("showFollow", true) ?: true
 
         if (showFollow) {
@@ -99,6 +98,15 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
 
     override fun updateUserPreview(user: User) {
         with(user) {
+
+            val fromSearch = intent?.extras?.getBoolean("fromSearchResults") ?: false
+
+            if (fromSearch && !isVisibletoLocationSearch) {
+                toast("User is not Visible to Public Search")
+                finish()
+            }
+
+
             Picasso.get()
                 .load(avatar)
                 .placeholder(R.mipmap.ic_launcher_round)

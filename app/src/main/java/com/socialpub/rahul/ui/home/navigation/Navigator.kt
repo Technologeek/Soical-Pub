@@ -54,10 +54,11 @@ class Navigator(
         activity.startActivity(Intent(activity, SettingsActivity::class.java))
     }
 
-    fun openProfilePreview(showFollow: Boolean, PreviewUserId: String) {
+    fun openProfilePreview(showFollow: Boolean, PreviewUserId: String, fromSearchResults: Boolean) {
         activity.startActivity(Intent(activity, ProfilePreviewActivity::class.java).also {
             it.putExtra("showFollow", showFollow)
             it.putExtra("userId", PreviewUserId)
+            it.putExtra("fromSearchResults", fromSearchResults)
         })
     }
 

@@ -62,17 +62,28 @@ class SearchController(private val view: SearchContract.View) : SearchContract.C
 
     private fun getSearchResult(type: String, query: String) {
 
-        val userProfiles = arrayListOf<User>()
+        val userNameProfiles = arrayListOf<User>()
+        val userEmailProfiles = arrayListOf<User>()
 
         userSource.getAllProfiles().addOnSuccessListener { querySnapshot ->
             querySnapshot?.apply {
                 forEach { queryDocument ->
                     if (queryDocument.get(type).toString().contains(query, true)) {
                         val userProfile = queryDocument.toObject(User::class.java)
-                        userProfiles.add(userProfile)
-                        view.updateSearchList(userProfiles)
+                        if (type.equals("username")){
+                            userNameProfiles.add(userProfile)
+                            view.updateSearchList(userNameProfiles)
+                        }
+
+                        if (type.equals("email") && userProfile.isVisibletoEmailSearch) {
+                            userEmailProfiles.add(userProfile)
+                            view.updateSearchList(userEmailProfiles)
+                        }
+
                     }
                 }
+
+
             } ?: kotlin.run {
                 view.onError("No results...")
                 Timber.e("empty")

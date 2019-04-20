@@ -56,5 +56,4 @@ class UserSource private constructor(private val firebaseManager: FirebaseManage
         .document(uid)
 
 
-
 }
