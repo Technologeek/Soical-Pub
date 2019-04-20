@@ -25,7 +25,7 @@ class SearchPostAdapter private constructor(
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Post>() {
-            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.postId == newItem.postId
+            override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
 
             override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
                 return (oldItem.postId == newItem.postId &&
@@ -40,6 +40,7 @@ class SearchPostAdapter private constructor(
                         oldItem.likeCount == newItem.likeCount &&
                         oldItem.commentCount == newItem.commentCount &&
                         oldItem.timestamp == newItem.timestamp &&
+                        oldItem.reported == newItem.reported &&
                         oldItem.imageUrl == newItem.imageUrl)
             }
         }

@@ -106,18 +106,6 @@
     <androidx.recyclerview.widget.RecyclerView
             android:background="@color/pub_text_color_primary_light"
             android:id="@+id/list_profile_published_post"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingBottom="8dp"
-            android:background="@android:color/holo_orange_dark"
-            android:id="@+id/list_profile_liked_post"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

@@ -9,7 +9,6 @@ interface ProfileContract {
     interface View : BaseContract.View {
         fun attachActions()
         fun updatePublishList(postList: List<Post>)
-        fun updateLikedList(postList: List<Post>)
         fun updateProfileInfo(profile: User)
         fun listScrollToTop()
     }
@@ -18,10 +17,8 @@ interface ProfileContract {
         fun startProfileObserving(uId: String)
         fun startObservingPublishedPost()
         fun stopObservingPublishedPost()
-        fun startObservingLikedPost()
         fun stopProfileObserving()
-        fun stopObservingLikedPost()
-        fun deleteLikedPost(post: Post?)
+        fun deletePublishedPost(postID:String)
     }
 
 }

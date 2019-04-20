@@ -1,7 +1,9 @@
 package com.socialpub.rahul.ui.home.members.user
 
 
+import android.content.DialogInterface
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
@@ -9,9 +11,8 @@ import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
-import com.socialpub.rahul.ui.home.members.user.adapter.LikePostAdapter
-import com.socialpub.rahul.ui.home.members.user.adapter.LikePostListener
 import com.socialpub.rahul.ui.home.navigation.NavController
+import com.socialpub.rahul.utils.AppConst
 import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
@@ -34,23 +35,21 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     lateinit var publishedPostAdapter: SearchPostAdapter
-    lateinit var likedPostAdapter: LikePostAdapter
 
     override fun attachActions() {
-
-        list_profile_published_post.visibility = View.VISIBLE
-        list_profile_liked_post.visibility = View.GONE
 
         btn_profile_user_post.setOnClickListener {
             listScrollToTop()
             list_profile_published_post.visibility = View.VISIBLE
-            list_profile_liked_post.visibility = View.GONE
         }
 
         publishedPostAdapter = SearchPostAdapter.newInstance(
-            object : SearchPostListener {
+            showPostActions = false,
+            showPostProfile = false,
+            listener = object : SearchPostListener {
                 override fun onPostLongClicked(position: Int) {
-
+                    val post = publishedPostAdapter.getPostAt(position)
+                    showOptionsDialog(post)
                 }
 
                 override fun onPostLikeClicked(position: Int) {
@@ -73,26 +72,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             adapter = publishedPostAdapter
         }
 
-
-        likedPostAdapter = LikePostAdapter.newInstance(
-            object : LikePostListener {
-                override fun onPostPreviewCicked(position: Int) {
-                    val post = likedPostAdapter.getPostAt(position)
-                    navigator.openPostPreview(false, post.postId, post.uid)
-                }
-
-                override fun onPostDelete(position: Int) {
-                    val post = likedPostAdapter.getPostAt(position)
-                    controller.deleteLikedPost(post)
-                }
-            }
-        )
-
-        list_profile_liked_post.run {
-            layoutManager = LinearLayoutManager(attachedContext)
-            adapter = likedPostAdapter
-        }
-
     }
 
     override fun updateProfileInfo(profile: User) {
@@ -109,18 +88,18 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             .into(image_profile_avatar)
     }
 
-    override fun updateLikedList(postList: List<Post>) {
-        likedPostAdapter.submitList(postList)
-    }
 
     override fun updatePublishList(postList: List<Post>) {
-        publishedPostAdapter.submitList(postList)
+        publishedPostAdapter.submitList(postList) {
+            if (postList.isEmpty()) {
+                publishedPostAdapter.notifyDataSetChanged()
+            }
+        }
     }
 
     override fun listScrollToTop() {
         Completable.timer(300, TimeUnit.MILLISECONDS)
             .subscribe {
-                list_profile_liked_post.smoothScrollToPosition(0)
                 list_profile_published_post.smoothScrollToPosition(0)
             }
     }
@@ -135,7 +114,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        controller.stopObservingLikedPost()
         controller.stopObservingPublishedPost()
         controller.stopProfileObserving()
     }
@@ -143,4 +121,21 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     companion object {
         fun newInstance() = ProfileFragment()
     }
+
+    private fun showOptionsDialog(post: Post) {
+        val items = arrayOf<String>("View location", "Delete")
+        val builder = AlertDialog.Builder(attachedContext)
+        builder.setTitle("Post Options")
+        builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
+            when (itemPos) {
+                AppConst.USER_PROFILE_VIEW_MAP -> navigator.openPostLocationOnMap(post)
+                AppConst.USER_PROFILE_DELETE -> controller.deletePublishedPost(post.postId)
+                else -> {
+                }
+            }
+        })
+        val alert = builder.create()
+        if (isVisible) alert.show()
+    }
+
 }

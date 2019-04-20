@@ -26,5 +26,6 @@ object AppConst {
     const val PROFILE_PREVIEW_VIEW_MAP = 1
     const val PROFILE_PREVIEW_REPORT = 2
 
-
+    const val USER_PROFILE_VIEW_MAP = 0
+    const val USER_PROFILE_DELETE = 1
 }

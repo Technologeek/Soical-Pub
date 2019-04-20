@@ -30,7 +30,6 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
         )
         startProfileObserving(userPrefs.userId)
         startObservingPublishedPost()
-        startObservingLikedPost()
     }
 
     private var profileListener: ListenerRegistration? = null
@@ -78,8 +77,8 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
                     querySnapshot.forEach { queryDocument ->
                         val post = queryDocument.toObject(Post::class.java)
                         updatePostList.add(post)
-                        view.updatePublishList(updatePostList)
                     }
+                    view.updatePublishList(updatePostList)
                 }
             }
 
@@ -89,50 +88,25 @@ class ProfileController(private val view: ProfileContract.View) : ProfileContrac
         publishPostListener?.remove()
     }
 
-    private var likedPostListener: ListenerRegistration? = null
-    override fun startObservingLikedPost() {
-        likedPostListener = userSource.observeUserLikedPost(userPrefs.userId)
-            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-
-                if (firebaseFirestoreException != null) {
-                    view.onError("Post not available...try again later")
-                    Timber.e(firebaseFirestoreException)
-                    return@addSnapshotListener
-                }
-
-                if (querySnapshot != null) {
-
-                    val updatePostList = arrayListOf<Post>()
-                    querySnapshot.forEach { queryDocument ->
-                        val post = queryDocument.toObject(Post::class.java)
-                        Timber.e(post.toString())
-                        updatePostList.add(post)
-                        view.updateLikedList(updatePostList)
-                    }
-                }
+    override fun deletePublishedPost(postID: String) {
+        view.showLoading("Deleting...")
+        postSource.deleteUserPost(postID, userPrefs.userId)
+            .addOnSuccessListener {
+                deleteGlobalPost(postID)
+            }.addOnFailureListener {
+                view.hideLoading()
+                view.onError("Post deleting failed...")
+                Timber.e(it.localizedMessage)
             }
     }
 
-    override fun stopObservingLikedPost() {
-        likedPostListener?.remove()
-    }
-
-    override fun deleteLikedPost(post: Post?) {
-        view.showLoading("Deleting...")
-
-        post?.run {
-            postSource.deleteLikedPost(post.postId, userPrefs.userId)
-                .addOnSuccessListener {
-                    view.onError("Post deleted...")
-                    view.hideLoading()
-                }.addOnFailureListener {
-                    view.hideLoading()
-                    view.onError("Woops..failed to delete")
-                    Timber.e(it.localizedMessage)
-                }
-
+    private fun deleteGlobalPost(postId: String) {
+        postSource.deleteGlobalPost(postId).addOnSuccessListener {
+            view.hideLoading()
+            view.onError("Post deleted...")
+        }.addOnFailureListener {
+            view.hideLoading()
+            Timber.e(it.localizedMessage)
         }
     }
-
-
 }
