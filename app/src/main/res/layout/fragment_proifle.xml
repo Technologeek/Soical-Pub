@@ -1,41 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
-        android:orientation="vertical"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:background="@color/background"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto" tools:context=".ui.home.members.user.ProfileFragment">
+        android:layout_height="match_parent" tools:context=".ui.home.members.user.ProfileFragment">
 
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-            android:background="@color/white"
-            android:padding="8dp"
-            android:orientation="horizontal"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="130dp">
+
+        <FrameLayout
+                android:background="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:src="@mipmap/ic_launcher_round"
-                android:layout_margin="8dp"
+                android:layout_marginTop="@dimen/module_4"
+                android:layout_marginStart="@dimen/module_3"
                 android:layout_width="84dp"
                 android:id="@+id/image_profile_avatar"
-                android:layout_gravity="center_vertical"
                 android:layout_height="84dp"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+
+        <LinearLayout
+                android:layout_marginEnd="@dimen/module_2"
+                android:layout_marginTop="65dp"
+                android:layout_marginStart="128dp"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_marginTop="4dp"
                     android:id="@+id/text_profile_user_name"
                     tools:text="User Name"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/font_body_3"
                     android:gravity="center"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
@@ -45,27 +48,43 @@
                     android:id="@+id/text_profile_user_email"
                     tools:text="email"
                     android:gravity="center"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/font_caption_1"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <com.google.android.material.button.MaterialButton
-                    android:layout_marginTop="8dp"
-                    android:id="@+id/btn_edit_profile"
-                    style="@style/Widget.MaterialComponents.Button.Icon"
-                    app:icon="@drawable/ic_edit"
-                    android:layout_gravity="center"
-                    android:text="Edit Profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+    </FrameLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:background="@color/white"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/text_followers"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_gravity="center"
+                tools:text="1000\nfollowers"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/text_following"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_gravity="center"
+                tools:text="1000\nfollowing"
+                android:layout_weight="0.5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.LinearLayoutCompat
-            android:weightSum="1"
             android:background="@color/white"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -76,25 +95,16 @@
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_gravity="center"
                 android:text="Your Post"
-                android:layout_weight="0.5"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"/>
-
-
-        <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_profile_liked_post"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:layout_gravity="center"
-                android:text="Favourite Post"
-                android:layout_weight="0.5"
-                android:layout_width="0dp"
+                android:backgroundTint="@color/pub_color_accent"
+                android:textColor="@color/white"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     <androidx.recyclerview.widget.RecyclerView
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/pub_text_color_primary_light"
             android:id="@+id/list_profile_published_post"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"

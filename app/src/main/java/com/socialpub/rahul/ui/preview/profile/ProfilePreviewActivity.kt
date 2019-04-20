@@ -106,7 +106,6 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
                 finish()
             }
 
-
             Picasso.get()
                 .load(avatar)
                 .placeholder(R.mipmap.ic_launcher_round)

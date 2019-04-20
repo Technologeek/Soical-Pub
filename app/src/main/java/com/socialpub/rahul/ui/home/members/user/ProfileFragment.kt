@@ -47,12 +47,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
             list_profile_liked_post.visibility = View.GONE
         }
 
-        btn_profile_liked_post.setOnClickListener {
-            listScrollToTop()
-            list_profile_published_post.visibility = View.GONE
-            list_profile_liked_post.visibility = View.VISIBLE
-        }
-
         publishedPostAdapter = SearchPostAdapter.newInstance(
             object : SearchPostListener {
                 override fun onPostLongClicked(position: Int) {
@@ -102,6 +96,9 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
     }
 
     override fun updateProfileInfo(profile: User) {
+
+        text_followers.text = "${profile.followedBy.size}\nfollowers"
+        text_following.text = "${profile.following.size}\nfollowing"
 
         text_profile_user_name.text = profile.username
         text_profile_user_email.text = profile.email
