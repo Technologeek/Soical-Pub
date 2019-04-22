@@ -83,6 +83,7 @@ dependencies {
     testImplementation "io.mockk:mockk:1.9"
     testImplementation "org.robolectric:robolectric:4.0"
     androidTestImplementation 'androidx.test:rules:1.2.0-alpha04'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
 
 }
 

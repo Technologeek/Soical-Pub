@@ -22,43 +22,18 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class HomeNaviagtionScreenTest {
+class HomeNavigationTest {
 
     @Rule
     @JvmField
     var mActivityTestRule = ActivityTestRule(OnboardingActivity::class.java)
 
     @Test
-    fun appScreenTest() {
-        val appCompatButton = onView(
-            allOf(
-                withId(R.id.btn_google_signin), withText("SignIn with google"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.screen_onboarding),
-                        0
-                    ),
-                    2
-                ),
-                isDisplayed()
-            )
-        )
-        appCompatButton.perform(click())
-
-        val bottomNavigationItemView = onView(
-            allOf(
-                withId(R.id.action_home), withContentDescription("Home"),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.bottom_nave_home),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        bottomNavigationItemView.perform(click())
+    fun homeNavigationTest() {
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        Thread.sleep(7000)
 
         val button = onView(
             allOf(
@@ -75,7 +50,7 @@ class HomeNaviagtionScreenTest {
         )
         button.check(matches(isDisplayed()))
 
-        val bottomNavigationItemView2 = onView(
+        val bottomNavigationItemView = onView(
             allOf(
                 withId(R.id.action_search), withContentDescription("Search"),
                 childAtPosition(
@@ -88,7 +63,7 @@ class HomeNaviagtionScreenTest {
                 isDisplayed()
             )
         )
-        bottomNavigationItemView2.perform(click())
+        bottomNavigationItemView.perform(click())
 
         val chip = onView(
             allOf(
@@ -105,22 +80,7 @@ class HomeNaviagtionScreenTest {
         )
         chip.check(matches(isDisplayed()))
 
-        val chip2 = onView(
-            allOf(
-                withId(R.id.chip_sort_name),
-                childAtPosition(
-                    childAtPosition(
-                        IsInstanceOf.instanceOf(androidx.appcompat.widget.LinearLayoutCompat::class.java),
-                        0
-                    ),
-                    0
-                ),
-                isDisplayed()
-            )
-        )
-        chip2.check(matches(isDisplayed()))
-
-        val bottomNavigationItemView3 = onView(
+        val bottomNavigationItemView2 = onView(
             allOf(
                 withId(R.id.action_profile), withContentDescription("Profile"),
                 childAtPosition(
@@ -133,7 +93,7 @@ class HomeNaviagtionScreenTest {
                 isDisplayed()
             )
         )
-        bottomNavigationItemView3.perform(click())
+        bottomNavigationItemView2.perform(click())
 
         val imageView = onView(
             allOf(

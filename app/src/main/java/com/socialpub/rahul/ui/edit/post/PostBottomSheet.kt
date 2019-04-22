@@ -149,7 +149,12 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
         )
 
         val address = locationManager.getAddressFromLocation(latLng)
-        val displayLocation = address.get(0).getAddressLine(0)
+        val displayLocation = try {
+            address.get(0).getAddressLine(0)
+        } catch (e: IndexOutOfBoundsException) {
+            Timber.e(e)
+            "Location"
+        }
         text_location_address.text = displayLocation
 
         sharingLocation = Location(latLng.latitude, latLng.longitude, displayLocation)
