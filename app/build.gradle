@@ -13,7 +13,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
     buildTypes {
         release {
@@ -77,14 +76,13 @@ dependencies {
     //junit 4
     implementation 'com.google.android.material:material:1.1.0-alpha05'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha04'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha04'
 
     //test libs
     testImplementation "io.mockk:mockk:1.9"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:5.4.0"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.4.0"
     testImplementation "org.robolectric:robolectric:4.0"
+    androidTestImplementation 'androidx.test:rules:1.2.0-alpha04'
 
 }
 

@@ -115,7 +115,9 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
 
         locationManager.getLastLocation()
             ?.addOnSuccessListener {
-                updateMapCamera(LatLng(it.latitude, it.longitude))
+                it?.apply {
+                    updateMapCamera(LatLng(latitude, longitude))
+                }
             }?.addOnFailureListener {
                 onError("Error getting location...Cant tag your post!")
                 Timber.e(it.localizedMessage)
