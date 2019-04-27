@@ -231,19 +231,23 @@ class PreviewPostController(
 
     //============= Notification =================//
     private fun notifyGlobalUser(globalPost: Post) {
-        val notif = Notif(
-            actionOnPostId = globalPost.postId,
-            actionByuid = userPrefs.userId,
-            actionByUsername = userPrefs.displayName,
-            actionByUserAvatar = userPrefs.avatarUrl,
-            action = AppConst.NOTIF_ACTION_COMMENT
-        )
-        notifSource.notifyUser(globalPost.uid, notif).addOnSuccessListener {
-            Timber.e("notified user success")
-            view.hideLoading()
-        }.addOnFailureListener {
-            Timber.e("notified user failed : $it")
+
+        if (userPrefs.userId != globalPost.uid) {
+            val notif = Notif(
+                actionOnPostId = globalPost.postId,
+                actionByuid = userPrefs.userId,
+                actionByUsername = userPrefs.displayName,
+                actionByUserAvatar = userPrefs.avatarUrl,
+                action = AppConst.NOTIF_ACTION_COMMENT
+            )
+            notifSource.notifyUser(globalPost.uid, notif).addOnSuccessListener {
+                Timber.e("notified user success")
+                view.hideLoading()
+            }.addOnFailureListener {
+                Timber.e("notified user failed : $it")
+            }
         }
+
     }
 
 
