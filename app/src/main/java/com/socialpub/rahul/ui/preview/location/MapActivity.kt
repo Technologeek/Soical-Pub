@@ -97,7 +97,16 @@ class MapActivity : BaseActivity(), MapContract.View {
         )
 
         val address = locationManager.getAddressFromLocation(latLng)
-        text_post_location.text = address.get(0).getAddressLine(0)
+
+
+        val displayLocation = try {
+            address.get(0).getAddressLine(0)
+        } catch (e: IndexOutOfBoundsException) {
+            Timber.e(e)
+            "Location"
+        }
+
+        text_post_location.text = displayLocation
         googleMap?.addMarker(locationManager.makeMarker(latLng))
 
     }
