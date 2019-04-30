@@ -49,6 +49,7 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatImageView
+                android:layout_marginStart="@dimen/module_1"
                 android:id="@+id/image_post_preview"
                 android:src="@mipmap/ic_launcher_round"
                 android:layout_width="160dp"

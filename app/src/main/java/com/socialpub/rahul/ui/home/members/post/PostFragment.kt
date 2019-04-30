@@ -137,7 +137,23 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
             when (itemPos) {
                 AppConst.POST_ADD_FAV -> controller.addFav(post)
-                AppConst.POST_VIEW_MAP -> navigator.openPostLocationOnMap(post)
+                AppConst.POST_VIEW_MAP -> {
+
+                    val perms =
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                    if (EasyPermissions.hasPermissions(attachedContext, *perms)) {
+                        navigator.openPostLocationOnMap(post)
+                    } else {
+                        EasyPermissions.requestPermissions(
+                            this,
+                            "Please provide location permission for tagging pictures",
+                            REQUEST_LOCATION_PERMISSION,
+                            *perms
+                        )
+                    }
+
+                }
                 AppConst.POST_REPORT -> controller.reportPost(post)
                 else -> {
                 }
