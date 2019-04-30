@@ -11,7 +11,6 @@ import com.socialpub.rahul.data.remote.firebase.sources.user.UserSource
 import com.socialpub.rahul.di.Injector
 import com.socialpub.rahul.utils.AppConst
 import timber.log.Timber
-import java.lang.NullPointerException
 
 class UserProfileController(
     private val view: UserProfileContract.View
@@ -257,45 +256,51 @@ class UserProfileController(
 
     override fun addLike(post: Post?) {
         post?.run {
-            view.showLoading("Liking...")
 
-            postSource.getGlobalPost(post.postId)
-                .addOnSuccessListener {
+            if (post.uid != userPrefs.userId) {
+                view.showLoading("Liking...")
 
-                    val globalPost = it.toObject(Post::class.java)
+                postSource.getGlobalPost(post.postId)
+                    .addOnSuccessListener {
 
-                    globalPost?.let {
+                        val globalPost = it.toObject(Post::class.java)
 
-                        likedBy.forEach { like ->
-                            if (like.uid == userPrefs.userId) {
-                                view.onError("You have already liked the post")
-                                view.hideLoading()
-                                return@addOnSuccessListener
+                        globalPost?.let {
+
+                            likedBy.forEach { like ->
+                                if (like.uid == userPrefs.userId) {
+                                    view.onError("You have already liked the post")
+                                    view.hideLoading()
+                                    return@addOnSuccessListener
+                                }
                             }
+
+                            val likers = it.likedBy.toMutableList()
+
+                            likers.add(
+                                Like(
+                                    uid = userPrefs.userId,
+                                    username = userPrefs.displayName,
+                                    userAvatar = userPrefs.avatarUrl,
+                                    userEmail = userPrefs.email
+                                )
+                            )
+                            val newPost = globalPost.copy(
+                                likedBy = likers,
+                                likeCount = likers.size.toLong()
+                            )
+                            updateGlobalLike(newPost)
                         }
 
-                        val likers = it.likedBy.toMutableList()
-
-                        likers.add(
-                            Like(
-                                uid = userPrefs.userId,
-                                username = userPrefs.displayName,
-                                userAvatar = userPrefs.avatarUrl,
-                                userEmail = userPrefs.email
-                            )
-                        )
-                        val newPost = globalPost.copy(
-                            likedBy = likers,
-                            likeCount = likers.size.toLong()
-                        )
-                        updateGlobalLike(newPost)
+                    }.addOnFailureListener {
+                        view.hideLoading()
+                        view.onError("Unable to like post")
+                        Timber.e(it.localizedMessage)
                     }
+            } else {
+                view.onError("Can't like your own post!")
+            }
 
-                }.addOnFailureListener {
-                    view.hideLoading()
-                    view.onError("Unable to like post")
-                    Timber.e(it.localizedMessage)
-                }
         }
     }
 

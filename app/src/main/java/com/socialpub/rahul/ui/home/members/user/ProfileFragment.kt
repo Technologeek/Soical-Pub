@@ -1,6 +1,7 @@
 package com.socialpub.rahul.ui.home.members.user
 
 
+import android.Manifest
 import android.content.DialogInterface
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -9,6 +10,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
+import com.socialpub.rahul.ui.edit.post.REQUEST_LOCATION_PERMISSION
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.ui.home.navigation.NavController
@@ -17,6 +19,7 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Completable
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.fragment_proifle.*
+import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.TimeUnit
 
 class ProfileFragment : BaseFragment(), ProfileContract.View {
@@ -128,7 +131,24 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         builder.setTitle("Post Options")
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
             when (itemPos) {
-                AppConst.USER_PROFILE_VIEW_MAP -> navigator.openPostLocationOnMap(post)
+
+                AppConst.USER_PROFILE_VIEW_MAP -> {
+
+                    val perms =
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                    if (EasyPermissions.hasPermissions(attachedContext, *perms)) {
+                        navigator.openPostLocationOnMap(post)
+                    } else {
+                        EasyPermissions.requestPermissions(
+                            this,
+                            "Please provide location permission for tagging pictures",
+                            REQUEST_LOCATION_PERMISSION,
+                            *perms
+                        )
+                    }
+                }
+
                 AppConst.USER_PROFILE_DELETE -> actionDelePostConfirm(post.postId)
                 else -> {
                 }
@@ -138,6 +158,10 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         if (isVisible) alert.show()
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
 
     private fun actionDelePostConfirm(postId: String) {
         val builder = AlertDialog.Builder(attachedContext)

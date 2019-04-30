@@ -52,6 +52,7 @@ class MapActivity : BaseActivity(), MapContract.View {
 
             Picasso.get()
                 .load(imageUrl)
+                .transform(CropCircleTransformation())
                 .placeholder(R.drawable.ic_empty_image)
                 .into(image_post_preview)
 

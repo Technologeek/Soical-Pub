@@ -1,5 +1,6 @@
 package com.socialpub.rahul.ui.preview.profile
 
+import android.Manifest
 import android.content.DialogInterface
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -9,12 +10,14 @@ import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
 import com.socialpub.rahul.data.model.User
 import com.socialpub.rahul.di.Injector
+import com.socialpub.rahul.ui.edit.post.REQUEST_LOCATION_PERMISSION
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostAdapter
 import com.socialpub.rahul.ui.home.members.search.adapter.SearchPostListener
 import com.socialpub.rahul.utils.AppConst
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.CropCircleTransformation
 import kotlinx.android.synthetic.main.bottom_sheet_preview_proifle.*
+import pub.devrel.easypermissions.EasyPermissions
 
 class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
 
@@ -155,7 +158,25 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
             when (itemPos) {
                 AppConst.PROFILE_PREVIEW_ADD_FAV -> controller.addFav(post)
-                AppConst.PROFILE_PREVIEW_VIEW_MAP -> navigator.openMapLocation(post.postId)
+                AppConst.PROFILE_PREVIEW_VIEW_MAP -> {
+
+                    val perms =
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                    if (EasyPermissions.hasPermissions(this@ProfilePreviewActivity, *perms)) {
+                        navigator.openMapLocation(post.postId)
+                    } else {
+                        EasyPermissions.requestPermissions(
+                            this,
+                            "Please provide location permission for tagging pictures",
+                            REQUEST_LOCATION_PERMISSION,
+                            *perms
+                        )
+                    }
+
+                }
+
+
                 AppConst.PROFILE_PREVIEW_REPORT -> controller.reportPost(post)
                 else -> {
                 }
@@ -165,5 +186,9 @@ class ProfilePreviewActivity : BaseActivity(), UserProfileContract.View {
         if (!isFinishing) alert.show()
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
 
 }

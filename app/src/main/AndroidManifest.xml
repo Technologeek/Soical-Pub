@@ -15,24 +15,38 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".ui.preview.post.PreviewPostActivity">
-        </activity>
-        <activity android:name=".ui.preview.location.MapActivity">
-        </activity>
-        <activity android:name=".ui.preview.profile.ProfilePreviewActivity">
-        </activity>
-        <activity android:name=".ui.settings.SettingsActivity">
-        </activity>
-        <activity android:name=".ui.edit.profile.EditProfileActivity">
-        </activity>
-        <activity android:name=".ui.preview.notifications.NotificationsActivity">
-        </activity>
-        <activity android:name=".ui.edit.followers.FollowersActivity">
-        </activity>
-        <activity android:name=".ui.edit.favourites.FavPostActivity">
-        </activity>
-        <activity android:name=".ui.navigation.FollowerActivity">
-        </activity>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.preview.post.PreviewPostActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.preview.location.MapActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.preview.profile.ProfilePreviewActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.settings.SettingsActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.edit.profile.EditProfileActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.preview.notifications.NotificationsActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.edit.followers.FollowersActivity"/>
+
+        <activity
+                android:screenOrientation="portrait"
+                android:name=".ui.edit.favourites.FavPostActivity"/>
 
         <meta-data
                 android:name="com.google.android.gms.version"

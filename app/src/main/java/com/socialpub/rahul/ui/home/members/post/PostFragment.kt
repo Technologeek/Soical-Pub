@@ -137,7 +137,23 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
         builder.setItems(items, DialogInterface.OnClickListener { dialog, itemPos ->
             when (itemPos) {
                 AppConst.POST_ADD_FAV -> controller.addFav(post)
-                AppConst.POST_VIEW_MAP -> navigator.openPostLocationOnMap(post)
+                AppConst.POST_VIEW_MAP -> {
+
+                    val perms =
+                        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+
+                    if (EasyPermissions.hasPermissions(attachedContext, *perms)) {
+                        navigator.openPostLocationOnMap(post)
+                    } else {
+                        EasyPermissions.requestPermissions(
+                            this,
+                            "Please provide location permission for tagging pictures",
+                            REQUEST_LOCATION_PERMISSION,
+                            *perms
+                        )
+                    }
+
+                }
                 AppConst.POST_REPORT -> controller.reportPost(post)
                 else -> {
                 }
@@ -153,14 +169,12 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        val uploadSheet = PostBottomSheet.newInstance()
-        uploadSheet.show(childFragmentManager, "UploadPost")
+        toast("Permission applied")
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
 
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            onError("Please grant permissions from setting if you want to post...")
             AppSettingsDialog.Builder(this).build().show()
         }
 
