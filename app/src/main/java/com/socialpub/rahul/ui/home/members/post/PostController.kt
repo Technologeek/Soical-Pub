@@ -93,7 +93,7 @@ class PostController(
 
     override fun addLike(post: Post?) {
         post?.run {
-            if (post!!.uid != userPrefs.userId) {
+            if (post.uid != userPrefs.userId) {
                 view.showLoading("Liking...")
                 postSource.getGlobalPost(post.postId)
                     .addOnSuccessListener {
