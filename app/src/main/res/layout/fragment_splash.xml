@@ -37,7 +37,7 @@
                 android:layout_marginTop="@dimen/module_3"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                app:srcCompat="@mipmap/ic_dog"/>
+                app:srcCompat="@mipmap/ic_launcher"/>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

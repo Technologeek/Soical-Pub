@@ -83,7 +83,7 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
         text_profile_user_email.text = profile.email
         Picasso.get()
             .load(profile.avatar)
-            .placeholder(R.mipmap.ic_launcher_round)
+            .placeholder(R.mipmap.ic_launcher)
             .transform(CropCircleTransformation())
             .into(image_profile_avatar)
     }

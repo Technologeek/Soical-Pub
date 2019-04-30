@@ -33,7 +33,7 @@ class EditProfileActivity : BaseActivity(), EditUserProfileContract.View {
         image_profile.run {
             Picasso.get()
                 .load(profileUrl)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.ic_launcher)
                 .transform(CropCircleTransformation())
                 .into(this)
             setOnClickListener {
@@ -54,7 +54,7 @@ class EditProfileActivity : BaseActivity(), EditUserProfileContract.View {
     override fun showSelectedImage(path: String) {
         Picasso.get()
             .load("file://$path")
-            .placeholder(R.mipmap.ic_launcher_round)
+            .placeholder(R.mipmap.ic_launcher)
             .transform(CropCircleTransformation())
             .into(image_profile)
     }

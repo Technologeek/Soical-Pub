@@ -150,7 +150,7 @@ class PreviewPostActivity : BaseActivity(), PreviewPostContract.View {
         with(post) {
             Picasso.get()
                 .load(userAvatar)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.ic_launcher)
                 .transform(CropCircleTransformation())
                 .into(image_post_publisher_avatar)
 

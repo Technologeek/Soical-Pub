@@ -46,7 +46,7 @@ class MapActivity : BaseActivity(), MapContract.View {
 
             Picasso.get()
                 .load(userAvatar)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.ic_launcher)
                 .transform(CropCircleTransformation())
                 .into(image_post_avatar)
 

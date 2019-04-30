@@ -3,6 +3,7 @@ package com.socialpub.rahul.ui.onboarding.members.register
 
 import android.content.Intent
 import android.view.View
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -10,6 +11,7 @@ import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseFragment
 import com.socialpub.rahul.ui.onboarding.navigation.NavController
 import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_splash.*
 import timber.log.Timber
 
 /**
@@ -30,6 +32,13 @@ class RegisterFragment : BaseFragment(), RegisterContract.View {
     }
 
     override fun attachActions(googleClient: GoogleSignInClient) {
+
+        Glide.with(attachedContext)
+            .load(R.drawable.ic_cat)
+            .placeholder(R.drawable.ic_cat)
+            .into(image_cat_gif);
+
+
         btn_google_signin.setOnClickListener {
             startActivityForResult(googleClient.signInIntent, RegisterContract.Controller.Const.GOOGLE_LOGIN_REQ_CODE)
         }

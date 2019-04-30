@@ -109,7 +109,7 @@ class HomeActivity : BaseActivity(), NavController {
 
             Picasso.get()
                 .load(Injector.userPrefs().avatarUrl)
-                .placeholder(R.mipmap.ic_launcher_round)
+                .placeholder(R.mipmap.ic_launcher)
                 .transform(CropCircleTransformation())
                 .into(navHeader.image_side_nav_home_useravatar)
 

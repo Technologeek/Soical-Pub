@@ -178,7 +178,7 @@ class PostBottomSheet : BaseBottomSheet(), PostUploadContract.View {
     override fun showSelectedImage(path: String) {
         Picasso.get()
             .load("file://$path")
-            .placeholder(R.mipmap.ic_launcher_round)
+            .placeholder(R.mipmap.ic_launcher)
             .fit()
             .centerInside()
             .into(image_post_content)

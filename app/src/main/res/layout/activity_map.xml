@@ -50,7 +50,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/image_post_preview"
-                android:src="@mipmap/ic_launcher_round"
+                android:src="@mipmap/ic_launcher"
                 android:layout_width="160dp"
                 android:layout_height="160dp"/>
 
@@ -73,7 +73,7 @@
             android:padding="@dimen/module_1"
             android:layout_marginTop="55dp"
             android:layout_gravity="right"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@mipmap/ic_launcher"
             android:layout_width="65dp"
             android:layout_height="65dp"/>
 
