@@ -147,7 +147,6 @@ class ProfileFragment : BaseFragment(), ProfileContract.View {
                             *perms
                         )
                     }
-
                 }
 
                 AppConst.USER_PROFILE_DELETE -> actionDelePostConfirm(post.postId)

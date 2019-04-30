@@ -169,14 +169,12 @@ class PostFragment : BaseFragment(), PostContract.View, EasyPermissions.Permissi
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        val uploadSheet = PostBottomSheet.newInstance()
-        uploadSheet.show(childFragmentManager, "UploadPost")
+        toast("Permission applied")
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
 
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            onError("Please grant permissions from setting if you want to post...")
             AppSettingsDialog.Builder(this).build().show()
         }
 
