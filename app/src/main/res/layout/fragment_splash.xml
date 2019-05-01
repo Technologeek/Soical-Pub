@@ -22,7 +22,7 @@
                 android:gravity="center"
                 android:textColor="@color/pub_text_color_primary"
                 android:textSize="@dimen/font_headline_large"
-                android:text="Social Pub"/>
+                android:text="@string/app_name"/>
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"

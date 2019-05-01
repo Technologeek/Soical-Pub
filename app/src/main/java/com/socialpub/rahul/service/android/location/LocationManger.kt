@@ -26,11 +26,15 @@ class LocationManger private constructor(
     fun getAddressFromLocation(latLng: LatLng): List<Address> {
         with(latLng) {
             val geocoder = Geocoder(context)
-            return geocoder.getFromLocation(latitude, longitude, 1)
+            return try {
+                geocoder.getFromLocation(latitude, longitude, 1)
+            } catch (e: NullPointerException) {
+                emptyList<Address>()
+            }
         }
     }
 
-    fun makeMarker(latLng: LatLng)= MarkerOptions().position(latLng).title("Tag here?")
+    fun makeMarker(latLng: LatLng) = MarkerOptions().position(latLng).title("Tag here?")
 
     companion object {
 
