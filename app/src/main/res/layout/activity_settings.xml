@@ -46,7 +46,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                         android:text="Your profile will be visible in location search results"
-                        android:textSize="@dimen/font_caption_2"
+                        android:textSize="@dimen/font_caption_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -84,7 +84,7 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                         android:text="Your profile  will be visible in email search results"
-                        android:textSize="@dimen/font_caption_2"
+                        android:textSize="@dimen/font_caption_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

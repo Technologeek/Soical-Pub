@@ -34,7 +34,13 @@ class LocationManger private constructor(
         }
     }
 
-    fun makeMarker(latLng: LatLng) = MarkerOptions().position(latLng).title("Tag here?")
+    fun makeMarker(latLng: LatLng) =
+        MarkerOptions().position(latLng)
+            .title("Tag here?")
+
+    fun makeCustomMarker(latLng: LatLng) =
+        MarkerOptions().position(latLng)
+            .title("Tag here?")
 
     companion object {
 

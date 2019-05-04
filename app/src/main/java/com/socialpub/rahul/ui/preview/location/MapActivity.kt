@@ -4,6 +4,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.socialpub.rahul.R
 import com.socialpub.rahul.base.BaseActivity
 import com.socialpub.rahul.data.model.Post
@@ -38,10 +39,11 @@ class MapActivity : BaseActivity(), MapContract.View {
         initMap()
     }
 
-
+    lateinit var preiewPost: Post
     override fun showPost(post: Post) {
         with(post) {
-            updateMapCamera(LatLng(location.lat, location.long))
+            preiewPost = post
+
             text_post_caption.text = caption
 
             Picasso.get()
@@ -56,11 +58,17 @@ class MapActivity : BaseActivity(), MapContract.View {
                 .placeholder(R.drawable.ic_empty_image)
                 .into(image_post_preview)
 
+
+            updateMapCamera(LatLng(location.lat, location.long))
+
         }
     }
 
     private var googleMap: GoogleMap? = null
     private fun initMap() {
+
+        locationManager = Injector.locationManager()
+
         val mapFragment = SupportMapFragment()
 
         supportFragmentManager
@@ -77,18 +85,10 @@ class MapActivity : BaseActivity(), MapContract.View {
             }
         }
 
-        locationManager = Injector.locationManager()
-
-        locationManager.getLastLocation()
-            ?.addOnSuccessListener {
-                updateMapCamera(LatLng(it.latitude, it.longitude))
-            }?.addOnFailureListener {
-                onError("Error getting location...Cant tag your post!")
-                Timber.e(it.localizedMessage)
-            }
     }
 
     private fun updateMapCamera(latLng: LatLng) {
+
         googleMap?.moveCamera(
             CameraUpdateFactory
                 .newLatLngZoom(
@@ -99,7 +99,6 @@ class MapActivity : BaseActivity(), MapContract.View {
 
         val address = locationManager.getAddressFromLocation(latLng)
 
-
         val displayLocation = try {
             address.get(0).getAddressLine(0)
         } catch (e: IndexOutOfBoundsException) {
@@ -108,7 +107,13 @@ class MapActivity : BaseActivity(), MapContract.View {
         }
 
         text_post_location.text = displayLocation
-        googleMap?.addMarker(locationManager.makeMarker(latLng))
+
+        val opiton = MarkerOptions()
+            .position(latLng)
+            .title(preiewPost.username)
+            .snippet(preiewPost.caption)
+
+        googleMap?.addMarker(opiton)
 
     }
 

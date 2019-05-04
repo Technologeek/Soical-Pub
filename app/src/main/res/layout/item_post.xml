@@ -73,10 +73,10 @@
 
 
         <androidx.appcompat.widget.AppCompatImageView
-                android:layout_marginTop="@dimen/module_1"
                 android:id="@+id/image_post_preview"
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
+                android:layout_height="260dp"
+                android:maxHeight="360dp"
                 android:src="@mipmap/ic_launcher"
         />
 
@@ -86,8 +86,8 @@
                 tools:text="Location"
                 android:padding="@dimen/module_1"
                 android:textSize="14sp"
-                android:background="@color/colorAccent"
                 android:textStyle="bold"
+                android:background="@color/colorAccent"
                 android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
